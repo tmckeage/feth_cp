@@ -3,14 +3,14 @@
         <div class="col-md-4 offset-md-4">
             <div class="login-form bg-light mt-4 p-4">
                 <form action="" method="" class="row g-3">
-                    <h4>Login</h4>
+                    <h5>Login</h5>
                     <div class="col-12">
                         <label>Username</label>
-                        <input type="text" name="username" class="form-control" placeholder="Username">
+                        <input type="text" name="username" class="form-control" placeholder="Username" value="admin">
                     </div>
                     <div class="col-12">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" class="form-control" placeholder="Password" value="admin">
                     </div>
                     <div class="col-12">
                         <div class="form-check">
@@ -19,12 +19,12 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <button type="button" class="btn btn-primary float-end" (click)="doLogin()" >Login</button>
+                        <button type="button" class="btn btn-primary float-end btn-sm" (click)="doLogin()" >Login</button>
                     </div>
                 </form>
                 <hr class="mt-4">
                 <div class="col-12">
-                    <p class="text-center mb-0"><a href="#">Forgot Password</a></p>
+                    <p class="text-center mb-0"><a [routerLink]="['/forgot-password']">Forgot Password</a></p>
                 </div>
             </div>
         </div>

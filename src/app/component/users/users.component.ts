@@ -7,50 +7,56 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersComponent implements OnInit {
 
-	columns: any;
-	users: any;
+	columnDefs: any;
+	rowData: any;
 
   	constructor() { }
 
 	ngOnInit(): void {
 		// This is temp JSON, once API's gets integrate then this will be get remove
-		this.columns = ['Name', 'Job Type', 'Facility'];
-		this.users = [
+		this.columnDefs = [
+			{ field: 'Name', sortable: true, filter: true },
+			{ field: 'Job Type', sortable: true, filter: true },
+			{ field: 'Facility', sortable: true, filter: true }
+		];
+
+		this.rowData = [
 			{
-				name: 'Rhodes, Simon',
-				job_type: 'Manager',
-				facility: 'All',
+				Name: 'Rhodes, Simon',
+				'Job Type': 'Manager',
+				Facility: 'All',
 			},
 			{
-				name: 'Guzman, Crystal',
-				job_type: 'Manager',
-				facility: 'All',
+				Name: 'Guzman, Crystal',
+				'Job Type': 'Manager',
+				Facility: 'All',
 			},
 			{
-				name: 'Knight, Vera',
-				job_type: 'Tech',
-				facility: 'Leigh',
+				Name: 'Knight, Vera',
+				'Job Type': 'Tech',
+				Facility: 'Leigh',
 			},
 			{
-				name: 'Chapman, Rick',
-				job_type: 'Tech',
-				facility: 'Norfolk General',
+				Name: 'Chapman, Rick',
+				'Job Type': 'Tech',
+				Facility: 'Norfolk General',
 			},
 			{
-				name: 'Rice, Dominic',
-				job_type: 'Tech',
-				facility: 'Beach General',
+				Name: 'Rice, Dominic',
+				'Job Type': 'Tech',
+				Facility: 'Beach General',
 			},
 			{
-				name: 'Freeman, Misty',
-				job_type: 'Tech',
-				facility: 'Careplex',
+				Name: 'Freeman, Misty',
+				'Job Type': 'Tech',
+				Facility: 'Careplex',
 			},
 			{
-				name: 'Houseton, Jasmine',
-				job_type: 'Tech',
-				facility: 'Princess Anne',
+				Name: 'Houseton, Jasmine',
+				'Job Type': 'Tech',
+				Facility: 'Princess Anne',
 			}
 		]
 	}
+
 }
