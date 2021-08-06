@@ -8,11 +8,6 @@ import { ReviewComponent } from '../component/review/review.component';
 import { UsersComponent } from '../component/users/users.component';
 import { ForgotPasswordComponent } from '../component/forgot-password/forgot-password.component';
 
-
-
-
-
-
 const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'login', component: LoginComponent },
