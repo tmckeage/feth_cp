@@ -5,8 +5,7 @@
             <div class="row">
                 <div class="col-sm-6 col-md- col-lg-5"></div>
                 <div class="col-sm-6 col-md-4 col-lg-4">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#addUser"
-                        class="float-end btn btn-secondary btn-sm" (click)="actionAddUser()">+ Add User</button>
+                    <button type="button" class="float-end btn btn-secondary btn-sm" (click)="actionAddUser(content)">+ Add User</button>
                 </div>
             </div>
             <div class="row pt-2">
@@ -14,140 +13,122 @@
                     class="ag-theme-alpine ag-table" 
                     [rowData]="rowData" 
                     [columnDefs]="columnDefs" 
-                    (cellClicked)='onCellClicked($event)'
-                    ></ag-grid-angular>
+                    (cellClicked)='onCellClicked($event,content)'
+                >
+				</ag-grid-angular>
             </div>
             <div class="col-md-2 col-lg-2"></div>
         </div>
     </div>  
 </div>
 
-<!-- Add User -->
-<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modalClose()" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form-inline" [formGroup]="addUser">
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="first-name" class="col-form-label-sm">First Name:</label>
-                            <input type="text" formControlName="first_name" class="form-control" id="first-name" placeholder="Enter First Name" name="first-name">
-                        </div>
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="last-name" class="col-form-label-sm">Last Name:</label>
-                            <input type="text" formControlName="last_name" class="form-control" id="last-name" placeholder="Enter Last Name" name="last-name">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="user-type" class="col-form-label-sm">User Type:</label>
-                            <select class="form-select" formControlName="user_type" >
-                                <option selected>Select</option>
-                                <option value="1">Manger</option>
-                                <option value="2">Tech</option>
-                                <option value="3">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="facility" class="col-form-label-sm">Facility:</label>
-                            <select class="form-select" formControlName="facility">
-                                <option selected>Select</option>
-                                <option value="1">All</option>
-                                <option value="2">Leigh</option>
-                                <option value="3">Norfolk General</option>
-                                <option value="4">Beach General</option>
-                                <option value="5">Careplex</option>
-                                <option value="6">Princess Anne</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="email" class="col-form-label-sm">Email:</label>
-                            <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter Email Address" name="email">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <input class="form-check-input" formControlName="reset_password"  type="checkbox" name="reset-password">
-                            Reset Password
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" [disabled]="!addUser.valid">Save</button>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+		<h6 class="modal-title " id="modal-basic-title">{{showModalTitle}}</h6>
+    	<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
     </div>
-</div>
+	<div class="modal-body">
+		<form class="form-inline" [formGroup]="userForms">
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<label for="first-name" class="col-form-label-sm">First Name:</label>
+					<input type="text" formControlName="first_name" class="form-control" id="first-name" placeholder="Enter First Name" name="first-name">
+					<div *ngIf="userForm.first_name.touched && userForm.first_name.invalid" class="msg    col-form-label-sm">
+						<div *ngIf="userForm.first_name.errors && userForm.first_name.errors.required">First name is required</div>
+						<div *ngIf="userForm.first_name.errors && userForm.first_name.errors.first_name">Please enter valid first name</div>
+					</div>
+				</div>
+				<div class="col-6 form-group input-group-sm">
+					<label for="last-name" class="col-form-label-sm">Last Name:</label>
+					<input type="text" formControlName="last_name" class="form-control" id="last-name" placeholder="Enter Last Name" name="last-name">
+					<div *ngIf="userForm.last_name.touched && userForm.last_name.invalid" class="msg col-form-label-sm">
+						<div *ngIf="userForm.last_name.errors && userForm.last_name.errors.required">Last name is required</div>
+						<div *ngIf="userForm.last_name.errors && userForm.last_name.errors.last_name">Please enter valid last name</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<label for="user-type" class="col-form-label-sm">User Type:</label>
+					<select class="form-select" formControlName="user_type" >
+						<option selected>Select</option>
+						<option value="1">Manger</option>
+						<option value="2">Tech</option>
+						<option value="3">Inactive</option>
+					</select>
+				</div>
+				<div class="col-6 form-group input-group-sm">
+					<label for="facility" class="col-form-label-sm">Facility:</label>
+					<select class="form-select" formControlName="facility">
+						<option selected>Select</option>
+						<option value="1">All</option>
+						<option value="2">Leigh</option>
+						<option value="3">Norfolk General</option>
+						<option value="4">Beach General</option>
+						<option value="5">Careplex</option>
+						<option value="6">Princess Anne</option>
+					</select>
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<label for="email" class="col-form-label-sm">Email:</label>
+					<input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter Email Address" name="email">
+					<div *ngIf="userForm.email.touched && userForm.email.invalid" class="msg col-form-label-sm">
+				    <div *ngIf="userForm.email.errors && userForm.email.errors.required">Email is required</div>
+					<div *ngIf="userForm.email.errors && userForm.email.errors.email">Please enter valid email</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<input class="form-check-input me-2 mt-2" formControlName="reset_password"  type="checkbox" name="reset-password">
+					<label for="reset_password" class="col-form-label-sm">Reset Password</label>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary btn-sm" [disabled]="!userForms.valid">Save</button>
+		<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+	</div>
+</ng-template>
 
-<!-- Edit User -->
-<div [ngStyle]="{'display':display}" class="modal fade show" id="editUser">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modalClose()" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form-inline" [formGroup]="addUser">
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="first-name" class="col-form-label-sm">First Name:</label>
-                            <input type="text" formControlName="first_name" class="form-control" id="first-name" placeholder="Enter First Name" name="first-name">
-                        </div>
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="last-name" class="col-form-label-sm">Last Name:</label>
-                            <input type="text" formControlName="last_name" class="form-control" id="last-name" placeholder="Enter Last Name" name="last-name">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="user-type" class="col-form-label-sm">User Type:</label>
-                            <select class="form-select" formControlName="user_type" >
-                                <option selected>Select</option>
-                                <option value="1">Manger</option>
-                                <option value="2">Tech</option>
-                                <option value="3">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="facility" class="col-form-label-sm">Facility:</label>
-                            <select class="form-select" formControlName="facility">
-                                <option selected>Select</option>
-                                <option value="1">All</option>
-                                <option value="2">Leigh</option>
-                                <option value="3">Norfolk General</option>
-                                <option value="4">Beach General</option>
-                                <option value="5">Careplex</option>
-                                <option value="6">Princess Anne</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <label for="email" class="col-form-label-sm">Email:</label>
-                            <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter Email Address" name="email">
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-6 form-group input-group-sm">
-                            <input class="form-check-input" formControlName="reset_password"  type="checkbox" name="reset-password">
-                            Reset Password
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" [disabled]="!addUser.valid">Save</button>
-                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal" (click)="modalClose()">Cancel</button>
-            </div>
-        </div>
+<ng-template #view let-modal>
+    <div class="modal-header">
+		<h6 class="modal-title " id="modal-view">User Details</h6>
+    	<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
     </div>
-</div>
+	<div class="modal-body">
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<label class="col-form-label-sm">First Name: </label>
+					<label class="col-form-label-sm">{{viewData.Name}}</label>
+	            </div>
+				<div class="col-6 form-group input-group-sm">
+					<label class="col-form-label-sm">Last Name: </label>
+				
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-6 form-group input-group-sm">
+					<label class="col-form-label-sm">User Type: </label>
+				
+				</div>
+				<div class="col-6 form-group input-group-sm">
+					<label class="col-form-label-sm">Facility: </label>
+				
+				</div>
+			</div>
+			<div class="row mb-2">
+				<div class="col-12 form-group input-group-sm">
+					<label class="col-form-label-sm">Email: </label>
+				
+				</div>
+			</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary btn-sm" [disabled]="!userForms.valid">Edit</button>
+		<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+	</div>
+</ng-template>

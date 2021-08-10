@@ -13,6 +13,12 @@ import { AnalysisComponent } from './component/analysis/analysis.component';
 import { UsersComponent } from './component/users/users.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SetPasswordComponent } from './component/set-password/set-password.component';
+import { RequestReceivedComponent } from './component/request-received/request-received.component';
+
+// AWS
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 
 
 
@@ -26,15 +32,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AnalysisComponent,
     UsersComponent,
     ForgotPasswordComponent,
+    SetPasswordComponent,
+    RequestReceivedComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    NgbModule,
+    AmplifyAngularModule
   ],
-  providers: [],
+  providers: [
+    AmplifyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

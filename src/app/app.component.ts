@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AmplifyService } from 'aws-amplify-angular';
 
 @Component({
     selector: 'app-root',
@@ -6,10 +7,13 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'Fathom';
+    // title = 'Fathom';
+    title = 'amplify-app';
     authenticated = false;
-    constructor(){}
-
+    public auth:object;
+    constructor(public amplify: AmplifyService) {
+      this.auth =  amplify.auth();
+    }
     ngOnInit(): void {
 
         // This is temp code, once Amazon cognito SDK gets integrate then this will be get remove

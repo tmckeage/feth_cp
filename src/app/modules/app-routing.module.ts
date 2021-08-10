@@ -7,6 +7,8 @@ import { ReportsComponent } from '../component/reports/reports.component';
 import { ReviewComponent } from '../component/review/review.component';
 import { UsersComponent } from '../component/users/users.component';
 import { ForgotPasswordComponent } from '../component/forgot-password/forgot-password.component';
+import { SetPasswordComponent } from '../component/set-password/set-password.component';
+import { RequestReceivedComponent } from '../component/request-received/request-received.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -17,6 +19,8 @@ const routes: Routes = [
     { path: 'review', component: ReviewComponent },
     { path: 'users', component: UsersComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
+    {path: 'set-password', component: SetPasswordComponent},
+    {path: 'request', component: RequestReceivedComponent}
 ];
 
 @NgModule({
