@@ -18,7 +18,8 @@ export class UsersComponent implements OnInit {
 	showModalTitle = '';
 	viewData:any;
 	viewName: any;
-	
+    isView!: boolean;
+
 	constructor(private userService:UserService, private modalService: NgbModal) {}
 
 	ngOnInit(): void {
@@ -39,18 +40,20 @@ export class UsersComponent implements OnInit {
 		];
 
 		// get row data from service
-        this.rowData = this.userService.RowData;
+		this.rowData = this.userService.RowData;
 	}
-    
-	//
+
+	// on click table coloms open view modal
 	onCellClicked(event: any, view:any) {
 		this.showModalTitle = 'Edit User';
+		this.isView = true;
 		if (event.colDef.field === 'Name') {
 			const [first_name, last_name] = this.rowData[event.rowIndex].Name.split(',');
 			const email_id = this.rowData[event.rowIndex].Email;
-			this.viewName = first_name;
-			this.viewData = last_name;
 			this.viewData = this.rowData[event.rowIndex];
+			this.viewData.first_name = first_name;
+			this.viewData.last_name = last_name;
+			this.viewData.job_type = 'Tech';
 			this.setFirstName(first_name);
 			this.setLastName(last_name);
 			this.setEmail(email_id);
@@ -61,7 +64,18 @@ export class UsersComponent implements OnInit {
 			});
 		}
 	}
-
+     // on clicking edit button open modal
+	onEdit(event: any, content:any){ 
+		this.isView = false;
+		this.setFirstName(this.viewData.first_name);
+		this.setLastName(this.viewData.last_name);
+		this.setEmail(this.viewData.Email);
+		this.setUserType(2);
+		this.setFacility(1);
+		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		});
+	}
 	// Function callback when clicking add user button
 	actionAddUser(content: any) {
 		this.showModalTitle = 'Add User';

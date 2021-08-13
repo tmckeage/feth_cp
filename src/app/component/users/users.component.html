@@ -13,7 +13,7 @@
                     class="ag-theme-alpine ag-table" 
                     [rowData]="rowData" 
                     [columnDefs]="columnDefs" 
-                    (cellClicked)='onCellClicked($event,content)'
+                    (cellClicked)='onCellClicked($event,view)'
                 >
 				</ag-grid-angular>
             </div>
@@ -21,7 +21,6 @@
         </div>
     </div>  
 </div>
-
 <ng-template #content let-modal>
     <div class="modal-header">
 		<h6 class="modal-title " id="modal-basic-title">{{showModalTitle}}</h6>
@@ -93,42 +92,43 @@
 		<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
 	</div>
 </ng-template>
-
-<ng-template #view let-modal>
-    <div class="modal-header">
-		<h6 class="modal-title " id="modal-view">User Details</h6>
-    	<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
-    </div>
-	<div class="modal-body">
+<ng-template  #view let-modal >
+	<div *ngIf="isView">
+		<div class="modal-header">
+			<h6 class="modal-title " id="modal-view">User Details</h6>
+			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+		</div>
+		<div class="modal-body">
 			<div class="row mb-2">
 				<div class="col-6 form-group input-group-sm">
-					<label class="col-form-label-sm">First Name: </label>
-					<label class="col-form-label-sm">{{viewData.Name}}</label>
-	            </div>
+					<label class="col-form-label-sm fw-bold">First Name: </label>&nbsp;
+					<label class="col-form-label-sm me-2">{{viewData.first_name}}</label>
+				</div>
 				<div class="col-6 form-group input-group-sm">
-					<label class="col-form-label-sm">Last Name: </label>
-				
+					<label class="col-form-label-sm fw-bold">Last Name: </label>&nbsp;
+					<label class="col-form-label-sm me-2">{{viewData.last_name}}</label>
 				</div>
 			</div>
 			<div class="row mb-2">
 				<div class="col-6 form-group input-group-sm">
-					<label class="col-form-label-sm">User Type: </label>
-				
+					<label class="col-form-label-sm fw-bold">User Type: </label>&nbsp;
+					<label class="col-form-label-sm me-2">{{viewData.job_type}}</label>
 				</div>
 				<div class="col-6 form-group input-group-sm">
-					<label class="col-form-label-sm">Facility: </label>
-				
+					<label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
+					<label class="col-form-label-sm me-2">{{viewData.Facility}}</label>
 				</div>
 			</div>
 			<div class="row mb-2">
 				<div class="col-12 form-group input-group-sm">
-					<label class="col-form-label-sm">Email: </label>
-				
+					<label class="col-form-label-sm fw-bold">Email: </label>&nbsp;
+					<label class="col-form-label-sm me-2">{{viewData.Email}}</label>
 				</div>
 			</div>
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-secondary btn-sm" [disabled]="!userForms.valid">Edit</button>
-		<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
-	</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary btn-sm" (click)="onEdit($event,content)">Edit</button>
+			<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Exit</button>
+		</div>
+    </div>
 </ng-template>
