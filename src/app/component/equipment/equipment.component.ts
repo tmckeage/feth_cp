@@ -22,14 +22,44 @@ export class EquipmentComponent implements OnInit {
 	ngOnInit(): void {
 		this.scannerForms = new FormGroup({
 			"make": new FormControl('Select', [Validators.required]),
-			"modal": new FormControl('Select', [Validators.required]),
+			"model": new FormControl('Select', [Validators.required]),
 			"room": new FormControl('Select', [Validators.required]),
 			"facility": new FormControl('Select', [Validators.required]),
 			"sn": new FormControl('', [Validators.required])
 		});
 
-		this.scanners = [{ name: "GE Logiq: L12345678", cirs: "CIRS", rm: "RM 1", due: "7/31/21" }];
-		this.scanner = [{ name: "Philips: M12345678", cirs: "CIRS", rm: "RM 2", due: "7/31/21" }];
+		this.scanners = [
+			{ 
+				name: "GE Logiq: L12345678", 
+				cirs: "CIRS", 
+				rm: "RM 1", 
+				due: "7/31/21",
+				transducer: [
+					{ scan: 'C26:L1q234', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q235', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q236', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q237', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+				]
+			},
+			{ 
+				name: "Philips: M12345678", 
+				cirs: "CIRS", 
+				rm: "RM 2", 
+				due: "7/31/21",
+				transducer: [
+					{ scan: 'C26:L1q234', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q235', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q236', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+					{ scan: 'C26:L1q237', scan1: 'L412:M1234', scan2: 'E27:L1234' },
+				]
+			}
+		];
+
+		// this.scanners = [
+		// 					{ name: "GE Logiq: L12345678", cirs: "CIRS", rm: "RM 1", due: "7/31/21" },
+		// 					{ name: "Philips: M12345678", cirs: "CIRS", rm: "RM 2", due: "7/31/21" }
+		// 				];
+		// this.scanner = [{ name: "Philips: M12345678", cirs: "CIRS", rm: "RM 2", due: "7/31/21" }];
 		this.equipment = [{ scan: 'C26:L1q234', scan1: 'L412:M1234', scan2: 'E27:L1234' }];
 
 		// This is temp JSON, once API's gets integrate then this will be get remove
@@ -54,7 +84,7 @@ export class EquipmentComponent implements OnInit {
 	onScanner(content: any) {
 		this.showModalTitle = 'New Scanner';
 		this.setMake('');
-		this.setModal('');
+		this.setModel('');
 		this.setFacility('');
 		this.setRoom('');
 		this.setSN('');
@@ -77,7 +107,7 @@ export class EquipmentComponent implements OnInit {
 		const [make, sn] = this.scanners[0].name.split(':');
 		this.viewData = this.scanners[0];
 		this.setMake(1);
-		this.setModal(1);
+		this.setModel(1);
 		this.setFacility(1);
 		this.setRoom(1);
 		this.setSN(sn);
@@ -86,7 +116,7 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 	setMake(inputVal: any) { this.scannerForms.controls.make.setValue(inputVal) }
-	setModal(inputVal: any) { this.scannerForms.controls.modal.setValue(inputVal) }
+	setModel(inputVal: any) { this.scannerForms.controls.model.setValue(inputVal) }
 	setSN(inputVal: any) { this.scannerForms.controls.sn.setValue(inputVal) }
 	setRoom(inputVal: any) { this.scannerForms.controls.room.setValue(inputVal) }
 	setFacility(inputVal: any) { this.scannerForms.controls.facility.setValue(inputVal) }

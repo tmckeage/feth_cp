@@ -1,4 +1,4 @@
-<div class="container align-middle">
+<div class="row justify-content-center mt-5">
     <div class="col-md-9 mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
             <button type="button" class="btn btn-primary btn-sm me-2" ><i class="fa fa-plus-circle"></i> Import</button>
@@ -6,13 +6,14 @@
             <button type="button" class="btn btn-primary btn-sm me-2" ><i class="bi bi-plus-circle"></i> Transducer</button>
         </div>
     </div>
-    <div class="card mt-2 p-4 col-md-9 text-center">
+    <div class="col-md-3 col-lg-3"></div>
+    <div class="card mt-2 p-4 col-lg-8">
         <div class="row">
             <div class="col-sm-2 col-md-1 col-lg-1 ">
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm" formControlName="facility" >
+                <select class="form-select btn-sm">
                     <option selected>Select</option>
                     <option value="1">Manger</option>
                     <option value="2">Tech</option>
@@ -23,7 +24,7 @@
                 <label for="room" class="col-form-label-sm fw-bold">Room:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm" formControlName="room" >
+                <select class="form-select btn-sm">
                     <option selected>Select</option>
                     <option value="1">Manger</option>
                     <option value="2">Tech</option>
@@ -41,50 +42,19 @@
                 <input type="text" class="form-control" name="due-date" >
             </div> 
         </div>
-        <table class="table table-borderless">
-            <thead class="float-left">
-                <tr *ngFor="let scan of scanners">
-                    <th scope="col" (click)="onView($event,view)">{{scan.name}}</th>
-                    <th scope="col">{{scan.cirs}}</th>
-                    <th scope="col">{{scan.rm}}</th>
-                    <th scope="col">{{scan.due}}</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let equ of equipment">
-                 <tr>
-                    <th scope="row">
-                    <ul class="float-left">
-                        <li><a src="#">{{equ.scan}}</a></li>
-                        <li><a src="">{{equ.scan}}</a></li>
-                        <li><a src="">{{equ.scan}}</a></li>
-                        <li><a src="">{{equ.scan}}</a></li>         
-                    </ul>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-borderless mt-2">
-            <thead class="float-left">
-                <tr *ngFor="let scan of scanner">
-                    <th scope="col"(click)="onView($event,view)">{{scan.name}}</th>
-                    <th scope="col">{{scan.cirs}}</th>
-                    <th scope="col">{{scan.rm}}</th>
-                    <th scope="col">{{scan.due}}</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let equ of equipment">
-                <tr>
-                    <th scope="row">
-                    <ul class="float-left">
-                        <li>{{equ.scan}}</li>
-                        <li>{{equ.scan}}</li>
-                        <li>{{equ.scan}}</li>
-                        <li>{{equ.scan}}</li>
-                    </ul>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
+        <div *ngFor="let scan of scanners" class="scanner-holder">
+            <div class="row">
+                <div class="col-md-3" (click)="onView($event,view)">{{scan.name}}</div>
+                <div class="col-md-3">{{scan.cirs}}</div>
+                <div class="col-md-3">{{scan.rm}}</div>
+                <div class="col-md-3">{{scan.due}}</div>
+            </div>
+            <div class="row d-inline">
+                <ul class="ms-5">
+                    <li *ngFor="let equ of scan.transducer"><a src="#">{{equ.scan}}</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -114,7 +84,7 @@
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label for="model" class="col-form-label-sm">Model:</label>
-                <select class="form-select" formControlName="modal" >
+                <select class="form-select" formControlName="model" >
                     <option selected>Select</option>
                     <option value="1">Logiq</option>
                 </select>
@@ -141,10 +111,10 @@
 	</div>
 </ng-template>
 
-<ng-template  #view let-modal >
+<ng-template #view let-modal >
 	<div>
 		<div class="modal-header">
-			<h6 class="modal-title " id="modal-view">User Details</h6>
+			<h6 class="modal-title " id="modal-view">Scanner Details</h6>
 			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
 		</div>
 		<div class="modal-body">
