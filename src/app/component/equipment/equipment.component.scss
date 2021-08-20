@@ -12,12 +12,25 @@
     margin-top: 20px;
 }
 
-
-input.ng-touched.ng-invalid {
-    border: 1px solid red; 
-    box-shadow: 0 0 13px inset rgba(255, 0, 0, 0.158)a(255, 0, 0, 0.158)a(255, 0, 0, 0.178);
+.close-btn{
+    cursor:pointer;
+    font-size:25px!important;
 }
 
-.msg{
- color:red;
+// material
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+.date-picker{
+    height: 10%;
+}
+.mat-form-field-type-mat-date-range-input .mat-form-field-infix {
+    width: 200px;
+    height: 2px;
 }

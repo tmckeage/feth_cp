@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,6 +19,10 @@ import { RequestReceivedComponent } from './component/request-received/request-r
 
 // AWS
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// angular material
+import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 
 
 
@@ -34,6 +38,7 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
     ForgotPasswordComponent,
     SetPasswordComponent,
     RequestReceivedComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -42,11 +47,14 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
     ReactiveFormsModule,
     AgGridModule.withComponents([]),
     NgbModule,
-    AmplifyAngularModule
+    AngularMaterialModule,
+    AmplifyAngularModule,
+    BrowserAnimationsModule
   ],
   providers: [
     AmplifyService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
