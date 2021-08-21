@@ -9,17 +9,17 @@
                 </div>
             </div>
             <div class="row pt-2">
-                <ag-grid-angular 
-                    class="ag-theme-alpine ag-table" 
-                    [rowData]="rowData" 
-                    [columnDefs]="columnDefs" 
+                <ag-grid-angular
+                    class="ag-theme-alpine ag-table"
+                    [rowData]="rowData"
+                    [columnDefs]="columnDefs"
                     (cellClicked)='onCellClicked($event,view)'
                 >
 				</ag-grid-angular>
             </div>
             <div class="col-md-2 col-lg-2"></div>
         </div>
-    </div>  
+    </div>
 </div>
 <ng-template #content let-modal>
     <div class="modal-header">

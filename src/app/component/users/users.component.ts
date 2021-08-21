@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {UserService} from '../../services/user.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-users',
@@ -20,9 +21,11 @@ export class UsersComponent implements OnInit {
 	viewName: any;
     isView!: boolean;
 
-	constructor(private userService:UserService, private modalService: NgbModal) {}
+	constructor(public nav: NavbarService, private userService:UserService, private modalService: NgbModal) {}
 
 	ngOnInit(): void {
+		this.nav.show();
+
 		this.userForms = new FormGroup({
 			"first_name": new FormControl(null, [Validators.required]),
 			"last_name": new FormControl(null, [Validators.required]),
@@ -65,7 +68,7 @@ export class UsersComponent implements OnInit {
 		}
 	}
      // on clicking edit button open modal
-	onEdit(event: any, content:any){ 
+	onEdit(event: any, content:any){
 		this.setFirstName(this.viewData.first_name);
 		this.setLastName(this.viewData.last_name);
 		this.setEmail(this.viewData.Email);
@@ -88,7 +91,7 @@ export class UsersComponent implements OnInit {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
-    
+
 	setFirstName(inputVal: any) {this.userForms.controls.first_name.setValue(inputVal)}
 	setLastName(inputVal: any) {this.userForms.controls.last_name.setValue(inputVal)}
 	setEmail(inputVal: any) {this.userForms.controls.email.setValue(inputVal)}

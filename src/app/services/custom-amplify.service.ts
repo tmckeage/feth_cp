@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
 })
 export class CustomAmplifyService {
 
-  constructor(private router: Router) { }
+  	constructor(private router: Router) { }
 
-  signOut() {
+  	signOut() {
 		try {
 			Auth.signOut();
 		} catch (error) {
@@ -22,10 +22,10 @@ export class CustomAmplifyService {
 			const user = {username, password};
 			Auth.signIn(user).then(user => {
 				console.log(user);
-				sessionStorage.setItem('loggedIn', 'ok');
-				// this.router.navigate(['/users']);
-				let navigate = this.router;
-				setTimeout(function(){ navigate.navigate(['/users']); }, 10)
+				// sessionStorage.setItem('loggedIn', 'ok');
+				this.router.navigate(['/users']);
+				// let navigate = this.router;
+				// setTimeout(function(){ navigate.navigate(['/users']); }, 10)
 			})
 			.catch(err => console.log(err));
 		} catch (error) {
@@ -44,7 +44,10 @@ export class CustomAmplifyService {
 
 	confirmSignUp(username: any, code: any) {
 		try {
-		  	Auth.confirmSignUp(username, code);
+		  	Auth.confirmSignUp(username, code).then(user => {
+				console.log(user);
+			})
+			.catch(err => console.log(err));
 		} catch (error) {
 			console.log('error confirming sign up', error);
 		}
@@ -58,7 +61,10 @@ export class CustomAmplifyService {
 				attributes: {
 					email,
 				}
+			}).then(user => {
+				console.log(user);
 			})
+			.catch(err => console.log(err));
 		} catch (error) {
 			console.log('error confirming sign up', error);
 		}

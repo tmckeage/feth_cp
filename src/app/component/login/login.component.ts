@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarService } from '../../services/navbar.service';
 import { CustomAmplifyService } from '../../services/custom-amplify.service';
 
 @Component({
@@ -9,12 +10,13 @@ import { CustomAmplifyService } from '../../services/custom-amplify.service';
 })
 export class LoginComponent implements OnInit {
 
-  	constructor(private router: Router, private customAmplifyService: CustomAmplifyService) {
+  	constructor(private router: Router, public nav: NavbarService, private customAmplifyService: CustomAmplifyService) {
 		// This is temp code, once Amazon cognito SDK gets integrate then this will be get remove
 		sessionStorage.setItem('loggedIn', '');
 	}
 
 	ngOnInit(): void {
+		this.nav.hide();
 	}
 
 	doLogin() {

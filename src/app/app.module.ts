@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
+import { NavbarComponent } from './component/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AngularMaterialModule } from './modules/angular-material/angular-materi
     ForgotPasswordComponent,
     SetPasswordComponent,
     RequestReceivedComponent,
+    NavbarComponent,
 
   ],
   imports: [

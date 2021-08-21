@@ -18,11 +18,11 @@ export class AppComponent {
 
     ngOnInit(): void {
         // This is temp code, once Amazon cognito SDK gets integrate then this will be get remove
-        setTimeout(() => {
-            const isAuthenticated = sessionStorage.getItem('loggedIn');
-            if (isAuthenticated == 'ok') {
-                this.authenticated = true;
-            }
-        }, 10);
+        // setTimeout(() => {
+        //     const isAuthenticated = sessionStorage.getItem('loggedIn');
+        //     if (isAuthenticated == 'ok') {
+        //         this.authenticated = true;
+        //     }
+        // }, 10);
     }
 }
