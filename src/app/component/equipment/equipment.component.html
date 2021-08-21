@@ -1,15 +1,12 @@
 <div class="row justify-content-center mt-5">
-    <div class="col-md-9 mt-3 text-center">
+    <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
             <button type="button" class="btn btn-primary btn-sm me-2"><i class="fa fa-plus-circle"></i> Import</button>
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i
-                    class="bi bi-plus-circle"></i> Scanner</button>
-            <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-plus-circle"></i>
-                Transducer</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i class="bi bi-plus-circle"></i> Scanner</button>
+            <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-plus-circle"></i>Transducer</button>
         </div>
     </div>
-    <div class="col-md-3 col-lg-3"></div>
-    <div class="card mt-2 p-4 col-lg-8">
+    <div class="card mt-2 p-4 col-md-8">
         <div class="row">
             <div class="col-sm-2 col-md-1 col-lg-1 ">
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
@@ -17,9 +14,8 @@
             <div class="col-sm-2 col-md-2 col-lg-2 ">
                 <select class="form-select btn-sm">
                     <option selected>Select</option>
-                    <option value="1">Manger</option>
-                    <option value="2">Tech</option>
-                    <option value="3">Inactive</option>
+                    <option value="1">CIRS</option>
+                    <option value="1">Fathom</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -28,20 +24,23 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm">
                     <option selected>Select</option>
-                    <option value="1">Manger</option>
-                    <option value="2">Tech</option>
-                    <option value="3">Inactive</option>
+                    <option value="1">RM1</option>
+                    <option value="1">RM2</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <label for="due-date" class="col-form-label-sm fw-bold">Due Date:</label>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2 input-group-sm">
-                <input type="text" class="form-control" name="due-date">
-            </div>
-
-            <div class="col-sm-2 col-md-2 col-lg-2 input-group-sm">
-                <input type="text" class="form-control" name="due-date">
+            <div class="col-sm-2 col-md-2 col-lg-2 mb-4">
+                <mat-form-field class="date-picker" appearance="fill">
+                    <mat-label>Enter a Due Date</mat-label>
+                    <mat-date-range-input [rangePicker]="picker" class="date-picker">
+                      <input matStartDate placeholder="Start date">
+                      <input matEndDate placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                  </mat-form-field>
             </div>
         </div>
         <div *ngFor="let scan of scanners" class="scanner-holder">
@@ -60,120 +59,118 @@
     </div>
 </div>
 
+<!-- Add/ Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h6 class="modal-title" id="modal-basic-title">{{showModalTitle}}</h6>
-        <button class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modal-basic-title">{{showModalTitle}}</h4>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">
-        <form [formGroup]="scannerForms">
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label for="make" class="col-form-label-sm">Make:</label>
-                    <select class="form-select" formControlName="make">
-                        <option selected>Select</option>
-                        <option value="1">GE</option>
-                    </select>
-                    <div *ngIf="scannerForm.make.touched && scannerForm.make.invalid" class="msg col-form-label-sm">
-                        <div *ngIf="scannerForm.make.errors && scannerForm.make.errors.required">make is required
-                        </div>
-                        <div *ngIf="scannerForm.make.errors && scannerForm.make.errors.make">Please enter valid make
-                        </div>
-                    </div>
+        <form class="example-form" [formGroup]="scannerFormGroup">
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Make :</mat-label>
+                        <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
+                        <mat-autocomplete #make="matAutocomplete" [displayWith]="displayOption">
+                            <mat-option *ngFor="let make of filteredMake | async" [value]="make">
+                                {{make.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
                 </div>
-                <div class="col-6 form-group input-group-sm">
-                    <label for="facility" class="col-form-label-sm">Facility:</label>
-                    <select class="form-select" formControlName="facility">
-                        <option selected>Select</option>
-                        <option value="1"> CIRS</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label for="model" class="col-form-label-sm">Model:</label>
-                    <select class="form-select" formControlName="model">
-                        <option selected>Select</option>
-                        <option value="1">Logiq</option>
-                    </select>
-                    <div *ngIf="scannerForm.model.touched && scannerForm.model.invalid"
-                        class="msg         col-form-label-sm">
-                        <div *ngIf="scannerForm.model.errors && scannerForm.model.errors.required">model is required
-                        </div>
-                        <div *ngIf="scannerForm.model.errors && scannerForm.model.errors.model">Please enter valid model
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 form-group input-group-sm">
-                    <label for="room" class="col-form-label-sm">Room:</label>
-                    <!-- <input type="text" class="col-3" formControlName="room" [(ngModel)]="room"> -->
-                    <select class="col-6 form-select" formControlName="room">
-                        <option selected>Select</option>
-                        <option value="1">RM 1</option>
-                    </select>
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Facility :</mat-label>
+                        <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
+                        <mat-autocomplete #facility="matAutocomplete" [displayWith]="displayOption">
+                            <mat-option *ngFor="let facility of filteredFacility | async" [value]="facility">
+                                {{facility.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label for="sn" class="col-form-label-sm">S/N:</label>
-                    <input type="text" formControlName="sn" class="form-control" id="sn" placeholder="" name="sn">
-                    <div *ngIf="scannerForm.sn.touched && scannerForm.sn.invalid" class="msg col-form-label-sm">
-                        <div *ngIf="scannerForm.sn.errors && scannerForm.sn.errors.required">S/N is required</div>
-                        <div *ngIf="scannerForm.sn.errors && scannerForm.sn.errors.sn">Please enter S/N</div>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Model :</mat-label>
+                        <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
+                        <mat-autocomplete #model="matAutocomplete" [displayWith]="displayOption">
+                            <mat-option *ngFor="let model of filteredModel | async" [value]="model">
+                                {{model.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Room :</mat-label>
+                        <input type="text" matInput formControlName="room" [matAutocomplete]="room">
+                        <mat-autocomplete #room="matAutocomplete" [displayWith]="displayOption">
+                            <mat-option *ngFor="let room of filteredRoom | async" [value]="room">
+                                {{room.name}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>S/N :</mat-label>
+                        <input type="text" matInput formControlName="sn" required>
+                    </mat-form-field>
                 </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerForms.valid">Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid">Save</button>
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
-
+.
+<!-- view scanner  details modal-->
 <ng-template #view let-modal>
-    <div>
-        <div class="modal-header">
-            <h6 class="modal-title " id="modal-view">Scanner Details</h6>
-            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span
-                    aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
-                    <label class="col-form-label-sm me-2">{{makeObj[0]}}</label>
-                </div>
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
-                    <label class="col-form-label-sm me-2 center ">{{viewData.cirs}}</label>
-                </div>
+    <div class="modal-header">
+        <h4 class="modal-title " id="modal-view">Scanner Details</h4>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body">
+        <div class="row mb-2">
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
+                <label class="col-form-label-sm me-2">{{makeObj[0]}}</label>
             </div>
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Modal: </label>&nbsp;
-                    <label class="col-form-label-sm me-2">{{viewData.cirs}}</label>
-                </div>
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
-                    <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
-                    <label class="col-form-label-sm me-2">{{makeObj[1]}}</label>
-                </div>
-                <div class="col-6 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
-                </div>
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
+                <label class="col-form-label-sm me-2 center ">{{viewData.cirs}}</label>
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" (click)="onEdit($event,content)">Edit</button>
-            <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Exit</button>
+        <div class="row mb-2">
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
+                <label class="col-form-label-sm me-2">{{viewData.cirs}}</label>
+            </div>
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
+                <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
+            </div>
         </div>
+        <div class="row mb-2">
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
+                <label class="col-form-label-sm me-2">{{makeObj[1]}}</label>
+            </div>
+            <div class="col-6 form-group input-group-sm">
+                <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
+                <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onEdit($event,content)">Edit</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
     </div>
 </ng-template>

@@ -10,6 +10,7 @@ import { ForgotPasswordComponent } from '../component/forgot-password/forgot-pas
 import { SetPasswordComponent } from '../component/set-password/set-password.component';
 import { RequestReceivedComponent } from '../component/request-received/request-received.component';
 
+
 const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'login', component: LoginComponent },
@@ -21,6 +22,8 @@ const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent },
     {path: 'set-password', component: SetPasswordComponent},
     {path: 'request', component: RequestReceivedComponent}
+
+    
 ];
 
 @NgModule({

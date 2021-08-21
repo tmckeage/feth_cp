@@ -23,8 +23,8 @@
 </div>
 <ng-template #content let-modal>
     <div class="modal-header">
-		<h6 class="modal-title " id="modal-basic-title">{{showModalTitle}}</h6>
-    	<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+		<h5 class="modal-title " id="modal-basic-title">{{showModalTitle}}</h5>
+		<span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
 	<div class="modal-body">
 		<form class="form-inline" [formGroup]="userForms">
@@ -93,10 +93,9 @@
 	</div>
 </ng-template>
 <ng-template  #view let-modal >
-	<div *ngIf="isView">
 		<div class="modal-header">
-			<h6 class="modal-title " id="modal-view">User Details</h6>
-			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"><span aria-hidden="true">&times;</span></button>
+			<h5 class="modal-title " id="modal-view">User Details</h5>
+			<span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
 		</div>
 		<div class="modal-body">
 			<div class="row mb-2">
@@ -130,5 +129,4 @@
 			<button type="button" class="btn btn-secondary btn-sm" (click)="onEdit($event,content)">Edit</button>
 			<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Exit</button>
 		</div>
-    </div>
 </ng-template>

@@ -66,12 +66,12 @@ export class UsersComponent implements OnInit {
 	}
      // on clicking edit button open modal
 	onEdit(event: any, content:any){ 
-		this.isView = false;
 		this.setFirstName(this.viewData.first_name);
 		this.setLastName(this.viewData.last_name);
 		this.setEmail(this.viewData.Email);
 		this.setUserType(2);
 		this.setFacility(1);
+		this.modalService.dismissAll();
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
@@ -84,12 +84,11 @@ export class UsersComponent implements OnInit {
 		this.setEmail('');
 		this.setUserType(2);
 		this.setFacility(1);
-
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
-
+    
 	setFirstName(inputVal: any) {this.userForms.controls.first_name.setValue(inputVal)}
 	setLastName(inputVal: any) {this.userForms.controls.last_name.setValue(inputVal)}
 	setEmail(inputVal: any) {this.userForms.controls.email.setValue(inputVal)}
