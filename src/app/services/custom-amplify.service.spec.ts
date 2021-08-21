@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AmplifyService } from './amplify.service';
+import { CustomAmplifyService } from './custom-amplify.service';
 
-describe('AmplifyService', () => {
-  let service: AmplifyService;
+describe('CustomAmplifyService', () => {
+  let service: CustomAmplifyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AmplifyService);
+    service = TestBed.inject(CustomAmplifyService);
   });
 
   it('should be created', () => {

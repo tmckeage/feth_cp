@@ -20,8 +20,6 @@ import { RequestReceivedComponent } from './component/request-received/request-r
 // AWS
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -8,7 +8,6 @@ import { Amplify } from '@aws-amplify/core';
 import amplify from './aws-exports';
 Amplify.configure(amplify);
 
-
 if (environment.production) {
   enableProdMode();
 }

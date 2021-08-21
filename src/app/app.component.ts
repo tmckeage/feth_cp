@@ -6,16 +6,17 @@ import { AmplifyService } from 'aws-amplify-angular';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
-    // title = 'Fathom';
-    title = 'amplify-app';
+    title = 'Fathom';
     authenticated = false;
     public auth:object;
+
     constructor(public amplify: AmplifyService) {
       this.auth =  amplify.auth();
     }
-    ngOnInit(): void {
 
+    ngOnInit(): void {
         // This is temp code, once Amazon cognito SDK gets integrate then this will be get remove
         setTimeout(() => {
             const isAuthenticated = sessionStorage.getItem('loggedIn');

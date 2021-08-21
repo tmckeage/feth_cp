@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Auth } from 'aws-amplify';
+import { Auth } from '@aws-amplify/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
-  	providedIn: 'root'
+  providedIn: 'root'
 })
-export class AmplifyService {
+export class CustomAmplifyService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  	signOut() {
+  signOut() {
 		try {
 			Auth.signOut();
 		} catch (error) {
@@ -18,7 +19,15 @@ export class AmplifyService {
 
 	signIn(username: any, password: any) {
 		try {
-			const user = Auth.signIn(username, password);
+			const user = {username, password};
+			Auth.signIn(user).then(user => {
+				console.log(user);
+				sessionStorage.setItem('loggedIn', 'ok');
+				// this.router.navigate(['/users']);
+				let navigate = this.router;
+				setTimeout(function(){ navigate.navigate(['/users']); }, 10)
+			})
+			.catch(err => console.log(err));
 		} catch (error) {
 			console.log('error signing in', error);
 		}
