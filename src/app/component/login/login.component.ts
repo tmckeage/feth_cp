@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../../services/navbar.service';
 import { Auth } from '@aws-amplify/auth';
 import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,8 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-	username: any = '';
-	password: any = '';
+	usernameValue: any = '';
+	passwordValue: any = '';
+	loginForm = new FormGroup({
+		"username": new FormControl(null, [Validators.required]),
+		"password": new FormControl(null, [Validators.required])
+	});
 	showLoading = false;
 
   	constructor(private nav: NavbarService, private router: Router) {}
@@ -20,16 +25,20 @@ export class LoginComponent implements OnInit {
 	}
 
 	doLogin() {
-		this.showLoading = true;
-		Auth.signIn(this.username, this.password).then(user => {
-			console.log(user);
-			this.showLoading = false;
-			sessionStorage.setItem('userDetails', user);
-			this.router.navigate(['/users']);
-		})
-		.catch(err => {
-			console.log(err);
-			this.showLoading = false;
-		});
+		this.usernameValue = this.loginForm.controls.username.value;
+		this.passwordValue = this.loginForm.controls.password.value;
+		if (this.usernameValue && this.passwordValue) {
+			this.showLoading = true;
+			Auth.signIn(this.usernameValue, this.passwordValue).then(user => {
+				console.log(user);
+				this.showLoading = false;
+				sessionStorage.setItem('userDetails', user);
+				this.router.navigate(['/users']);
+			})
+			.catch(err => {
+				console.log(err);
+				this.showLoading = false;
+			});
+		}
 	}
 }

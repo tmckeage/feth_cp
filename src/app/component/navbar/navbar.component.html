@@ -22,7 +22,7 @@
 			</li>
 		</ul>
 	</div>
-	<span class="float-end">
+	<span class="float-end" *ngIf="nav.visible">
 		<a class="logoutbutton me-3" (click)="doLogout()">Logout</a>
 	</span>
 </nav>

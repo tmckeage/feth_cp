@@ -17,8 +17,9 @@ export class NavbarComponent implements OnInit {
 
     doLogout() {
         Auth.signOut().then(user => {
+            sessionStorage.removeItem('userDetails');
             this.router.navigate(['']);
         })
         .catch(err => console.log(err));
-        }
     }
+}
