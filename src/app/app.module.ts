@@ -44,6 +44,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     AgGridModule.withComponents([]),
     NgbModule,

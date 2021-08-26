@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {UserService} from '../../services/user.service';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../services/user.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarService } from '../../services/navbar.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class UsersComponent implements OnInit {
 	viewName: any;
     isView!: boolean;
 
-	constructor(public nav: NavbarService, private userService:UserService, private modalService: NgbModal) {}
+	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal) {}
 
 	ngOnInit(): void {
 		this.nav.show();
