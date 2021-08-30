@@ -64,7 +64,7 @@ export class CustomAmplifyService {
 			}).then(user => {
 				console.log(user);
 			})
-			.catch(err => console.log(err));
+			.catch((err: any) => console.log(err));
 		} catch (error) {
 			console.log('error confirming sign up', error);
 		}

@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
+import { TransducerComponent } from './component/transducer/transducer.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
     SetPasswordComponent,
     RequestReceivedComponent,
     NavbarComponent,
+    TransducerComponent,
 
   ],
   imports: [
@@ -45,6 +47,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     AgGridModule.withComponents([]),
     NgbModule,
     AngularMaterialModule,

@@ -1,9 +1,9 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
-            <button type="button" class="btn btn-primary btn-sm me-2"><i class="fa fa-plus-circle"></i> Import</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onImportFile(importFile)"><i class="fa fa-plus-circle"></i> Import</button>
             <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i class="bi bi-plus-circle"></i> Scanner</button>
-            <button type="button" class="btn btn-primary btn-sm me-2"><i class="bi bi-plus-circle"></i>Transducer</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)"><i class="bi bi-plus-circle"></i> Transducer</button>
         </div>
     </div>
     <div class="card mt-2 p-4 col-md-8">
@@ -12,47 +12,42 @@
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm">
-                    <option selected>Select</option>
-                    <option value="1">CIRS</option>
-                    <option value="1">Fathom</option>
+                <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
+                    <option *ngFor="let item of facilityName">{{ item }}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
                 <label for="room" class="col-form-label-sm fw-bold">Room:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm">
-                    <option selected>Select</option>
-                    <option value="1">RM1</option>
-                    <option value="1">RM2</option>
+                <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
+                    <option *ngFor="let item of roomName">{{ item }}</option>
                 </select>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
+            <div class="col-sm-6 col-md-6 col-lg-6 float-start " id="due-date">
                 <label for="due-date" class="col-form-label-sm fw-bold">Due Date:</label>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2 mb-4">
-                <mat-form-field class="date-picker" appearance="fill">
-                    <mat-label>Enter a Due Date</mat-label>
-                    <mat-date-range-input [rangePicker]="picker" class="date-picker">
-                      <input matStartDate placeholder="Start date">
-                      <input matEndDate placeholder="End date">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                  </mat-form-field>
+                <mat-form-field color="accent" class="btn-sm mat-form-field-infix-new" appearance="outline">
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" (dateChange)="startDateEvent($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker1" class="size"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field> 
+                <mat-form-field color="accent" class="btn-sm mat-form-field-infix-new size" appearance="outline">
+                    <input matInput [matDatepicker]="picker2" [(ngModel)]="EndDate"  (dateChange)="endDateEvent($event)" >
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 color="primary"></mat-datepicker>
+                </mat-form-field> 
             </div>
         </div>
-        <div *ngFor="let scan of scanners" class="scanner-holder">
+        <div *ngFor="let scanner of scanners" class="scanner-holder">
             <div class="row">
-                <div class="col-md-3" (click)="onView($event,view)">{{scan.name}}</div>
-                <div class="col-md-3">{{scan.cirs}}</div>
-                <div class="col-md-3">{{scan.rm}}</div>
-                <div class="col-md-3">{{scan.due}}</div>
+                <div class="col-md-3" (click)="scannerDetail(scanner,view)">{{scanner.name}}</div>
+                <div class="col-md-3">{{scanner.cirs}}</div>
+                <div class="col-md-3">{{scanner.rm}}</div>
+                <div class="col-md-3">{{scanner.due}}</div>
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
-                    <li *ngFor="let equ of scan.transducer"><a src="#">{{equ.scan}}</a></li>
+                    <li *ngFor="let equ of scanner.transducer"><a src="#" (click)="onTransducerDetail(equ,scanner,transducerView)">{{equ.scan}}</a></li>
                 </ul>
             </div>
         </div>
@@ -62,7 +57,7 @@
 <!-- Add/ Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">{{showModalTitle}}</h4>
+        <h5 class="modal-title" id="modal-basic-title">{{showModalTitle}}</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">
@@ -71,10 +66,10 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Make :</mat-label>
-                        <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
-                        <mat-autocomplete #make="matAutocomplete" [displayWith]="displayOption">
+                        <input type="text" matInput formControlName="make" required [matAutocomplete]="make" >
+                        <mat-autocomplete #make="matAutocomplete"  >
                             <mat-option *ngFor="let make of filteredMake | async" [value]="make">
-                                {{make.name}}
+                                {{make}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -83,9 +78,9 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Facility :</mat-label>
                         <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
-                        <mat-autocomplete #facility="matAutocomplete" [displayWith]="displayOption">
+                        <mat-autocomplete #facility="matAutocomplete" >
                             <mat-option *ngFor="let facility of filteredFacility | async" [value]="facility">
-                                {{facility.name}}
+                                {{facility}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -96,9 +91,9 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
-                        <mat-autocomplete #model="matAutocomplete" [displayWith]="displayOption">
+                        <mat-autocomplete #model="matAutocomplete" >
                             <mat-option *ngFor="let model of filteredModel | async" [value]="model">
-                                {{model.name}}
+                                {{model}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -107,9 +102,9 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Room :</mat-label>
                         <input type="text" matInput formControlName="room" [matAutocomplete]="room">
-                        <mat-autocomplete #room="matAutocomplete" [displayWith]="displayOption">
+                        <mat-autocomplete #room="matAutocomplete" >
                             <mat-option *ngFor="let room of filteredRoom | async" [value]="room">
-                                {{room.name}}
+                                {{room}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -130,18 +125,132 @@
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
-.
+
+<!-- Add/ Edit transducer modal -->
+<ng-template #transducerModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">{{transducerModalTitle}}</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body">
+        <form class="form" id="form" [formGroup]="transducerFormGroup">
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Make :</mat-label>
+                        <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup.enter)="onKey($event)">
+                        <mat-autocomplete #makeTransducer="matAutocomplete">
+                            <mat-option *ngFor="let makeTransducer of filteredMake | async" [value]="makeTransducer"  (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
+                                {{makeTransducer}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Scanner:</mat-label>
+                        <input type="text" matInput formControlName="scannerTransducer" [matAutocomplete]="scannerTransducer">
+                        <mat-autocomplete #scannerTransducer="matAutocomplete" >
+                            <mat-option *ngFor="let scannerTransducer of filteredScanner | async" [value]="scannerTransducer">
+                                {{scannerTransducer}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Model :</mat-label>
+                        <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup.enter)="onKey($event)">
+                        <mat-autocomplete #modelTransducer="matAutocomplete" >
+                            <mat-option *ngFor="let modelTransducer of filteredModel | async" [value]="modelTransducer" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
+                                {{modelTransducer}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6" *ngIf="isEmpty">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Image Setup:</mat-label>
+                        <input type="text" matInput formControlName="image" required [matAutocomplete]="image">
+                        <mat-autocomplete #image="matAutocomplete">
+                            <mat-option *ngFor="let image of filteredImageTransducer | async" [value]="image">
+                                {{image}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>S/N :</mat-label>
+                        <input type="text" matInput formControlName="snTransducer" required>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row g-2" *ngIf="isModel">
+                <div class="col-6">
+                    <div class="p-1 border btn-secondary btn-sm text-center">Uniformity Window</div>
+                </div>
+                <div class="col-6">
+                 <div class="p-1 border btn-secondary btn-sm text-center">Image Quality Window</div>
+                </div>
+            </div>
+            <div class="row g-2 pt-2" *ngIf="isModel">
+                <div class="col-4">
+                    <div class="row">
+                    <h4 class="text-cente fs-6">Analysis Parameters</h4>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">4cm</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">520,-200</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">60</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">360 cm</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">600 cm</label>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <!-- <iframe href=""></iframe> -->
+                    <img class="scanner-img" src="../../../assets/scanner.png">
+                </div>
+            </div>
+            <div class="row g-2 float-center" *ngIf="isEmpty">
+                <h6 class="text-center">Unknown Transducer model </h6>
+                <span class="text-center"> Analysis field of view and parameters</span><span class="text-center">Will be determined at onboarding</span>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onReportsError(reportsError)" *ngIf="isModel">Reports Analysis Window Errors </button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid">Save</button>
+    </div>
+</ng-template>
+
 <!-- view scanner  details modal-->
 <ng-template #view let-modal>
     <div class="modal-header">
-        <h4 class="modal-title " id="modal-view">Scanner Details</h4>
+        <h5 class="modal-title " id="modal-view">Scanner Details</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{makeObj[0]}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.make}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
@@ -151,7 +260,7 @@
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.cirs}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.make}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
@@ -161,7 +270,7 @@
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{makeObj[1]}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.sn}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
@@ -170,7 +279,130 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" (click)="onEdit($event,content)">Edit</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onScannerEdit(viewData,content)">Edit</button>
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
+    </div>
+</ng-template>
+
+<!--Reports Error modal  -->
+<ng-template #reportsError let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Reports Fov Error</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body">
+     <div class="card">
+        <h6> Please describe the nature of the  error</h6>
+        <textarea class="textarea" placeholder="Enter a description of the error"></textarea>
+     </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm">Reports Error</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="reportsCancel(transducerModal)">Cancel</button>
+    </div>
+</ng-template>
+
+<!-- View transducer modal -->
+<div id="modal-tra">
+<ng-template #transducerView let-modal >
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Transducer Details</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body">
+        <form class="form" id="form" [formGroup]="transducerFormGroup">
+            <div class="row mb-2">
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
+                    <label class="col-form-label-sm me-2">{{viewTransducer.make}}</label>
+                </div>
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Scanner: </label>&nbsp;
+                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.scan}}</label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
+                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.model}}</label>
+                </div>
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Image Setup: </label>&nbsp;
+                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.scan1}}</label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
+                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.sn}}</label>
+                </div>
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
+                    <label class="col-form-label-sm text-center">Barcode</label>
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col-6">
+                    <div class="p-1 border btn-secondary btn-sm text-center">Uniformity Window</div>
+                </div>
+                <div class="col-6">
+                 <div class="p-1 border btn-secondary btn-sm text-center">Image Quality Window</div>
+                </div>
+            </div>
+            <div class="row g-2 pt-2">
+                <div class="col-4">
+                    <div class="row">
+                    <h4 class="text-cente fs-6">Analysis Parameters</h4>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">4cm</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">520,-200</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">60</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">360 cm</label>
+                    </div>
+                    <div class="form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
+                        <label class="col-form-label-sm float-end">600 cm</label>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <img class="scanner-img" src="../../../assets/scanner.png">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onTransducerEdit(viewTransducer,transducerModal)">Edit </button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
+    </div>
+</ng-template>
+</div>
+
+<ng-template #importFile let-modal >
+    <div class="modal-header">
+        <h5 class="modal-title" id="modal-basic-title">Import File</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body">
+     <form>
+        <input type="file" accept=".csv" (change)="handleFileSelect($event)">
+     </form>
+     <div style="text-align:center">
+        <app-material-file-upload (complete)="onFileComplete($event)"></app-material-file-upload>
+  </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="handleFileSelect($event)">Upload </button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>

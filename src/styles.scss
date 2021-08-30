@@ -54,4 +54,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .cdk-overlay-container {
   z-index: 1100;
 }
+// for scanner model
+#due-date {
+  .mat-form-field{
+    width: 40%;
+  }
+  .mat-form-field-appearance-outline {
+    .mat-form-field-wrapper {
+      margin: 0;
+      padding: 0;
 
+      .mat-form-field-infix {
+        padding: 0 0 6px 0px;
+      }
+    }
+  }
+} 
+
+ #modal-tra{
+  .modal-content{
+    width: 120% !important;
+   }
+  }
