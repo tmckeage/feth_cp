@@ -1,7 +1,7 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onImportFile(importFile)"><i class="fa fa-plus-circle"></i> Import</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" disabled ><i class="fa fa-plus-circle"></i> Import</button>
             <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i class="bi bi-plus-circle"></i> Scanner</button>
             <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)"><i class="bi bi-plus-circle"></i> Transducer</button>
         </div>
@@ -12,16 +12,18 @@
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
-                    <option *ngFor="let item of facilityName">{{ item }}</option>
+                <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter1($event)">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="let item of facilityName">{{item}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
-                <label for="room" class="col-form-label-sm fw-bold">Room:</label>
+                <label for="room" class="col-form-label-sm fw-bold" >Room:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
-                    <option *ngFor="let item of roomName">{{ item }}</option>
+                <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter($event)">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="let item of roomName">{{item}}</option>
                 </select>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 float-start " id="due-date">
@@ -40,14 +42,14 @@
         </div>
         <div *ngFor="let scanner of scanners" class="scanner-holder">
             <div class="row">
-                <div class="col-md-3" (click)="scannerDetail(scanner,view)">{{scanner.name}}</div>
+                <div class="col-md-3 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.name}}</div>
                 <div class="col-md-3">{{scanner.cirs}}</div>
                 <div class="col-md-3">{{scanner.rm}}</div>
                 <div class="col-md-3">{{scanner.due}}</div>
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
-                    <li *ngFor="let equ of scanner.transducer"><a src="#" (click)="onTransducerDetail(equ,scanner,transducerView)">{{equ.scan}}</a></li>
+                    <li class="cursorPointer" *ngFor="let equ of scanner.transducer"><a src="#" (click)="onTransducerDetail(equ,scanner,transducerView)">{{equ.scan}}</a></li>
                 </ul>
             </div>
         </div>
@@ -138,9 +140,9 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="fill">
                         <mat-label>Make :</mat-label>
-                        <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup.enter)="onKey($event)">
+                        <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup)="onKey($event)">
                         <mat-autocomplete #makeTransducer="matAutocomplete">
-                            <mat-option *ngFor="let makeTransducer of filteredMake | async" [value]="makeTransducer"  (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
+                            <mat-option *ngFor="let makeTransducer of filteredMakeTransducer | async" [value]="makeTransducer"  (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
                                 {{makeTransducer}}
                             </mat-option>
                         </mat-autocomplete>
@@ -162,9 +164,9 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="fill" >
                         <mat-label>Model :</mat-label>
-                        <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup.enter)="onKey($event)">
+                        <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup)="onKey($event)">
                         <mat-autocomplete #modelTransducer="matAutocomplete" >
-                            <mat-option *ngFor="let modelTransducer of filteredModel | async" [value]="modelTransducer" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
+                            <mat-option *ngFor="let modelTransducer of filteredModelTransducer | async" [value]="modelTransducer" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
                                 {{modelTransducer}}
                             </mat-option>
                         </mat-autocomplete>
@@ -190,43 +192,47 @@
             </div>
             <div class="row g-2" *ngIf="isModel">
                 <div class="col-6">
-                    <div class="p-1 border btn-secondary btn-sm text-center">Uniformity Window</div>
+                    <div class="p-1 border btn-secondary btn-sm text-center" (click)="onWindow()">Uniformity Window</div>
                 </div>
                 <div class="col-6">
-                 <div class="p-1 border btn-secondary btn-sm text-center">Image Quality Window</div>
+                 <div class="p-1 border btn-secondary btn-sm text-center" (click)="onImage()">Image Quality Window</div>
                 </div>
             </div>
-            <div class="row g-2 pt-2" *ngIf="isModel">
-                <div class="col-4">
-                    <div class="row">
-                    <h4 class="text-cente fs-6">Analysis Parameters</h4>
-                    <div class="form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
-                        <label class="col-form-label-sm float-end">4cm</label>
+             <div *ngIf="!isTab">
+                <div class="row g-2 pt-2" *ngIf="isModel">
+                    <div class="col-4">
+                        <div class="row">
+                        <h4 class="text-cente fs-6">Analysis Parameters</h4>
+                        <div class="form-group input-group-sm">
+                            <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
+                            <label class="col-form-label-sm float-end">4cm</label>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
+                            <label class="col-form-label-sm float-end">520,-200</label>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
+                            <label class="col-form-label-sm float-end">60</label>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
+                            <label class="col-form-label-sm float-end">360 cm</label>
+                        </div>
+                        <div class="form-group input-group-sm">
+                            <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
+                            <label class="col-form-label-sm float-end">600 cm</label>
+                        </div>
+                        </div>
                     </div>
-                    <div class="form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
-                        <label class="col-form-label-sm float-end">520,-200</label>
-                    </div>
-                    <div class="form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
-                        <label class="col-form-label-sm float-end">60</label>
-                    </div>
-                    <div class="form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
-                        <label class="col-form-label-sm float-end">360 cm</label>
-                    </div>
-                    <div class="form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
-                        <label class="col-form-label-sm float-end">600 cm</label>
-                    </div>
+                    <div class="col-8">
+                        <img class="scanner-img" src="../../../assets/scanner.png">
                     </div>
                 </div>
-                <div class="col-8">
-                    <!-- <iframe href=""></iframe> -->
-                    <img class="scanner-img" src="../../../assets/scanner.png">
-                </div>
-            </div>
+             </div>
+             <div class="row" *ngIf="isTab">
+              <img class="scanner-img" src="../../../assets/scanner.png">
+             </div>
             <div class="row g-2 float-center" *ngIf="isEmpty">
                 <h6 class="text-center">Unknown Transducer model </h6>
                 <span class="text-center"> Analysis field of view and parameters</span><span class="text-center">Will be determined at onboarding</span>
@@ -287,14 +293,16 @@
 <!--Reports Error modal  -->
 <ng-template #reportsError let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="modal-basic-title">Reports Fov Error</h5>
+        <h5 class="modal-title" id="modal-basic-title">Reports FoV Error</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">
-     <div class="card">
-        <h6> Please describe the nature of the  error</h6>
-        <textarea class="textarea" placeholder="Enter a description of the error"></textarea>
-     </div>
+        <div class="row">
+            <div class="col-md-12">
+               <h6> Please describe the nature of the  error</h6>
+               <textarea class="textarea" placeholder="Enter a description of the error"></textarea>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm">Reports Error</button>
@@ -303,7 +311,6 @@
 </ng-template>
 
 <!-- View transducer modal -->
-<div id="modal-tra">
 <ng-template #transducerView let-modal >
     <div class="modal-header">
         <h5 class="modal-title" id="modal-basic-title">Transducer Details</h5>
@@ -343,13 +350,13 @@
             </div>
             <div class="row g-2">
                 <div class="col-6">
-                    <div class="p-1 border btn-secondary btn-sm text-center">Uniformity Window</div>
+                    <div class="p-1 border btn-secondary btn-sm text-center" (click)="onWindow()">Uniformity Window</div>
                 </div>
                 <div class="col-6">
-                 <div class="p-1 border btn-secondary btn-sm text-center">Image Quality Window</div>
+                 <div class="p-1 border btn-secondary btn-sm text-center" (click)="onImage()">Image Quality Window</div>
                 </div>
             </div>
-            <div class="row g-2 pt-2">
+            <div class="row g-2 pt-2" *ngIf="!isTab">
                 <div class="col-4">
                     <div class="row">
                     <h4 class="text-cente fs-6">Analysis Parameters</h4>
@@ -379,6 +386,9 @@
                     <img class="scanner-img" src="../../../assets/scanner.png">
                 </div>
             </div>
+            <div class="row" *ngIf="isTab">
+                <img class="scanner-img" src="../../../assets/scanner.png">
+            </div>
         </form>
     </div>
     <div class="modal-footer">
@@ -386,7 +396,6 @@
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
     </div>
 </ng-template>
-</div>
 
 <ng-template #importFile let-modal >
     <div class="modal-header">
@@ -395,14 +404,11 @@
     </div>
     <div class="modal-body">
      <form>
-        <input type="file" accept=".csv" (change)="handleFileSelect($event)">
+        <input type="file" accept=".csv" >
      </form>
-     <div style="text-align:center">
-        <app-material-file-upload (complete)="onFileComplete($event)"></app-material-file-upload>
-  </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" (click)="handleFileSelect($event)">Upload </button>
+        <button type="button" class="btn btn-secondary btn-sm">Upload </button>
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>

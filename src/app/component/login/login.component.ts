@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NavbarService } from '../../services/navbar.service';
-import { CustomAmplifyService } from '../../services/custom-amplify.service';
+import { Auth } from '@aws-amplify/auth';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +10,35 @@ import { CustomAmplifyService } from '../../services/custom-amplify.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+	usernameValue: any = '';
+	passwordValue: any = '';
+	loginForm = new FormGroup({
+		"username": new FormControl(null, [Validators.required]),
+		"password": new FormControl(null, [Validators.required])
+	});
+	showLoading = false;
 
-  	constructor(private router: Router, public nav: NavbarService, private customAmplifyService: CustomAmplifyService) {
-		// This is temp code, once Amazon cognito SDK gets integrate then this will be get remove
-		sessionStorage.setItem('loggedIn', '');
-	}
+  	constructor(private nav: NavbarService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.nav.hide();
 	}
 
 	doLogin() {
-		this.customAmplifyService.signIn('nitin', 'aloha@123');
-		// sessionStorage.setItem('loggedIn', 'ok');
-		// this.router.navigate(['/users']);
-		// setTimeout(function(){ window.location.reload(); }, 10)
+		this.usernameValue = this.loginForm.controls.username.value;
+		this.passwordValue = this.loginForm.controls.password.value;
+		if (this.usernameValue && this.passwordValue) {
+			this.showLoading = true;
+			Auth.signIn(this.usernameValue, this.passwordValue).then(user => {
+				console.log(user);
+				this.showLoading = false;
+				sessionStorage.setItem('userDetails', user);
+				this.router.navigate(['/users']);
+			})
+			.catch(err => {
+				console.log(err);
+				this.showLoading = false;
+			});
+		}
 	}
 }

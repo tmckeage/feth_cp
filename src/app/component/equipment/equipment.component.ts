@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { from } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { EquipmentService } from 'src/app/services/equipment.service';
-// import {MatAutocompleteTrigger } from '@angular/material'; 
 
 @Component({
 	selector: 'app-equipment',
@@ -31,6 +31,8 @@ export class EquipmentComponent implements OnInit {
 	roomOptions: any[] = [];
 	scannerOptions: any[] = [];
 	imageOptions: any[] = [];
+	modelTransducerOption:any[] = [];
+	makeTransducerOption:any[] = [];
 	filteredMake: Observable<any[]> | undefined;
 	filteredFacility: Observable<any[]> | undefined;
 	filteredModel: Observable<any[]> | undefined;
@@ -40,15 +42,19 @@ export class EquipmentComponent implements OnInit {
 	filteredModelTransducer: Observable<any[]> | undefined;
 	filteredSnTransducer: Observable<any[]> | undefined;
 	filteredImageTransducer: Observable<any[]> | undefined;
+	selectedR: Observable<any[]> | undefined;
+	selectedF: Observable<any[]> | undefined;
 	isMake:boolean = false;
 	isModel:boolean = false;
 	isEmpty:boolean = false;
+	isTab:boolean = false;
 	facilityName:any;
 	roomName:any;
-	public selectedRoom: any;
-	public selectedFacility:any;
+	scannerList: any;
+	selectedFacility: any
+	selectedRoom: any;
 	public startDate:any;
-	public EndDate:any;
+	public EndDate: any;
 
 	constructor(private modalService: NgbModal, private _equipment:EquipmentService) {
 		// scanner form
@@ -75,7 +81,9 @@ export class EquipmentComponent implements OnInit {
 		this.modelOptions = ['Logiq', 'Logiq1'];
 		this.roomOptions = ['RM1', 'RM2'];
 		this.scannerOptions = ['scanner1','scanner2'];	
-		this.imageOptions = ['Deflout','scanner2'];	
+		this.imageOptions = ['Deflout','Deflout1'];	
+		this.makeTransducerOption = ['GE1', 'GE2'];
+		this.modelTransducerOption = ['Logiq1', 'Logiq2'];
 	}
 
 	ngOnInit(): void {
@@ -107,13 +115,19 @@ export class EquipmentComponent implements OnInit {
 		this.filteredMakeTransducer = this.transducerFormGroup.controls.makeTransducer.valueChanges.pipe(
 			startWith(''),
 			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterMakeTransducer(name) : this.makeOptions.slice())
+			map(name => name ? this._filterMakeTransducer(name) : this.makeTransducerOption.slice())
+		);
+
+		this.filteredModelTransducer = this.transducerFormGroup.controls.modelTransducer.valueChanges.pipe(
+			startWith(''),
+			map(value => typeof value === 'string' ? value : value.name),
+			map(name => name ? this._filterModelTransducer(name) : this.modelTransducerOption.slice())
 		);
 
 		this.filteredScanner = this.transducerFormGroup.controls.scannerTransducer.valueChanges.pipe(
 			startWith(''),
 			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterModel(name) : this.scannerOptions.slice())
+			map(name => name ? this._filterScanner(name) : this.scannerOptions.slice())
 		);
 
 		this.filteredImageTransducer = this.transducerFormGroup.controls.image.valueChanges.pipe(
@@ -123,17 +137,25 @@ export class EquipmentComponent implements OnInit {
 		);
 
         // show for dropDown list
-		 this.scanners = this._equipment.scanners;
-		 this.roomName = this._equipment.roomTransducer;
-		 this.facilityName = this._equipment.facilityTransducer;
+		this.scanners = this._equipment.scanners;
+		this.roomName = this._equipment.roomTransducer;
+		this.facilityName = this._equipment.facilityTransducer;
 	}
 	
 	// equipment filter Room
-	equipmentFilter() {
-		this.scanners = this._equipment.scanners.filter(item => item.rm === this.selectedRoom || item.circ === this.selectedFacility );
-
-
+	equipmentFilter(event:any) {
+		const selectValue = event.target.value;
+		//  this.scanners = this._equipment.scanners.filter(item => item.rm === this.selectedRoom );
+	    // this.selectedRoom = this.scanners[0].rm;
+		// this.selectedFacility = this.scanners[0];
 	}	
+
+	equipmentFilter1(event:any) {
+		const selectValue = event.target.value;
+		//  this.scanners = this._equipment.scanners.filter(item => item.circ === this.selectedFacility );
+	    // this.selectedRoom = this.scanners[0].rm;
+		// this.selectedFacility = this.scanners[0];
+	}
 	
 	// autocomplete button filter
 	private _filterMake(name: string): any[] {
@@ -163,19 +185,26 @@ export class EquipmentComponent implements OnInit {
 
 	private _filterMakeTransducer(name: string): any[] {
 		const filterValue = name.toLowerCase();
-		return this.makeOptions.filter(option => option.toLowerCase().includes(filterValue));
+		return this.makeTransducerOption.filter(option => option.toLowerCase().includes(filterValue));
 	}
 
 	private _filterModelTransducer(name: string): any[] {
 		const filterValue = name.toLowerCase();
-		return this.modelOptions.filter(option => option.toLowerCase().includes(filterValue));
+		return this.modelTransducerOption.filter(option => option.toLowerCase().includes(filterValue));
 	}
 
 	private _filterImageTransducer(name: string): any[] {
 		const filterValue = name.toLowerCase();
 		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
 	}
-
+	private _filterSelectedFacility(name: string): any[] {
+		const filterValue = name.toLowerCase();
+		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
+	}
+	private _filterSelectedRoom(name: string): any[] {
+		const filterValue = name.toLowerCase();
+		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
+	}
 
 	// add scanner modal
 	onScanner(content: any) {
@@ -189,6 +218,7 @@ export class EquipmentComponent implements OnInit {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
+
 	// on scanner click open view modal
 	scannerDetail(scanner: any, view: any) {
 		const [name, snNo] = scanner.name.split(':');
@@ -214,7 +244,7 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-		// Edit modal
+	// Edit modal
 	onScannerEdit(viewData: any, content: any) {
 		this.showModalTitle = 'Edit Scanner';
 		const [name, sn] = viewData.name.split(':');
@@ -229,19 +259,20 @@ export class EquipmentComponent implements OnInit {
 		});	
 	}
 
-      //on change  make and modal modal
+	//on change  make and modal modal
 	onChangeMakeTransducer(makeTransducer: any){
        let changeMakeValue = makeTransducer; 
 	   if(changeMakeValue){
         this.isMake = true;
 	    }
 	}
-     // model selected
-	onChangeModalTransducer(modelTransducer: any){
+    
+	// model selected
+	onChangeModalTransducer(modelTransducer: any) {
 		let changeModalValue = modelTransducer; 
-		if(changeModalValue && this.isMake === true){
+		if (changeModalValue && this.isMake === true) {
 		   this.isModel = true;
-	    }else{
+	    } else {
 		   this.isEmpty = true;
 		}
 	}
@@ -250,13 +281,19 @@ export class EquipmentComponent implements OnInit {
 	onKey(event: any){
 	  let modelValue = event.target.value;
 	  this.modelOptions.forEach(item =>{
-		if(modelValue == item){
+		if (modelValue == item) {
 			this.isModel = true;
-		}else{
+			this.isEmpty = false;
+		} else if (modelValue == "") {
+			this.isEmpty = false; 
+			this.isModel = false;
+		} else {
 			this.isEmpty = true; 
+			this.isModel = false;
 		}
 	  })
 	}
+	
     // transducer edit data
 	onTransducerEdit(viewTransducer: any, transducerModal: any){
 		this.transducerModalTitle = 'Edit Transducer';
@@ -270,7 +307,6 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});	
-
 	}
 
 	//add transducer modal
@@ -298,37 +334,20 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	startDateEvent(event:any){
-      this.startDate = event.value;
+		this.startDate = event.value;
 	}
 
 	endDateEvent(event: any){
-	 this.EndDate = event.value;
+		this.EndDate = event.value;
 	}
 
-	onImportFile(importFile: any){
-		this.modalService.dismissAll();
-		this.modalService.open(importFile, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-			this.closeResult = `Closed with: ${result}`;
-		});
+	onWindow() { 
+		this.isTab = false;
 	}
 
-
-	handleFileSelect(evt:any) {
-	  var files = evt.target.files; // FileList object
-	  var file = files[0];
-	  var reader = new FileReader();
-	  reader.readAsText(file);
-	  reader.onload = (event: any) => {
-		var csv = event.target.result; // Content of CSV file
-
-	  }
+	onImage(){ 
+		this.isTab = true;
 	}
-
-	onFileComplete(data: any) {
-		console.log(data); 
-	}
-	 
-
 
 	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }

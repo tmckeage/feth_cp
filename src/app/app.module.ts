@@ -46,6 +46,7 @@ import { TransducerComponent } from './component/transducer/transducer.component
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     FormsModule,
     AgGridModule.withComponents([]),

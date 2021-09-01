@@ -3,15 +3,17 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
+
 export class EquipmentService {
   facilityTransducer:any[] = [];
   roomTransducer:any[] = [];
+  
   constructor() { 
     this.facilityTransducer = ['CIRS', 'Fathom'];
     this.roomTransducer = ['RM1', 'RM2', 'RM3'];
   }
 
-  scanners = [
+  scanners = [  
     { 
       name: "GE Logiq: L12345678", 
       circ: "CIRS", 
