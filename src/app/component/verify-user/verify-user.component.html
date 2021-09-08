@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="verify-form bg-light mt-4 p-4">
+                <form class="row g-3">
+                    <h5>Verify User</h5><hr>
+                    <div class="col-12">
+                        <label *ngIf="isMessage"><b>Your login is verified successfully</b></label>
+                        <label *ngIf="!isMessage"><b>Login verification failed. Please contact your admin.</b></label>
+                    </div>
+                    <div class="col-12 footer" *ngIf="isMessage">
+                        <p class="text-center mb-4 btn-sm">Please click here  <a [routerLink]="['/login']">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

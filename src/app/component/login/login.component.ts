@@ -33,7 +33,8 @@ export class LoginComponent implements OnInit {
 				console.log(user);
 				this.showLoading = false;
 				sessionStorage.setItem('userDetails', user);
-				this.router.navigate(['/users']);
+				// this.router.navigate(['/users']);
+				this.router.navigate(['/verify-user/:userName/:userId']);
 			})
 			.catch(err => {
 				console.log(err);

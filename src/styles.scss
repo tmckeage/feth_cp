@@ -76,8 +76,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 } 
 
- #modal-tra{
-  .modal-content{
-    width: 120% !important;
+// transducer tab 
+#tab{
+  .mat-tab-label {
+    width: 50% !important;
    }
+  .mat-tab-label{
+    background-color: #ccc;
+    color: #ffff;
+    font-size: 18px;
+    height: 40px;
+    border-radius: 6px 6px 0 0;
   }
+  .mat-tab-label-active {
+    background-color: #666;
+  }
+  .mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+  }
+}

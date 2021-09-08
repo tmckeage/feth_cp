@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { from } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -51,30 +52,22 @@ export class EquipmentComponent implements OnInit {
 	facilityName:any;
 	roomName:any;
 	scannerList: any;
-	selectedFacility: any
-	selectedRoom: any;
-	public startDate:any;
-	public EndDate: any;
+	selectedFacility: any = 0;
+	selectedRoom: any = 0 ;
+    startDate:any;
+    endDate: any;
+	make: any = '';
+	model: any = ''
+	sn: any = ''; 
+
+    public validation_msgs = {
+      'scannerFormGroup': [
+	    { type: 'invalidAutocompleteObject', message: 'Contact make not recognized' },
+	    { type: 'required', message: 'Contact is required.' }
+       ]
+    }
 
 	constructor(private modalService: NgbModal, private _equipment:EquipmentService) {
-		// scanner form
-		this.scannerFormGroup = new FormGroup({
-			"make": new FormControl('', [Validators.required]),
-			"model": new FormControl('', [Validators.required]),
-			"room": new FormControl('', []),
-			"facility": new FormControl('', []),
-			"sn": new FormControl('', [Validators.required]),
-		});
-
-		// Transducer form
-		this.transducerFormGroup = new FormGroup({
-			"makeTransducer": new FormControl('', [Validators.required]),
-			"modelTransducer": new FormControl('', [Validators.required]),
-			"scannerTransducer": new FormControl('', []),
-			"snTransducer": new FormControl('', [Validators.required]),
-			"image": new FormControl('', []),
-		});
-
 		// select options 
 		this.makeOptions = ['GE', 'GE1'];
 		this.facilityOptions = ['CIRS', 'Fathom'];
@@ -84,7 +77,33 @@ export class EquipmentComponent implements OnInit {
 		this.imageOptions = ['Deflout','Deflout1'];	
 		this.makeTransducerOption = ['GE1', 'GE2'];
 		this.modelTransducerOption = ['Logiq1', 'Logiq2'];
+
+		// scanner form 
+		this.scannerFormGroup = new FormGroup({
+			"make": new FormControl('', [Validators.required, forbiddenNamesValidator(this.makeOptions)]),
+			"model": new FormControl('', [Validators.required, forbiddenNamesValidator(this.modelOptions)]),
+			"room": new FormControl('', []),
+			"facility": new FormControl('', []),
+			"sn": new FormControl('', [Validators.required]),
+		}); 
+
+		// Transducer form
+		this.transducerFormGroup = new FormGroup({
+			"makeTransducer": new FormControl('', [Validators.required,forbiddenNamesValidator(this.makeTransducerOption)]),
+			"modelTransducer": new FormControl('', [Validators.required, forbiddenNamesValidator(this.modelTransducerOption)]),
+			"scannerTransducer": new FormControl('', []),
+			"snTransducer": new FormControl('', [Validators.required]),
+			"image": new FormControl('', []),
+		});
+
+		this.validation_msgs = {
+			'scannerFormGroup': [
+			  { type: 'invalidAutocompleteString', message: 'Please enter valid make name' },
+			  { type: 'required', message: 'Make is required.' }
+			]
+		}
 	}
+	
 
 	ngOnInit(): void {
 		// filter values in autocomplete
@@ -142,19 +161,26 @@ export class EquipmentComponent implements OnInit {
 		this.facilityName = this._equipment.facilityTransducer;
 	}
 	
-	// equipment filter Room
-	equipmentFilter(event:any) {
-		const selectValue = event.target.value;
-		//  this.scanners = this._equipment.scanners.filter(item => item.rm === this.selectedRoom );
-	    // this.selectedRoom = this.scanners[0].rm;
-		// this.selectedFacility = this.scanners[0];
-	}	
-
-	equipmentFilter1(event:any) {
-		const selectValue = event.target.value;
-		//  this.scanners = this._equipment.scanners.filter(item => item.circ === this.selectedFacility );
-	    // this.selectedRoom = this.scanners[0].rm;
-		// this.selectedFacility = this.scanners[0];
+	// equipment filter
+	equipmentFilter() {
+		let scannerList = this._equipment.scanners;
+		if (this.selectedFacility != 0) {
+		    scannerList = scannerList.filter(item => {
+				return item.circ === this.selectedFacility;
+			});
+		}
+		if (this.selectedRoom != 0) {
+		    scannerList = scannerList.filter(item => {
+				return item.rm === this.selectedRoom;
+			});
+		}
+		// if (this.startDate != undefined) {
+		// 	// let start_date = this.startDate.format('dd/mm/yy');
+		//     scannerList = scannerList.filter(item => {
+		// 		return item.due >= this.startDate;
+		// 	});
+		// }
+		this.scanners = scannerList;
 	}
 	
 	// autocomplete button filter
@@ -218,14 +244,13 @@ export class EquipmentComponent implements OnInit {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
-
+	
 	// on scanner click open view modal
 	scannerDetail(scanner: any, view: any) {
 		const [name, snNo] = scanner.name.split(':');
 		this.viewData = scanner;
 		scanner.make = name;
 		scanner.sn = snNo;
-		
 		this.modalService.open(view, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
@@ -239,7 +264,7 @@ export class EquipmentComponent implements OnInit {
 		this.viewTransducer.sn = snNo;
 		this.viewTransducer.model = name;
 		this.modalService.dismissAll();
-		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size:'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
@@ -250,7 +275,7 @@ export class EquipmentComponent implements OnInit {
 		const [name, sn] = viewData.name.split(':');
 		this.setMake(name);
 		this.setModel(name);  
-		this.setFacility(viewData.cirs);
+		this.setFacility(viewData.circ);
 		this.setRoom(viewData.rm);
 		this.setSN(sn);
 		this.modalService.dismissAll();
@@ -277,23 +302,27 @@ export class EquipmentComponent implements OnInit {
 		}
 	}
 
-	// Enter new value in input
-	onKey(event: any){
+	// Enter new value in input make
+	onKey(event: any, makeTransducer: any){
 	  let modelValue = event.target.value;
 	  this.modelOptions.forEach(item =>{
-		if (modelValue == item) {
+		if (modelValue == item && this.isMake === true) {
 			this.isModel = true;
 			this.isEmpty = false;
-		} else if (modelValue == "") {
+		} else if (modelValue == "" && this.isMake === false ) {
 			this.isEmpty = false; 
 			this.isModel = false;
 		} else {
-			this.isEmpty = true; 
-			this.isModel = false;
+			if (modelValue){
+				this.isEmpty = true; 
+			} else{
+				this.isEmpty = false; 
+				this.isModel = false;
+			}
 		}
 	  })
 	}
-	
+    
     // transducer edit data
 	onTransducerEdit(viewTransducer: any, transducerModal: any){
 		this.transducerModalTitle = 'Edit Transducer';
@@ -304,7 +333,7 @@ export class EquipmentComponent implements OnInit {
 		this.setImageTransducer(viewTransducer.scan1);
 		this.isModel = true;
 		this.modalService.dismissAll();
-		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});	
 	}
@@ -312,7 +341,13 @@ export class EquipmentComponent implements OnInit {
 	//add transducer modal
 	onTransducer(transducerModal: any) {
 		this.transducerModalTitle = 'New Transducer';
-		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+		this.setMakeTransducer('');
+		this.setModelTransducer('');  
+		this.setSNTransducer('');
+		this.setScannerTransducer('');
+		this.setImageTransducer('');
+		this.isModel = false;
+		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
@@ -320,7 +355,7 @@ export class EquipmentComponent implements OnInit {
 	// Reports Cancel 
 	reportsCancel(transducerModal: any){
 		this.modalService.dismissAll();
-		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
@@ -334,21 +369,13 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	startDateEvent(event:any){
-		this.startDate = event.value;
+		this.startDate = event.value.toDateString();
 	}
 
 	endDateEvent(event: any){
-		this.EndDate = event.value;
+		this.endDate = event.value.toDateString();
 	}
-
-	onWindow() { 
-		this.isTab = false;
-	}
-
-	onImage(){ 
-		this.isTab = true;
-	}
-
+      
 	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }
 	setSN(inputVal: any) { this.scannerFormGroup.controls.sn.setValue(inputVal) }
@@ -360,5 +387,27 @@ export class EquipmentComponent implements OnInit {
 	setScannerTransducer(inputVal: any) { this.transducerFormGroup.controls.scannerTransducer.setValue(inputVal) }
 	setImageTransducer(inputVal: any) { this.transducerFormGroup.controls.image.setValue(inputVal) }
 	get scannerForm() { return this.scannerFormGroup.controls; }
-	get transducerForm() { return this.transducerFormGroup.controls; }
+	get transducerForm() { return this.transducerFormGroup.controls;}
 }
+
+//transducer form validation msg
+export function forbiddenNamesValidator(Services: any[]): ValidatorFn {
+	return (control: AbstractControl): { [key: string]: any } | null => {
+	  const index = Services.findIndex(Service => {
+		return new RegExp("^" + Service.name + "$").test(control.value);
+	  });
+	  return index < 0 ? { forbiddenNames: { value: control.value } } : null;
+	};
+  }
+
+function isErrorState(control: any, arg1: number, form: any, arg3: number) {
+	throw new Error('Function not implemented.');
+}
+function control(control: any, arg1: number, form: any, arg3: number) {
+	throw new Error('Function not implemented.');
+}
+
+function form(control: any, arg1: number, form: any, arg3: number) {
+	throw new Error('Function not implemented.');
+}
+

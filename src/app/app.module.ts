@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { TransducerComponent } from './component/transducer/transducer.component';
+import { VerifyUserComponent } from './component/verify-user/verify-user.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { TransducerComponent } from './component/transducer/transducer.component
     RequestReceivedComponent,
     NavbarComponent,
     TransducerComponent,
-
+    VerifyUserComponent
   ],
   imports: [
     BrowserModule,
