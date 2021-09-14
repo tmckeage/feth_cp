@@ -29,14 +29,12 @@
             <div class="col-sm-6 col-md-6 col-lg-6 float-start mb-4" id="due-date">
                 <label for="due-date" class="col-form-label-sm fw-bold mb-2">Due Date:</label>
                 <mat-form-field class="btn-sm mat-form-field-infix-new size mb-2" appearance="outline">
-                    <input matInput [matDatepicker]="picker1" placeholder="Start Date" [(ngModel)]="startDate" (dateChange)="startDateEvent($event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field class="btn-sm mat-form-field-infix-new size mb-2" appearance="outline">
-                    <input matInput [matDatepicker]="picker2" placeholder="End Date" [(ngModel)]="endDate" (dateChange)="endDateEvent($event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-date-range-input [formGroup]="dueDate" [rangePicker]="picker" >
+                    <input matStartDate formControlName="start" placeholder="Start date">
+                    <input matEndDate formControlName="end" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
             </div>
         </div>
@@ -148,7 +146,7 @@
         <form class="form" id="form" [formGroup]="transducerFormGroup">
             <div class="row">
                 <div class="col-lg-6">
-                    <mat-form-field appearance="fill" class="mat-width">
+                    <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Make :</mat-label>
                         <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup)="onKey($event,makeTransducer)">
                         <mat-autocomplete #makeTransducer="matAutocomplete">
@@ -162,7 +160,7 @@
                     </mat-form-field>
                 </div>
                 <div class="col-lg-6">
-                    <mat-form-field appearance="fill" class="mat-width">
+                    <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Scanner:</mat-label>
                         <input type="text" matInput formControlName="scannerTransducer" [matAutocomplete]="scannerTransducer">
                         <mat-autocomplete #scannerTransducer="matAutocomplete" >
@@ -175,7 +173,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <mat-form-field appearance="fill" class="mat-width">
+                    <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup)="onKey($event, modelTransducer)">
                         <mat-autocomplete #modelTransducer="matAutocomplete" >
@@ -189,7 +187,7 @@
                     </mat-form-field>
                 </div>
                 <div class="col-lg-6" *ngIf="isEmpty">
-                    <mat-form-field appearance="fill" class="mat-width">
+                    <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Image Setup:</mat-label>
                         <input type="text" matInput formControlName="image" required [matAutocomplete]="image">
                         <mat-autocomplete #image="matAutocomplete">
@@ -203,7 +201,7 @@
                     </mat-form-field>
                 </div>
                 <div class="col-lg-6">
-                    <mat-form-field appearance="fill" class="mat-width">
+                    <mat-form-field appearance="fill" class="matInput">
                         <mat-label>S/N :</mat-label>
                         <input type="text" matInput formControlName="snTransducer" required>
                         <mat-error *ngIf="transducerFormGroup.controls.snTransducer.errors?.required">

@@ -5,9 +5,7 @@
     width: 800px;
     height: 400px;
 }
-.float-left {
-    float: left !important;
-}
+
 .cursorPointer {
     cursor: pointer;
 }
@@ -27,4 +25,11 @@
 } 
 #due-date{
     margin-top:-7px ;
+}
+.matInput{
+    width: 350px;
+}
+
+#due-date .mat-form-field {
+    width: 60%;
 }

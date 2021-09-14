@@ -9,10 +9,14 @@ import { Router } from '@angular/router';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-
+    fathomUserDetails: any;
     constructor(public nav: NavbarService, private router: Router) { }
 
     ngOnInit(): void {
+    	this.fathomUserDetails = this.fathomUserDetails = sessionStorage.fathomUserDetails;
+		if (!this.fathomUserDetails.length){
+			this.router.navigate(['/login']);
+		} 
     }
 
     doLogout() {

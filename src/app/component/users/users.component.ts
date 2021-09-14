@@ -3,6 +3,7 @@ import { UserService } from '../../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarService } from '../../services/navbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -20,10 +21,16 @@ export class UsersComponent implements OnInit {
 	viewData:any;
 	viewName: any;
     isView!: boolean;
+	fathomUserDetails: any;
 
-	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal) {}
+	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal, private router: Router) {}
 
 	ngOnInit(): void {
+		this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+		if (!this.fathomUserDetails.username){
+			this.router.navigate(['/login']);
+		} 
+
 		this.nav.show();
 
 		this.userForms = new FormGroup({

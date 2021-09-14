@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@aws-amplify/auth';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-user',
@@ -11,10 +11,16 @@ export class VerifyUserComponent implements OnInit {
   userName: any;
   code: any;
   isMessage: any;
+  fathomUserDetails: any;
 
-  constructor(private actRoute: ActivatedRoute) { }
+  constructor(private actRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit(): void {
+    this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+		if (!this.fathomUserDetails.username){
+			this.router.navigate(['/login']);
+		}
+    
     this.userName = this.actRoute.snapshot.params.userName;
     this.code = this.actRoute.snapshot.params.code;
     // check user name and code 

@@ -18,7 +18,7 @@ export class EquipmentService {
       name: "GE Logiq: L12345678",
       circ: "CIRS",
       rm: "RM1",
-      due: "7/31/21",
+      due: "09/14/21",
       transducer: [
         {name: 'RM1', scan: 'C26:L1q234', scan1: 'L412:M1234', scan2: 'E27:L1234' },
         {name: 'RM2', scan: 'C26:L1q235', scan1: 'L412:M1234', scan2: 'E27:L1234' },

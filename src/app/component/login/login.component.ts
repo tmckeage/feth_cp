@@ -32,10 +32,9 @@ export class LoginComponent implements OnInit {
 			Auth.signIn(this.usernameValue, this.passwordValue).then(user => {
 				console.log(user);
 				this.showLoading = false;
-				sessionStorage.setItem('userDetails', user);
-				// this.router.navigate(['/users']);
-				this.router.navigate(['/verify-user/:userName/:userId']);
-			})
+				sessionStorage.setItem('fathomUserDetails', JSON.stringify(user));
+				this.router.navigate(['/users']);
+			})  
 			.catch(err => {
 				console.log(err);
 				this.showLoading = false;

@@ -6,6 +6,8 @@ import { from } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { filter, map, startWith } from 'rxjs/operators';
 import { EquipmentService } from 'src/app/services/equipment.service';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-equipment',
@@ -22,6 +24,7 @@ export class EquipmentComponent implements OnInit {
 	viewData: any;
 	viewTransducer: any;
 	makeObj: any;
+	dueDate: FormGroup;
 	scannerFormGroup: FormGroup;
 	transducerFormGroup: FormGroup;
 	columnDefs: any;
@@ -54,20 +57,16 @@ export class EquipmentComponent implements OnInit {
 	scannerList: any;
 	selectedFacility: any = 0;
 	selectedRoom: any = 0 ;
-    startDate:any;
-    endDate: any;
 	make: any = '';
 	model: any = ''
 	sn: any = ''; 
+	fathomUserDetails: any;
+	showLoading: any;
+	startDate:any;
+	endDate:any;
+	
 
-    public validation_msgs = {
-      'scannerFormGroup': [
-	    { type: 'invalidAutocompleteObject', message: 'Contact make not recognized' },
-	    { type: 'required', message: 'Contact is required.' }
-       ]
-    }
-
-	constructor(private modalService: NgbModal, private _equipment:EquipmentService) {
+	constructor(private modalService: NgbModal, private _equipment:EquipmentService, private datePipe: DatePipe, private router: Router) {
 		// select options 
 		this.makeOptions = ['GE', 'GE1'];
 		this.facilityOptions = ['CIRS', 'Fathom'];
@@ -80,32 +79,36 @@ export class EquipmentComponent implements OnInit {
 
 		// scanner form 
 		this.scannerFormGroup = new FormGroup({
-			"make": new FormControl('', [Validators.required, forbiddenNamesValidator(this.makeOptions)]),
-			"model": new FormControl('', [Validators.required, forbiddenNamesValidator(this.modelOptions)]),
+			"make": new FormControl('', [Validators.required]),
+			"model": new FormControl('', [Validators.required]),
 			"room": new FormControl('', []),
 			"facility": new FormControl('', []),
 			"sn": new FormControl('', [Validators.required]),
 		}); 
 
+        //due date form
+		this.dueDate = new FormGroup({
+			start: new FormControl(),
+			end: new FormControl()
+		});
+
 		// Transducer form
 		this.transducerFormGroup = new FormGroup({
-			"makeTransducer": new FormControl('', [Validators.required,forbiddenNamesValidator(this.makeTransducerOption)]),
-			"modelTransducer": new FormControl('', [Validators.required, forbiddenNamesValidator(this.modelTransducerOption)]),
+			"makeTransducer": new FormControl('', [Validators.required]),
+			"modelTransducer": new FormControl('', [Validators.required]),
 			"scannerTransducer": new FormControl('', []),
 			"snTransducer": new FormControl('', [Validators.required]),
 			"image": new FormControl('', []),
 		});
 
-		this.validation_msgs = {
-			'scannerFormGroup': [
-			  { type: 'invalidAutocompleteString', message: 'Please enter valid make name' },
-			  { type: 'required', message: 'Make is required.' }
-			]
-		}
 	}
-	
 
 	ngOnInit(): void {
+		this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+		if (!this.fathomUserDetails.username){
+			this.router.navigate(['/login']);
+		} 
+		
 		// filter values in autocomplete
 		this.filteredMake = this.scannerFormGroup.controls.make.valueChanges.pipe(
 			startWith(''),
@@ -166,21 +169,29 @@ export class EquipmentComponent implements OnInit {
 		let scannerList = this._equipment.scanners;
 		if (this.selectedFacility != 0) {
 		    scannerList = scannerList.filter(item => {
-				return item.circ === this.selectedFacility;
+			return item.circ === this.selectedFacility;
 			});
 		}
 		if (this.selectedRoom != 0) {
 		    scannerList = scannerList.filter(item => {
-				return item.rm === this.selectedRoom;
+			return item.rm === this.selectedRoom;
 			});
 		}
-		// if (this.startDate != undefined) {
-		// 	// let start_date = this.startDate.format('dd/mm/yy');
-		//     scannerList = scannerList.filter(item => {
-		// 		return item.due >= this.startDate;
-		// 	});
-		// }
-		this.scanners = scannerList;
+		if (this.dueDate.controls.start != undefined) {
+			this.startDate = this.dueDate.value.start;
+			this.startDate = this.datePipe.transform(this.startDate, 'M/d/yy');
+		    scannerList = scannerList.filter(item => {
+			return item.due >= this.startDate;
+			});
+		}
+		if (this.dueDate.controls.end != undefined) {
+			this.endDate = this.dueDate.value.end;
+			this.endDate = this.datePipe.transform(this.endDate, 'M/d/yy');
+		    scannerList = scannerList.filter(item => {
+			return item.due <= this.endDate;
+			});
+		}
+		 this.scanners = scannerList;
 	}
 	
 	// autocomplete button filter
@@ -291,7 +302,6 @@ export class EquipmentComponent implements OnInit {
         this.isMake = true;
 	    }
 	}
-    
 	// model selected
 	onChangeModalTransducer(modelTransducer: any) {
 		let changeModalValue = modelTransducer; 
@@ -301,7 +311,6 @@ export class EquipmentComponent implements OnInit {
 		   this.isEmpty = true;
 		}
 	}
-
 	// Enter new value in input make
 	onKey(event: any, makeTransducer: any){
 	  let modelValue = event.target.value;
@@ -313,7 +322,7 @@ export class EquipmentComponent implements OnInit {
 			this.isEmpty = false; 
 			this.isModel = false;
 		} else {
-			if (modelValue){
+			if (modelValue && this.isModel == false){
 				this.isEmpty = true; 
 			} else{
 				this.isEmpty = false; 
@@ -322,7 +331,6 @@ export class EquipmentComponent implements OnInit {
 		}
 	  })
 	}
-    
     // transducer edit data
 	onTransducerEdit(viewTransducer: any, transducerModal: any){
 		this.transducerModalTitle = 'Edit Transducer';
@@ -368,14 +376,6 @@ export class EquipmentComponent implements OnInit {
 		});	
 	}
 
-	startDateEvent(event:any){
-		this.startDate = event.value.toDateString();
-	}
-
-	endDateEvent(event: any){
-		this.endDate = event.value.toDateString();
-	}
-      
 	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }
 	setSN(inputVal: any) { this.scannerFormGroup.controls.sn.setValue(inputVal) }
@@ -398,7 +398,7 @@ export function forbiddenNamesValidator(Services: any[]): ValidatorFn {
 	  });
 	  return index < 0 ? { forbiddenNames: { value: control.value } } : null;
 	};
-  }
+}
 
 function isErrorState(control: any, arg1: number, form: any, arg3: number) {
 	throw new Error('Function not implemented.');

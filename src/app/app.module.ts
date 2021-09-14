@@ -26,7 +26,7 @@ import { AngularMaterialModule } from './modules/angular-material/angular-materi
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { TransducerComponent } from './component/transducer/transducer.component';
 import { VerifyUserComponent } from './component/verify-user/verify-user.component';
-
+import {DatePipe} from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +57,8 @@ import { VerifyUserComponent } from './component/verify-user/verify-user.compone
     BrowserAnimationsModule
   ],
   providers: [
-    AmplifyService
+    AmplifyService,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
