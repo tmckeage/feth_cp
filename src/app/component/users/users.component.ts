@@ -26,10 +26,11 @@ export class UsersComponent implements OnInit {
 	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal, private router: Router) {}
 
 	ngOnInit(): void {
-		this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+		// check login session
+		this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
 		if (!this.fathomUserDetails.username){
-			this.router.navigate(['/login']);
-		} 
+			this.router.navigate(['']);
+		}
 
 		this.nav.show();
 

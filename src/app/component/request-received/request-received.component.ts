@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-request-received',
@@ -7,14 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./request-received.component.scss']
 })
 export class RequestReceivedComponent implements OnInit {
-  fathomUserDetails: any;
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private nav: NavbarService) { }
 
   ngOnInit(): void {
-    this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
-		if (!this.fathomUserDetails.username){
-			this.router.navigate(['/login']);
-		}
+    this.nav.hide();
   }
 
 }

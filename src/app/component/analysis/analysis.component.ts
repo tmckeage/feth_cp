@@ -11,11 +11,10 @@ export class AnalysisComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+    // check login session
+    this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
 		if (!this.fathomUserDetails.username){
-			this.router.navigate(['/login']);
-		} 
-
+			this.router.navigate(['']);
+		}
   }
-
 }

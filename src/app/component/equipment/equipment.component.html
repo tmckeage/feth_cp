@@ -30,8 +30,8 @@
                 <label for="due-date" class="col-form-label-sm fw-bold mb-2">Due Date:</label>
                 <mat-form-field class="btn-sm mat-form-field-infix-new size mb-2" appearance="outline">
                     <mat-date-range-input [formGroup]="dueDate" [rangePicker]="picker" >
-                    <input matStartDate formControlName="start" placeholder="Start date">
-                    <input matEndDate formControlName="end" placeholder="End date">
+                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="equipmentFilter()">
+                        <input matEndDate formControlName="end" placeholder="End date" (dateChange)="equipmentFilter()">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>

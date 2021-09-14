@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
   selector: 'app-set-password',
@@ -9,9 +10,10 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 export class SetPasswordComponent implements OnInit {
   setPassword!: FormGroup;
 
-  constructor() { }
+  constructor(private nav: NavbarService) { }
 
   ngOnInit(): void {
+    this.nav.hide();
     this.setPassword = new FormGroup({
 			"password": new FormControl(null, [Validators.required]),
 			"verifyPassword": new FormControl(null, [Validators.required])

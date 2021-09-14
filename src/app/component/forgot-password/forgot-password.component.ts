@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarService } from '../../services/navbar.service';
 
 @Component({
     selector: 'app-forgot-password',
@@ -9,17 +10,11 @@ import { Router } from '@angular/router';
 export class ForgotPasswordComponent implements OnInit {
 
     linkSent = false;
-    fathomUserDetails: any;
-    constructor(private router: Router) { }
+
+    constructor(private router: Router, private nav: NavbarService) { }
 
     ngOnInit(): void {
-        // This is temp code, once Amazon cognito SDK gets integrate then this will be get remove
-        sessionStorage.setItem('loggedIn', '');
-        this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
-		if (!this.fathomUserDetails.username){
-			this.router.navigate(['/login']);
-		}
-        
+        this.nav.hide();
     }
 
     submitForgotPassword() {

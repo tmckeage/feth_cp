@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { from } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
@@ -64,7 +63,6 @@ export class EquipmentComponent implements OnInit {
 	showLoading: any;
 	startDate:any;
 	endDate:any;
-	
 
 	constructor(private modalService: NgbModal, private _equipment:EquipmentService, private datePipe: DatePipe, private router: Router) {
 		// select options 
@@ -86,7 +84,7 @@ export class EquipmentComponent implements OnInit {
 			"sn": new FormControl('', [Validators.required]),
 		}); 
 
-        //due date form
+        // due date calendar form
 		this.dueDate = new FormGroup({
 			start: new FormControl(),
 			end: new FormControl()
@@ -104,10 +102,11 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.fathomUserDetails = JSON.parse(sessionStorage.fathomUserDetails);
+		// check login session
+		this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
 		if (!this.fathomUserDetails.username){
-			this.router.navigate(['/login']);
-		} 
+			this.router.navigate(['']);
+		}
 		
 		// filter values in autocomplete
 		this.filteredMake = this.scannerFormGroup.controls.make.valueChanges.pipe(
@@ -167,31 +166,36 @@ export class EquipmentComponent implements OnInit {
 	// equipment filter
 	equipmentFilter() {
 		let scannerList = this._equipment.scanners;
+		// facility filter
 		if (this.selectedFacility != 0) {
 		    scannerList = scannerList.filter(item => {
-			return item.circ === this.selectedFacility;
+				return item.circ === this.selectedFacility;
 			});
 		}
+		// room filter
 		if (this.selectedRoom != 0) {
 		    scannerList = scannerList.filter(item => {
-			return item.rm === this.selectedRoom;
+				return item.rm === this.selectedRoom;
 			});
 		}
-		if (this.dueDate.controls.start != undefined) {
+		// due date filter
+		if (this.dueDate.value.start != null) {
 			this.startDate = this.dueDate.value.start;
-			this.startDate = this.datePipe.transform(this.startDate, 'M/d/yy');
+			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
+			console.log(this.startDate);
 		    scannerList = scannerList.filter(item => {
-			return item.due >= this.startDate;
+				return item.due >= this.startDate;
 			});
 		}
-		if (this.dueDate.controls.end != undefined) {
+		if (this.dueDate.value.end != null) {
 			this.endDate = this.dueDate.value.end;
-			this.endDate = this.datePipe.transform(this.endDate, 'M/d/yy');
+			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
+			console.log(this.endDate);
 		    scannerList = scannerList.filter(item => {
-			return item.due <= this.endDate;
+				return item.due <= this.endDate;
 			});
 		}
-		 this.scanners = scannerList;
+		this.scanners = scannerList;
 	}
 	
 	// autocomplete button filter
@@ -302,6 +306,7 @@ export class EquipmentComponent implements OnInit {
         this.isMake = true;
 	    }
 	}
+
 	// model selected
 	onChangeModalTransducer(modelTransducer: any) {
 		let changeModalValue = modelTransducer; 
@@ -311,6 +316,7 @@ export class EquipmentComponent implements OnInit {
 		   this.isEmpty = true;
 		}
 	}
+
 	// Enter new value in input make
 	onKey(event: any, makeTransducer: any){
 	  let modelValue = event.target.value;
@@ -331,6 +337,7 @@ export class EquipmentComponent implements OnInit {
 		}
 	  })
 	}
+
     // transducer edit data
 	onTransducerEdit(viewTransducer: any, transducerModal: any){
 		this.transducerModalTitle = 'Edit Transducer';
@@ -389,25 +396,3 @@ export class EquipmentComponent implements OnInit {
 	get scannerForm() { return this.scannerFormGroup.controls; }
 	get transducerForm() { return this.transducerFormGroup.controls;}
 }
-
-//transducer form validation msg
-export function forbiddenNamesValidator(Services: any[]): ValidatorFn {
-	return (control: AbstractControl): { [key: string]: any } | null => {
-	  const index = Services.findIndex(Service => {
-		return new RegExp("^" + Service.name + "$").test(control.value);
-	  });
-	  return index < 0 ? { forbiddenNames: { value: control.value } } : null;
-	};
-}
-
-function isErrorState(control: any, arg1: number, form: any, arg3: number) {
-	throw new Error('Function not implemented.');
-}
-function control(control: any, arg1: number, form: any, arg3: number) {
-	throw new Error('Function not implemented.');
-}
-
-function form(control: any, arg1: number, form: any, arg3: number) {
-	throw new Error('Function not implemented.');
-}
-
