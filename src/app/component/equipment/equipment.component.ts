@@ -17,17 +17,13 @@ import { Router } from '@angular/router';
 export class EquipmentComponent implements OnInit {
 	closeResult = '';
 	scanners: any;
-	fileUp: any = [];
-	showModalTitle: any = '';
+	addModalTitle: any = '';
 	transducerModalTitle: any = ''
 	viewData: any;
 	viewTransducer: any;
-	makeObj: any;
 	dueDate: FormGroup;
 	scannerFormGroup: FormGroup;
 	transducerFormGroup: FormGroup;
-	columnDefs: any;
-	rowData: any;
 	makeOptions: any[] = [];
 	facilityOptions:any[] = [];
 	modelOptions: any[] = [];
@@ -45,8 +41,6 @@ export class EquipmentComponent implements OnInit {
 	filteredModelTransducer: Observable<any[]> | undefined;
 	filteredSnTransducer: Observable<any[]> | undefined;
 	filteredImageTransducer: Observable<any[]> | undefined;
-	selectedR: Observable<any[]> | undefined;
-	selectedF: Observable<any[]> | undefined;
 	isMake:boolean = false;
 	isModel:boolean = false;
 	isEmpty:boolean = false;
@@ -60,11 +54,10 @@ export class EquipmentComponent implements OnInit {
 	model: any = ''
 	sn: any = ''; 
 	fathomUserDetails: any;
-	showLoading: any;
 	startDate:any;
 	endDate:any;
 
-	constructor(private modalService: NgbModal, private _equipment:EquipmentService, private datePipe: DatePipe, private router: Router) {
+	constructor(private modalService: NgbModal, private equipmentService:EquipmentService, private datePipe: DatePipe, private router: Router) {
 		// select options 
 		this.makeOptions = ['GE', 'GE1'];
 		this.facilityOptions = ['CIRS', 'Fathom'];
@@ -98,7 +91,6 @@ export class EquipmentComponent implements OnInit {
 			"snTransducer": new FormControl('', [Validators.required]),
 			"image": new FormControl('', []),
 		});
-
 	}
 
 	ngOnInit(): void {
@@ -158,14 +150,14 @@ export class EquipmentComponent implements OnInit {
 		);
 
         // show for dropDown list
-		this.scanners = this._equipment.scanners;
-		this.roomName = this._equipment.roomTransducer;
-		this.facilityName = this._equipment.facilityTransducer;
+		this.scanners = this.equipmentService.scanners;
+		this.roomName = this.equipmentService.roomTransducer;
+		this.facilityName = this.equipmentService.facilityTransducer;
 	}
 	
 	// equipment filter
 	equipmentFilter() {
-		let scannerList = this._equipment.scanners;
+		let scannerList = this.equipmentService.scanners;
 		// facility filter
 		if (this.selectedFacility != 0) {
 		    scannerList = scannerList.filter(item => {
@@ -249,7 +241,7 @@ export class EquipmentComponent implements OnInit {
 
 	// add scanner modal
 	onScanner(content: any) {
-		this.showModalTitle = 'New Scanner';
+		this.addModalTitle = 'New Scanner';
 		this.setMake('');
 		this.setModel('');
 		this.setFacility('');
@@ -286,7 +278,7 @@ export class EquipmentComponent implements OnInit {
 
 	// Edit modal
 	onScannerEdit(viewData: any, content: any) {
-		this.showModalTitle = 'Edit Scanner';
+		this.addModalTitle = 'Edit Scanner';
 		const [name, sn] = viewData.name.split(':');
 		this.setMake(name);
 		this.setModel(name);  

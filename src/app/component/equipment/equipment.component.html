@@ -1,9 +1,9 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
-            <button type="button" class="btn btn-primary btn-sm me-2" disabled ><i class="fa fa-plus-circle"></i> Import</button>
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i class="bi bi-plus-circle"></i> Scanner</button>
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)"><i class="bi bi-plus-circle"></i> Transducer</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" disabled ><i class="fa fa-file" aria-hidden="true"></i> Import</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Scanner</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)"><i class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Transducer</button>
         </div>
     </div>
     <div class="card mt-2 p-4 col-md-8">
@@ -58,7 +58,7 @@
 <!-- Add/ Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="modal-basic-title">{{showModalTitle}}</h5>
+        <h5 class="modal-title" id="modal-basic-title">{{addModalTitle}}</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">

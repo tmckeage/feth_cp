@@ -9,7 +9,6 @@ import { UsersComponent } from '../component/users/users.component';
 import { ForgotPasswordComponent } from '../component/forgot-password/forgot-password.component';
 import { SetPasswordComponent } from '../component/set-password/set-password.component';
 import { RequestReceivedComponent } from '../component/request-received/request-received.component';
-import { TransducerComponent } from '../component/transducer/transducer.component';
 import { VerifyUserComponent } from '../component/verify-user/verify-user.component';
 
 const routes: Routes = [
@@ -23,7 +22,6 @@ const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'set-password', component: SetPasswordComponent },
     { path: 'request', component: RequestReceivedComponent },
-    { path: 'transducer', component:TransducerComponent },
     { path: 'verify-user/:userName/:code', component:VerifyUserComponent }
 ];
 

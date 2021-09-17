@@ -14,26 +14,14 @@ import { Router } from '@angular/router';
 export class UsersComponent implements OnInit {
 	closeResult = '';
 	columnDefs: any;
-	rowData: any = {};
-	modalTitle: any;
-	userForms!: FormGroup;
-	showModalTitle = '';
+	rowData: any = {}
+	userForms: FormGroup;
+	addModelTitle = '';
 	viewData:any;
 	viewName: any;
-    isView!: boolean;
 	fathomUserDetails: any;
 
-	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal, private router: Router) {}
-
-	ngOnInit(): void {
-		// check login session
-		this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
-		if (!this.fathomUserDetails.username){
-			this.router.navigate(['']);
-		}
-
-		this.nav.show();
-
+	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal, private router: Router) {
 		this.userForms = new FormGroup({
 			"first_name": new FormControl(null, [Validators.required]),
 			"last_name": new FormControl(null, [Validators.required]),
@@ -42,6 +30,16 @@ export class UsersComponent implements OnInit {
 			"email": new FormControl('',[Validators.required, Validators.email]),
 			"reset_password": new FormControl(false, [Validators.required])
 		});
+	}
+
+	ngOnInit(): void {
+		// check login session
+		this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
+		if (!this.fathomUserDetails.username){
+			this.router.navigate(['']);
+		}
+        // show nav bar 
+		this.nav.show();
 
 		// This is temp JSON, once API's gets integrate then this will be get remove
 		this.columnDefs = [
@@ -56,8 +54,7 @@ export class UsersComponent implements OnInit {
 
 	// on click table coloms open view modal
 	onCellClicked(event: any, view:any) {
-		this.showModalTitle = 'Edit User';
-		this.isView = true;
+		this.addModelTitle = 'Edit User';
 		if (event.colDef.field === 'Name') {
 			const [first_name, last_name] = this.rowData[event.rowIndex].Name.split(',');
 			const email_id = this.rowData[event.rowIndex].Email;
@@ -89,7 +86,7 @@ export class UsersComponent implements OnInit {
 	}
 	// Function callback when clicking add user button
 	actionAddUser(content: any) {
-		this.showModalTitle = 'Add User';
+		this.addModelTitle = 'Add User';
 		this.setFirstName('');
 		this.setLastName('');
 		this.setEmail('');

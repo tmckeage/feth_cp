@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-sm-6 col-md- col-lg-5"></div>
                 <div class="col-sm-6 col-md-4 col-lg-4">
-                    <button type="button" class="float-end btn btn-secondary btn-sm" (click)="actionAddUser(content)">+ Add User</button>
+                    <button type="button" class="float-end btn btn-secondary btn-sm" (click)="actionAddUser(content)"><i class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Add User</button>
                 </div>
             </div>
             <div class="row pt-2">
@@ -13,8 +13,7 @@
                     class="ag-theme-alpine ag-table"
                     [rowData]="rowData"
                     [columnDefs]="columnDefs"
-                    (cellClicked)='onCellClicked($event,view)'
-                >
+                    (cellClicked)='onCellClicked($event,view)'>
 				</ag-grid-angular>
             </div>
             <div class="col-md-2 col-lg-2"></div>
@@ -23,7 +22,7 @@
 </div>
 <ng-template #content let-modal>
     <div class="modal-header">
-		<h5 class="modal-title " id="modal-basic-title">{{showModalTitle}}</h5>
+		<h5 class="modal-title " id="modal-basic-title">{{addModelTitle}}</h5>
 		<span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
 	<div class="modal-body">

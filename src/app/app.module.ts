@@ -21,10 +21,12 @@ import { RequestReceivedComponent } from './component/request-received/request-r
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// fontawesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+
 // angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
-import { TransducerComponent } from './component/transducer/transducer.component';
 import { VerifyUserComponent } from './component/verify-user/verify-user.component';
 import {DatePipe} from '@angular/common';
 @NgModule({
@@ -40,8 +42,8 @@ import {DatePipe} from '@angular/common';
     SetPasswordComponent,
     RequestReceivedComponent,
     NavbarComponent,
-    TransducerComponent,
     VerifyUserComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import {DatePipe} from '@angular/common';
     NgbModule,
     AngularMaterialModule,
     AmplifyAngularModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FontAwesomeModule
   ],
   providers: [
     AmplifyService,
