@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn  } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { from } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { filter, map, startWith } from 'rxjs/operators';
 import { EquipmentService } from 'src/app/services/equipment.service';
@@ -18,7 +17,7 @@ export class EquipmentComponent implements OnInit {
 	closeResult = '';
 	scanners: any;
 	addModalTitle: any = '';
-	transducerModalTitle: any = ''
+	transducerModalTitle: any = '';
 	viewData: any;
 	viewTransducer: any;
 	dueDate: FormGroup;
@@ -63,8 +62,8 @@ export class EquipmentComponent implements OnInit {
 		this.facilityOptions = ['CIRS', 'Fathom'];
 		this.modelOptions = ['Logiq', 'Logiq1'];
 		this.roomOptions = ['RM1', 'RM2'];
-		this.scannerOptions = ['scanner1','scanner2'];	
-		this.imageOptions = ['Deflout','Deflout1'];	
+		this.scannerOptions = ['scanner1','scanner2'];
+		this.imageOptions = ['Default','Default1'];	
 		this.makeTransducerOption = ['GE1', 'GE2'];
 		this.modelTransducerOption = ['Logiq1', 'Logiq2'];
 
@@ -161,7 +160,7 @@ export class EquipmentComponent implements OnInit {
 		// facility filter
 		if (this.selectedFacility != 0) {
 		    scannerList = scannerList.filter(item => {
-				return item.circ === this.selectedFacility;
+				return item.cirs === this.selectedFacility;
 			});
 		}
 		// room filter
@@ -230,14 +229,6 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = name.toLowerCase();
 		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
 	}
-	private _filterSelectedFacility(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
-	}
-	private _filterSelectedRoom(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
-	}
 
 	// add scanner modal
 	onScanner(content: any) {
@@ -263,7 +254,7 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 	
-	// edit transducer modelOptions
+	// view transducer modal
 	onTransducerDetail(equipment: any, scanner:any, transducerView:any){
 		const [name, snNo] = scanner.name.split(':');
 	    this.viewTransducer = equipment;
@@ -276,13 +267,13 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	// Edit modal
+	// Edit scanner modal
 	onScannerEdit(viewData: any, content: any) {
 		this.addModalTitle = 'Edit Scanner';
 		const [name, sn] = viewData.name.split(':');
 		this.setMake(name);
 		this.setModel(name);  
-		this.setFacility(viewData.circ);
+		this.setFacility(viewData.cirs);
 		this.setRoom(viewData.rm);
 		this.setSN(sn);
 		this.modalService.dismissAll();
@@ -291,7 +282,7 @@ export class EquipmentComponent implements OnInit {
 		});	
 	}
 
-	//on change  make and modal modal
+	// on change make for transducer
 	onChangeMakeTransducer(makeTransducer: any){
        let changeMakeValue = makeTransducer; 
 	   if(changeMakeValue){
@@ -299,7 +290,7 @@ export class EquipmentComponent implements OnInit {
 	    }
 	}
 
-	// model selected
+	// on change model for transducer
 	onChangeModalTransducer(modelTransducer: any) {
 		let changeModalValue = modelTransducer; 
 		if (changeModalValue && this.isMake === true) {
@@ -330,7 +321,7 @@ export class EquipmentComponent implements OnInit {
 	  })
 	}
 
-    // transducer edit data
+    // transducer edit modal
 	onTransducerEdit(viewTransducer: any, transducerModal: any){
 		this.transducerModalTitle = 'Edit Transducer';
 		this.setMakeTransducer(viewTransducer.make);
@@ -345,7 +336,7 @@ export class EquipmentComponent implements OnInit {
 		});	
 	}
 
-	//add transducer modal
+	// add transducer modal
 	onTransducer(transducerModal: any) {
 		this.transducerModalTitle = 'New Transducer';
 		this.setMakeTransducer('');

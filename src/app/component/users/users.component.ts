@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit {
 	columnDefs: any;
 	rowData: any = {}
 	userForms: FormGroup;
-	addModelTitle = '';
+	addModalTitle = '';
 	viewData:any;
 	viewName: any;
 	fathomUserDetails: any;
@@ -43,40 +43,39 @@ export class UsersComponent implements OnInit {
 
 		// This is temp JSON, once API's gets integrate then this will be get remove
 		this.columnDefs = [
-			{ field: 'Name', sortable: true, filter: true },
-			{ field: 'Job Type', sortable: true, filter: true },
-			{ field: 'Facility', sortable: true, filter: true }
+			{ field: 'name', sortable: true, filter: true },
+			{ field: 'jobType', sortable: true, filter: true },
+			{ field: 'facility', sortable: true, filter: true }
 		];
 
 		// get row data from service
-		this.rowData = this.userService.RowData;
+		this.rowData = this.userService.usersList;
 	}
 
-	// on click table coloms open view modal
+	// Function on clicking table columns open view modal
 	onCellClicked(event: any, view:any) {
-		this.addModelTitle = 'Edit User';
-		if (event.colDef.field === 'Name') {
-			const [first_name, last_name] = this.rowData[event.rowIndex].Name.split(',');
-			const email_id = this.rowData[event.rowIndex].Email;
-			this.viewData = this.rowData[event.rowIndex];
-			this.viewData.first_name = first_name;
-			this.viewData.last_name = last_name;
-			this.viewData.job_type = 'Tech';
-			this.setFirstName(first_name);
-			this.setLastName(last_name);
-			this.setEmail(email_id);
-			this.setUserType(2);
-			this.setFacility(1);
-			this.modalService.open(view, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-				this.closeResult = `Closed with: ${result}`;
-			});
-		}
+		this.addModalTitle = 'Edit User';
+		const [first_name, last_name] = this.rowData[event.rowIndex].name.split(',');
+		const email_id = this.rowData[event.rowIndex].email;
+		this.viewData = this.rowData[event.rowIndex];
+		this.viewData.first_name = first_name;
+		this.viewData.last_name = last_name;
+		this.viewData.job_type = 'Tech';
+		this.setFirstName(first_name);
+		this.setLastName(last_name);
+		this.setEmail(email_id);
+		this.setUserType(2);
+		this.setFacility(1);
+		this.modalService.open(view, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		});
 	}
-     // on clicking edit button open modal
+
+    // Function on clicking edit button open modal
 	onEdit(event: any, content:any){
 		this.setFirstName(this.viewData.first_name);
 		this.setLastName(this.viewData.last_name);
-		this.setEmail(this.viewData.Email);
+		this.setEmail(this.viewData.email);
 		this.setUserType(2);
 		this.setFacility(1);
 		this.modalService.dismissAll();
@@ -84,9 +83,10 @@ export class UsersComponent implements OnInit {
 			this.closeResult = `Closed with: ${result}`;
 		});
 	}
+
 	// Function callback when clicking add user button
 	actionAddUser(content: any) {
-		this.addModelTitle = 'Add User';
+		this.addModalTitle = 'Add User';
 		this.setFirstName('');
 		this.setLastName('');
 		this.setEmail('');

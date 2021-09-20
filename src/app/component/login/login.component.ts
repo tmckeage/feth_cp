@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 		this.nav.hide();
 	}
 
+	// Function to login user
 	doLogin() {
 		this.usernameValue = this.loginForm.controls.username.value;
 		this.passwordValue = this.loginForm.controls.password.value;

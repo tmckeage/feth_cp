@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -21,14 +20,14 @@ import { RequestReceivedComponent } from './component/request-received/request-r
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// fontawesome
+// Fontawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
-// angular material
+// Angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { VerifyUserComponent } from './component/verify-user/verify-user.component';
-import {DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,

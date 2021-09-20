@@ -6,7 +6,7 @@
                     <h5>Login</h5>
                     <div class="col-12">
                         <label>Username</label>
-                        <input type="text" name="username" class="form-control" formControlName ="username">
+                        <input type="text" name="username" class="form-control" formControlName ="username" autofocus>
                         <div *ngIf="loginForm.controls.username.touched && loginForm.controls.username.invalid" class="error col-form-label-sm">
                             <div *ngIf="loginForm.controls.username.errors && loginForm.controls.username.errors.required">Username is required</div>
                             <div *ngIf="loginForm.controls.username.errors && loginForm.controls.username.errors.username">Please enter valid username</div>

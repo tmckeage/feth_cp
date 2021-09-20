@@ -48,14 +48,14 @@
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
-                    <li class="cursorPointer" *ngFor="let equ of scanner.transducer"><a src="#" (click)="onTransducerDetail(equ,scanner,transducerView)">{{equ.scan}}</a></li>
+                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducer"><a src="#" (click)="onTransducerDetail(transducer,scanner,transducerView)">{{transducer.scan}}</a></li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add/ Edit Scanner modal -->
+<!-- Add / Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
         <h5 class="modal-title" id="modal-basic-title">{{addModalTitle}}</h5>
@@ -276,7 +276,7 @@
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
-                <label class="col-form-label-sm me-2 center ">{{viewData.circ}}</label>
+                <label class="col-form-label-sm me-2 center ">{{viewData.cirs}}</label>
             </div>
         </div>
         <div class="row mb-2">
@@ -414,6 +414,7 @@
     </div>
 </ng-template>
 
+<!-- import file modal -->
 <ng-template #importFile let-modal>
     <div class="modal-header">
         <h5 class="modal-title" id="modal-basic-title">Import File</h5>

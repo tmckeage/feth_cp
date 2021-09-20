@@ -20,9 +20,11 @@
         </div>
     </div>
 </div>
+
+<!-- add edit user modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
-		<h5 class="modal-title " id="modal-basic-title">{{addModelTitle}}</h5>
+		<h5 class="modal-title " id="modal-basic-title">{{addModalTitle}}</h5>
 		<span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
 	<div class="modal-body">
@@ -91,6 +93,8 @@
 		<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
 	</div>
 </ng-template>
+
+<!-- view user modal -->
 <ng-template  #view let-modal >
 		<div class="modal-header">
 			<h5 class="modal-title " id="modal-view">User Details</h5>
@@ -114,13 +118,13 @@
 				</div>
 				<div class="col-6 form-group input-group-sm">
 					<label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
-					<label class="col-form-label-sm me-2">{{viewData.Facility}}</label>
+					<label class="col-form-label-sm me-2">{{viewData.facility}}</label>
 				</div>
 			</div>
 			<div class="row mb-2">
 				<div class="col-12 form-group input-group-sm">
 					<label class="col-form-label-sm fw-bold">Email: </label>&nbsp;
-					<label class="col-form-label-sm me-2">{{viewData.Email}}</label>
+					<label class="col-form-label-sm me-2">{{viewData.email}}</label>
 				</div>
 			</div>
 		</div>
@@ -129,5 +133,3 @@
 			<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Exit</button>
 		</div>
 </ng-template>
-
-
