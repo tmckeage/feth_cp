@@ -1,5 +1,170 @@
-<div class="middle">
-    <h1>COMING SOON</h1>
-    <hr>
-    <p>Review works!</p>
+<div class="row justify-content-center mt-5">
+    <div class="card mt-2 p-4 col-md-8">
+        <div class="row">
+            <div class="col-sm-2 col-md-1 col-lg-1 ">
+                <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2 ">
+                <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="let item of facilityName" value="{{item}}">{{item}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2 col-md-1 col-lg-1">
+                <label for="room" class="col-form-label-sm fw-bold">Room:</label>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="let item of roomName" value="{{item}}">{{item}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2 col-md-1 col-lg-1">
+                <label for="room" class="col-form-label-sm fw-bold">Type:</label>
+            </div>
+            <div class="col-sm-2 col-md-2 col-lg-2">
+                <select class="form-select btn-sm" [(ngModel)]="selectedType" (change)="equipmentFilter()">
+                    <option value="0">--Select--</option>
+                    <option *ngFor="let type of typeName" value="{{type}}">{{type}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2 col-md-1 col-lg-1">
+                <label for="room" class="col-form-label-sm fw-bold">S/N:</label>
+            </div>
+            <div class="col-sm-2 col-md-2">
+                <div class="search">
+                    <input type="text" class="form-control btn-sm" placeholder="Search" [(ngModel)]="selectedSn"
+                        (keyup)="equipmentFilter()">
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <!-- scanner list -->
+        <div *ngFor="let scanner of scanners " class="scanner-holder mt-4">
+            <div class="row">
+                <div class="col-md-3 cursorPointer" (click)="scannerDetail(scanner, scannerView)">{{scanner.make}}</div>
+                <div class="col-md-2">{{scanner.facility}}</div>
+                <div class="col-md-2">{{scanner.room}}</div>
+                <div class="col-md-3"><span *ngIf="scanner.last_study.finalized == true">Complete
+                        (</span>{{scanner.last_study.type}}<span *ngIf="scanner.last_study.finalized == true">)</span>
+                </div>
+            </div>
+            <div class="row d-inline">
+                <div class="row ms-4" *ngFor="let transducer of scanner.transducers">
+                    <div class="col-md-7" (click)="onTransducerDetail(transducer)">{{transducer.make}}</div>
+                    <div class="col-md-3"><span *ngIf="scanner.last_study.finalized == true">Complete
+                            (</span>{{transducer.last_study.type}}<span
+                            *ngIf="scanner.last_study.finalized == true">)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- view scanner  details modal-->
+<ng-template #scannerView let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title " id="modal-view">Scanner Acceptance Study - {{viewData}}</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body px-2">
+        <h5 class="col-form-label-sm me-2"> Date: {{date}}</h5>
+        <div>
+            <div class="row mb-2">
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Physical Condition </label>
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let res of reviewList.physical">
+                <div class="col-4 form-group input-group-sm">
+                    <label class="col-form-label-sm ">{{res.display_name |titlecase}}</label>&nbsp;
+                </div>
+                <div class="col-4 form-group input-group-sm">
+                    <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
+                        (click)="onSubStudy(isSubStudyAvailable, $event ,res.display_name)"
+                        [(ngModel)]="res.assessment">
+                        <option value="pass" [selected]="res.assessment=='pass'">PASS</option>
+                        <option value="fail" [selected]="res.assessment=='fail'">FAIL</option>
+                    </select>
+                </div>
+                <div class="col-4 form-group input-group-sm">
+                    <i class="fa fa-camera me-2" aria-hidden="true" [class.imgClass]="res.img.length == 0"
+                        (click)="subStudy(subStudyView,res.display_name, res)"></i>
+                    <i class="fa fa-edit" [class.noteClass]="res.notes.length == 0" (click)="subStudy(
+                        subStudyView,res.display_name, res)"></i>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Display Evaluation</label>
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let res of reviewList.display">
+                <div class="col-4 form-group input-group-sm">
+                    <label class="col-form-label-sm ">{{res.display_name |titlecase}}</label>&nbsp;
+                </div>
+                <div class="col-4 form-group input-group-sm">
+                    <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
+                        (click)="onSubStudy(isSubStudyAvailable, $event ,res.display_name)"
+                        [(ngModel)]="res.assessment">
+                        <option value="pass" [selected]="res.assessment=='pass'">PASS</option>
+                        <option value="fail" [selected]="res.assessment=='fail'">FAIL</option>
+                    </select>
+                </div>
+                <div class="col-4 form-group input-group-sm">
+                    <i class="fa fa-camera me-2" aria-hidden="true" [class.imgClass]="res.img.length == 0"
+                        (click)="subStudy(subStudyView,res.display_name, res)"></i>
+                    <i class="fa fa-edit" [class.noteClass]="res.notes.length == 0" (click)="subStudy(
+                    subStudyView,res.display_name, res)"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="isFinalized">Accept</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+    </div>
+</ng-template>
+
+<!-- subStudy icon -->
+<ng-template #subStudyView let-modal>
+    <div class="modal-header gap-3">
+        <h5 class="modal-title" id="modal-basic-title">Scanner Acceptance Study - {{viewData}}</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body mb-2">
+        <span class="col-form-label-sm me-2"> Date: {{date}}</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="p-4 h-100 border" ng-class="{'my-disable':isSubStudyFlag}"><img class="scanner-img"
+                        src="../../../assets/scanner.png"></div>
+            </div>
+            <div class="col-md-6">
+                <textarea type="textarea" class="textarea w-100 h-100" [(ngModel)]="noteValue"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm">Done</button>
+    </div>
+</ng-template>
+
+<!-- substudy assessment -->
+<ng-template #isSubStudyAvailable let-modal>
+    <div class="modal-header gap-3">
+        <h5 class="modal-title" id="modal-basic-title">Scanner Acceptance Study - {{viewData}}</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <div class="modal-body mb-2">
+        <span class="col-form-label-sm me-2"> Date: {{date}}</span>
+        <div class="row">
+            <h5 class="col-form-label-sm mb-2">Please provide reason for setting {{review}} to {{assessmentType}} </h5>
+            <textarea class="textarea h-100" [(ngModel)]="reasonTextArea"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="reason($event)">Done</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+    </div>
+</ng-template>
+

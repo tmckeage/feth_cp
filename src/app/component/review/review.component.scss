@@ -1,0 +1,37 @@
+.px-2 {
+    margin-left: 15px;
+}
+.study_type{ 
+    margin-left: -8px !important;
+}
+.scanner-img{
+    width: -webkit-fill-available;
+}
+.noteClass{
+    color:gray;
+    pointer-events:none;
+}
+.imgClass{
+    color:gray;
+    pointer-events:none;
+}
+.b:after {
+    content: ")"
+}  
+.b:before {
+    content: "("
+}
+.my-disable{
+    pointer-events:none;
+}
+.search {
+	position: relative;
+}
+.search input {
+	border: 1px solid #d6d4d4
+}
+.search .fa-search {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
