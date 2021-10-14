@@ -1,0 +1,59 @@
+<div class="row justify-content-center mt-5">
+    <div class="card mt-2 p-4 col-md-8">
+        <div class="header hr">
+            <h5 class="col-form-label-sm fw-bold">Philips: M12345678 </h5>
+            <h5 class="col-form-label-sm me-2"> Date:</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <h4 class="h6 text-center fw-bold"> Visual Inspection</h4>
+                <div class="row" *ngFor="let val of visualList">
+                    <div class="col-md-5">{{val.type}}</div>
+                    <div class="col-md-3">Pass</div>
+                    <div class="col-md-4">
+                        <i class="fa fa-camera me-2" aria-hidden="true" (click)="onImg(isImgView,val.type)"></i>
+                        <i class="fa fa-edit" aria-hidden="true" (click)="onNotes(isImgView,val.type)"></i>
+                    </div>
+                </div>
+                <h4 class="h6 text-center mt-2 fw-bold">Image Analysis</h4>
+                <div class="col-md-5"></div>
+                <div class="col-md-2 fw-bold">Baseline</div>
+                <div class="col-md-2 fw-bold">Measurement</div>
+                <div class="col-md-2 fw-bold">Decision</div>
+                <div class="row ml-4" *ngFor="let res of imgData">
+                    <div class="col-md-6">{{res.type}}</div>
+                    <div class="col-md-2 float-center">{{res.baseline}}</div>
+                    <div class="col-md-2 float-center">{{res.measurement}}</div>
+                    <div class="col-md-2 float-center" (click)="onVertical(res.type)">{{res.decision}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <button type="button" class="btn btn-secondary float-end btn-sm">Finalize</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- icon model -->
+<ng-template #isImgView let-modal>
+    <div class="modal-header gap-3">
+        <h5 class="modal-title" id="modal-basic-title">Scanner Acceptance Study - {{viewType}}</h5>
+        <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+    </div>
+    <span class="col-form-label-sm me-2"> Date:{{date}}</span>
+    <div class="modal-body mb-2">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="p-4 h-100 border"><img class="scanner-img"
+                        src="../../../assets/scanner.png"></div>
+            </div>
+            <div class="col-md-6">
+                <textarea type="textarea" class="textarea w-100 h-100"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm">Done</button>
+    </div>
+</ng-template>

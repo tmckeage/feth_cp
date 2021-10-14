@@ -10,6 +10,8 @@ import { ForgotPasswordComponent } from '../component/forgot-password/forgot-pas
 import { SetPasswordComponent } from '../component/set-password/set-password.component';
 import { RequestReceivedComponent } from '../component/request-received/request-received.component';
 import { VerifyUserComponent } from '../component/verify-user/verify-user.component';
+import { TransducerComponent } from '../component/review/transducer/transducer.component';
+import { VerticalDistanceComponent } from '../component/review/vertical-distance/vertical-distance.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -17,12 +19,16 @@ const routes: Routes = [
     { path: 'analysis', component: AnalysisComponent },
     { path: 'equipment', component: EquipmentComponent },
     { path: 'reports', component: ReportsComponent },
-    { path: 'review', component: ReviewComponent },
     { path: 'users', component: UsersComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'set-password', component: SetPasswordComponent },
     { path: 'request', component: RequestReceivedComponent },
-    { path: 'verify-user/:userName/:code', component:VerifyUserComponent }
+    { path: 'verify-user/:userName/:code', component:VerifyUserComponent },
+    { path: 'review', children:[
+        { path:'', component: ReviewComponent},
+        { path:'transducer', component:TransducerComponent},
+        { path:'vertical', component:VerticalDistanceComponent}
+    ]}
 ];
 
 @NgModule({

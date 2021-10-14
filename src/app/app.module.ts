@@ -28,6 +28,9 @@ import { AngularMaterialModule } from './modules/angular-material/angular-materi
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { VerifyUserComponent } from './component/verify-user/verify-user.component';
 import { DatePipe } from '@angular/common';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { TransducerComponent } from './component/review/transducer/transducer.component';
+import { VerticalDistanceComponent } from './component/review/vertical-distance/vertical-distance.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +44,9 @@ import { DatePipe } from '@angular/common';
     SetPasswordComponent,
     RequestReceivedComponent,
     NavbarComponent,
-    VerifyUserComponent
+    VerifyUserComponent,
+    TransducerComponent,
+    VerticalDistanceComponent
     
   ],
   imports: [
@@ -56,7 +61,8 @@ import { DatePipe } from '@angular/common';
     AngularMaterialModule,
     AmplifyAngularModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    Ng2SearchPipeModule
   ],
   providers: [
     AmplifyService,

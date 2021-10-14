@@ -26,9 +26,9 @@
                     <option *ngFor="let item of roomName" value="{{item}}">{{item}}</option>
                 </select>
             </div>
-            <div class="col-sm-6 col-md-6 col-lg-6 float-start mb-4" id="due-date">
-                <label for="due-date" class="col-form-label-sm fw-bold mb-2">Due Date:</label>
-                <mat-form-field class="btn-sm mat-form-field-infix-new size mb-2" appearance="outline">
+            <div class="col-sm-6 col-md-6 col-lg-6 float-start" id="due-date">
+                <label for="due-date" class="col-form-label-sm fw-bold">Due Date:</label>
+                <mat-form-field class="btn-sm mat-form-field-infix-new size" appearance="outline">
                     <mat-date-range-input [formGroup]="dueDate" [rangePicker]="picker" >
                         <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="equipmentFilter()">
                         <input matEndDate formControlName="end" placeholder="End date" (dateChange)="equipmentFilter()">
@@ -39,7 +39,7 @@
             </div>
         </div>
         <!-- scanner list -->
-        <div *ngFor="let scanner of scanners" class="scanner-holder">
+        <div *ngFor="let scanner of scanners" class="scanner-holder mt-4">
             <div class="row">
                 <div class="col-md-3 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.name}}</div>
                 <div class="col-md-3">{{scanner.cirs}}</div>
