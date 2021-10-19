@@ -2,7 +2,7 @@
     <div class="card mt-2 p-4 col-md-8">
         <div class="header hr">
             <h5 class="col-form-label-sm fw-bold">Philips: M12345678 </h5>
-            <h5 class="col-form-label-sm me-2"> Date:</h5>
+            <h5 class="col-form-label-sm me-2"> Date:{{date}}</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -17,14 +17,17 @@
                 </div>
                 <h4 class="h6 text-center mt-2 fw-bold">Image Analysis</h4>
                 <div class="col-md-5"></div>
-                <div class="col-md-2 fw-bold">Baseline</div>
-                <div class="col-md-2 fw-bold">Measurement</div>
-                <div class="col-md-2 fw-bold">Decision</div>
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-2 fw-bold">Baseline</div>
+                    <div class="col-md-2 fw-bold">Measurement</div>
+                    <div class="col-md-2 fw-bold">Decision</div>
+                </div>
                 <div class="row ml-4" *ngFor="let res of imgData">
                     <div class="col-md-6">{{res.type}}</div>
                     <div class="col-md-2 float-center">{{res.baseline}}</div>
                     <div class="col-md-2 float-center">{{res.measurement}}</div>
-                    <div class="col-md-2 float-center" (click)="onVertical(res.type)">{{res.decision}}</div>
+                    <div class="col-md-2 float-center"> <a (click)="onDistance(res.type)">{{res.decision}}</a></div>
                 </div>
             </div>
         </div>

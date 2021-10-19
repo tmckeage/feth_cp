@@ -165,7 +165,7 @@ export class EquipmentService {
                     "img": "",
                     "notes": []
                   }],
-                "image": "",
+                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
                 "uniformity": {},
                 "imaging": {
                   "sensitivity": {},
@@ -174,36 +174,51 @@ export class EquipmentService {
                     "display_name": "vertical distance",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [6,8]
                   }],
-                  "horizontal_distance": {},
+                  "horizontal_distance": {
+                    "row_one":{ 
+                    "unit": "",
+                    "display_name": "vertical distance",
+                    "baseline": 12345,
+                    "measured": 21212,
+                    "tolerance": [3,5]
+                  },
+                    "row_two":{
+                      "unit": "",
+                      "display_name": "vertical distance",
+                      "baseline": 12345,
+                      "measured": 21212,
+                      "tolerance": [3,6]
+                    }
+                  },
                   "axial_resolution": [{
                     "unit": "",
                     "display_name": "axial resolution",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [4,5]
                   }],
                   "lateral_resolution": [{
                     "unit": "",
                     "display_name": "lateralresolution",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [5,7]
                   }],
                   "elevational_resolution": [{
                     "unit": "",
                     "display_name": "",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [5,6]
                     }],
                     "contrast_resolution": [{
                       "unit": "",
                       "display_name": "",
                       "baseline": 12345,
                       "measured": 21212,
-                      "tolerance": []
+                      "tolerance": [1,3]
                   }]
                 }
               }]
@@ -333,7 +348,7 @@ export class EquipmentService {
                     "img": "",
                     "notes": []
                   }],
-                "image": "",
+                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
                 "uniformity": {},
                 "imaging": {
                   "sensitivity": {},
@@ -342,36 +357,51 @@ export class EquipmentService {
                     "display_name": "vertical distance",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [4,5]
                   }],
-                  "horizontal_distance": {},
+                  "horizontal_distance": {
+                    "row_one":{ 
+                    "unit": "",
+                    "display_name": "vertical distance",
+                    "baseline": 12345,
+                    "measured": 21212,
+                    "tolerance": [2,6]
+                  },
+                    "row_two":{
+                      "unit": "",
+                      "display_name": "vertical distance",
+                      "baseline": 12345,
+                      "measured": 21212,
+                      "tolerance": [1,5]
+                    }
+                  },
                   "axial_resolution": [{
                     "unit": "",
                     "display_name": "axial resolution",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [2,4]
                   }],
                   "lateral_resolution": [{
                     "unit": "",
                     "display_name": "lateralresolution",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [1,4]
                   }],
                   "elevational_resolution": [{
                     "unit": "",
                     "display_name": "",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [3,4]
                     }],
                     "contrast_resolution": [{
                       "unit": "",
                       "display_name": "",
                       "baseline": 12345,
                       "measured": 21212,
-                      "tolerance": []
+                      "tolerance": [2,3]
                   }]
                 }
               }]
@@ -497,24 +527,39 @@ export class EquipmentService {
                     "img": "",
                     "notes": []
                   }],
-                "image": "",
+                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
                 "uniformity": {},
                 "imaging": {
                   "sensitivity": {},
                   "vertical_distance": [{
+                    "unit": "1",
+                    "display_name": "vertical distance",
+                    "baseline": 12345,
+                    "measured": 21212,
+                    "tolerance": [1,3]
+                  }],
+                  "horizontal_distance": {
+                    "row_one":{ 
                     "unit": "",
                     "display_name": "vertical distance",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
-                  }],
-                  "horizontal_distance": {},
+                    "tolerance": [1,4]
+                    },
+                    "row_two":{
+                      "unit": "2",
+                      "display_name": "vertical distance",
+                      "baseline": 12345,
+                      "measured": 21212,
+                      "tolerance": [1,21]
+                    }
+                  },
                   "axial_resolution": [{
-                    "unit": "",
+                    "unit": "3",
                     "display_name": "axial resolution",
                     "baseline": 12345,
                     "measured": 21212,
-                    "tolerance": []
+                    "tolerance": [1,2]
                   }],
                   "lateral_resolution": [{
                     "unit": "",

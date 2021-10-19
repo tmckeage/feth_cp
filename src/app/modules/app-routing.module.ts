@@ -12,6 +12,8 @@ import { RequestReceivedComponent } from '../component/request-received/request-
 import { VerifyUserComponent } from '../component/verify-user/verify-user.component';
 import { TransducerComponent } from '../component/review/transducer/transducer.component';
 import { VerticalDistanceComponent } from '../component/review/vertical-distance/vertical-distance.component';
+import { HorizontalDistanceComponent } from '../component/review/horizontal-distance/horizontal-distance.component';
+import { UniformityComponent } from '../component/review/uniformity/uniformity.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -27,7 +29,9 @@ const routes: Routes = [
     { path: 'review', children:[
         { path:'', component: ReviewComponent},
         { path:'transducer', component:TransducerComponent},
-        { path:'vertical', component:VerticalDistanceComponent}
+        { path:'vertical', component:VerticalDistanceComponent},
+        { path:'horizontal', component:HorizontalDistanceComponent},
+        { path:'uniformity', component:UniformityComponent}
     ]}
 ];
 

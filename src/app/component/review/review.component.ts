@@ -84,7 +84,7 @@ export class ReviewComponent implements OnInit {
 	scannerDetail(scanner: any, scannerView: any) {
 		this.titleName = 'Scanner Acceptance Study';
 		this.viewData = scanner.make;
-		this.date = '07/10/2021';
+		this.date = scanner.last_study.date_performed;
 		this.isFinalized = false;
 		if (scanner.last_study.finalized === "true") {
 			this.isFinalized = true;

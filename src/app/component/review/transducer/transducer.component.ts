@@ -31,6 +31,9 @@ export class TransducerComponent implements OnInit {
     ];
     
     this.analysisList = this.equipmentService.getScanner();
+    this.analysisList.forEach((res:any)=>{
+      this.date = res.last_study.date_performed;
+    });
     this.imgData = [
       {type:'Uniformity', baseline:'0', measurement:'--', decision:'Review'},
       {type:'Sensitivity', baseline:'15.6 cm', measurement:'15.7 cm', decision:'Pass'},
@@ -46,7 +49,7 @@ export class TransducerComponent implements OnInit {
   }
   onNotes(isImgView:any, content: any){ 
    this.viewType = content;  
-   this.date = '07/10/2021' 
+   this.date = this.date; 
   // this.modalService.dismissAll();
   this.modalService.open(isImgView, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
@@ -54,16 +57,22 @@ export class TransducerComponent implements OnInit {
   }
   onImg(isImgView: any, content: any){
     this.viewType = content;
-    this.date = '07/10/2021' 
+    this.date =  this.date; 
     // this.modalService.dismissAll();
     this.modalService.open(isImgView, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     });
   }
   
-  onVertical(type:any){ 
+  onDistance(type:any){ 
     if(type == 'Vertical Distance') {
       this.router.navigate(['/review/vertical']);
+    }
+    if(type == 'Horizontal Distance') {
+      this.router.navigate(['/review/horizontal']);
+    }
+    if(type == 'Uniformity') {
+      this.router.navigate(['/review/uniformity']);
     }
   }
 

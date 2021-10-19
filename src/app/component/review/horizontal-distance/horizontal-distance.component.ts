@@ -2,18 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { EquipmentService } from '../../../services/equipment.service';
 
 @Component({
-  selector: 'app-vertical-distance',
-  templateUrl: './vertical-distance.component.html',
-  styleUrls: ['./vertical-distance.component.scss']
+  selector: 'app-horizontal-distance',
+  templateUrl: './horizontal-distance.component.html',
+  styleUrls: ['./horizontal-distance.component.scss']
 })
-export class VerticalDistanceComponent implements OnInit {
- transducer: any;
- datalist: any[] = [];
- measurementList: any;
- horizontal_distance: any;
- date : any;
-
- 
+export class HorizontalDistanceComponent implements OnInit {
+  transducer: any;
+  datalist: any[] = [];
+  measurementList: any;
+  horizontal_distance: any;
+  date : any;
   constructor(private equipment: EquipmentService) { }
 
   ngOnInit(): void {
@@ -28,6 +26,6 @@ export class VerticalDistanceComponent implements OnInit {
           });
       });
     });
-
   }
-} 
+
+}
