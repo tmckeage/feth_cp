@@ -13,7 +13,7 @@ export class EquipmentService {
   constructor() {
     this.facilityTransducer = ['CIRS', 'Fathom'];
     this.roomTransducer = ['RM1', 'RM2', 'RM3'];
-    this.typeTransducer = ['Monthly', 'Quarterly', 'Annual', 'Acceptance ']
+    this.typeTransducer = ['Monthly', 'Quarterly', 'Annual', 'Acceptance']
   }
 
   scanners = [
@@ -135,8 +135,8 @@ export class EquipmentService {
             },
             "last_study": {
               "id": "1",
-              "type": "Annual",
-              "finalized": "true",
+              "type": "Quarterly",
+              "finalized": true,
               "date_performed": "07/09/2021",
               "assessment": "pass",
               "data": [{
@@ -221,15 +221,15 @@ export class EquipmentService {
         "serial_number": "45678",
         "next_study_due": {
           "date": "09/01/2021",
-          "type": "annual"
+          "type": "Annual"
         },
         "last_study": {
           "id": "4b684df6-d0d0-4634-a5bb-7fa2e52a5df5",
-          "type": "annual",
+          "type": "Annual",
           "finalized": false,
           "date_performed": "2021-9-20",
           "assessment": "pass",
-          "data": 
+          "data":
             {
               "physical": [
                 {
@@ -257,8 +257,8 @@ export class EquipmentService {
                   "notes": []
                 }
               ],
-            
-            
+
+
               "display": [
                 {
                   "assessment": "pass",
@@ -286,7 +286,7 @@ export class EquipmentService {
                 }
               ]
             }
-          
+
         },
         "transducers": [
           {
@@ -299,12 +299,12 @@ export class EquipmentService {
             "serial_number": "123455",
             "next_study_due": {
               "date": "ISO 8601",
-              "type": "Acceptance"
+              "type": "Annual"
             },
             "last_study": {
               "id": "2",
-              "type": "Acceptance",
-              "finalized": "false",
+              "type": "Annual",
+              "finalized": false,
               "date_performed": "07/09/2021",
               "assessment": "pass",
               "data": [{
@@ -388,15 +388,15 @@ export class EquipmentService {
         "serial_number": "78945",
         "next_study_due": {
           "date": "ISO 8601",
-          "type": "Annual"
+          "type": "Acceptance"
         },
         "last_study": {
           "id": "4b684df6-d0d0-4634-a5bb-7fa2e52a5df6",
-          "type": "annual",
+          "type": "Acceptance",
           "finalized": false,
           "date_performed": "2021-9-20",
           "assessment": "pass",
-          "data": 
+          "data":
             {
               "physical": [
                 {
@@ -467,8 +467,8 @@ export class EquipmentService {
             },
             "last_study": {
               "id": "3",
-              "type": "Quarterly",
-              "finalized": "false",
+              "type": "Acceptance",
+              "finalized": false,
               "date_performed": "07/09/2021",
               "assessment": "pass",
               "data": [{
