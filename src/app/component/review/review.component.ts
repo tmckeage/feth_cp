@@ -68,7 +68,7 @@ export class ReviewComponent implements OnInit {
 		// type filter
 		if (this.selectedType != 0) {
 			scannerList = scannerList.filter(item => {
-				return item.last_study == this.selectedType;
+				return item.last_study.type == this.selectedType;
 			});
 		}
 		// s/n searching
@@ -86,7 +86,7 @@ export class ReviewComponent implements OnInit {
 		this.viewData = scanner.make;
 		this.date = scanner.last_study.date_performed;
 		this.isFinalized = false;
-		if (scanner.last_study.finalized === "true") {
+		if (scanner.last_study.finalized === true) {
 			this.isFinalized = true;
 		}
 		this.reviewList = scanner.last_study.data;
@@ -116,7 +116,7 @@ export class ReviewComponent implements OnInit {
 			this.modalService.open(isSubStudyAvailable, { ariaLabelledBy: 'modal-basic-title', size: 'md' }).result.then((result) => {
 				this.closeResult = `Closed with: ${result}`;
 			});
-		}, 3000);
+		}, 200);
 	}
 
 	reason(reason: any) {
