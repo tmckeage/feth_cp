@@ -11,11 +11,13 @@ import { EquipmentService } from 'src/app/services/equipment.service';
 export class TransducerComponent implements OnInit {
   fathomUserDetails: any;
   visualList: any[] = [];
+  dataList: any;
   analysisList: any
-  imgData: any;
+  imgData: any = [];
   closeResult: any;
   viewType: any;
   date: any;
+
   constructor(private modalService: NgbModal, private router: Router,  private equipmentService:EquipmentService) { }
 
   ngOnInit(): void {
@@ -31,10 +33,26 @@ export class TransducerComponent implements OnInit {
     ];
     
     this.analysisList = this.equipmentService.getScanner();
-    this.analysisList.forEach((res:any)=>{
+    this.analysisList.forEach((res: any) => {
       this.date = res.last_study.date_performed;
+      let data = res.transducers;
+      data.forEach((item: any) => {
+        this.dataList = item.last_study.data;
+        let imgList: any = [];
+        imgList = item.last_study.data.imaging;
+        let items: any = [];
+        Object.entries(imgList).forEach(([k, v]) => {
+          items.push({
+            name: k,
+            value:v
+          });
+          this.imgData = items;
+        });
+        // this.imgData.name.replaceAll('_', '');
+      });
     });
-    this.imgData = [
+
+    this.visualList = [
       {type:'Uniformity', baseline:'0', measurement:'--', decision:'Review'},
       {type:'Sensitivity', baseline:'15.6 cm', measurement:'15.7 cm', decision:'Pass'},
       {type:'Vertical Distance', baseline:'9.95 cm', measurement:'10.2 cm', decision:'Pass'},

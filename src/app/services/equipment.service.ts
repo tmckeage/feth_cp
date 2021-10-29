@@ -66,165 +66,494 @@ export class EquipmentService {
           "date_performed": "2021-9-20",
           "assessment": "pass",
           "data": {
+            "physical": [
+              {
+                "assessment": "pass",
+                "display_name": "Control Panel",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Wheels",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Cords",
+                "img": "https://coolimages.com/384784936",
+                "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Air Filter",
+                "img": "",
+                "notes": []
+              }
+            ],
+            "display": [
+              {
+                "assessment": "fail",
+                "display_name": "Visible Transitions",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Distinct Line Pairs",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Smooth Greyscale",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Consistent with PACS",
+                "img": "",
+                "notes": []
+              }
+            ]
+          }
+        },
+        "transducers": [{
+          "id": '1',
+          "make": "C26:L1q237",
+          "model": "C26:L1q237",
+          "facility": "CIRS",
+          "room": "RM1",
+          "barcode": "123456",
+          "serial_number": "123456",
+          "next_study_due": {
+            "date": "ISO 8601",
+            "type": "Quarterly"
+          },
+          "last_study": {
+            "id": '36f483cd-99fb-494d-a8e0-8ee1f75ddb10',
+            "type": 'annual',
+            "finalized": false,
+            "date_performed": '2021-07-10',
+            "assessment": "none",
+            "data": {
               "physical": [
                 {
                   "assessment": "pass",
-                  "display_name": "Control Panel",
+                  "display_name": "Cables",
                   "img": "",
                   "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Wheels",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Cords",
-                  "img": "https://coolimages.com/384784936",
-                  "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                },
-                {
+                }, {
                   "assessment": "pass",
-                  "display_name": "Air Filter",
+                  "display_name": "Cracks/Discoloration",
                   "img": "",
                   "notes": []
+                }, {
+                  "assessment": "fail",
+                  "display_name": "Connectors",
+                  "img": "https://www.fathom.com/img/934322856",
+                  "notes": [
+                    {
+                      "timestamp": "2021-7-10T12:28",
+                      "type": "eval",
+                      "text": "Connector loose; falls out if bumped"
+                    }
+                  ]
                 }
               ],
-              "display": [
-                {
-                  "assessment": "fail",
-                  "display_name": "Visible Transitions",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Distinct Line Pairs",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Smooth Greyscale",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Consistent with PACS",
-                  "img": "",
-                  "notes": []
-                }
-              ]
-          }
-        },
-        "transducers": [
-          {
-            "id": '1',
-            "make": "C26:L1q237",
-            "model": "C26:L1q237",
-            "facility": "CIRS",
-            "room": "RM1",
-            "barcode": "123456",
-            "serial_number": "123456",
-            "next_study_due": {
-              "date": "ISO 8601",
-              "type": "Quarterly"
-            },
-            "last_study": {
-              "id": "1",
-              "type": "Quarterly",
-              "finalized": true,
-              "date_performed": "07/09/2021",
-              "assessment": "pass",
-              "data": [{
-                "physical": [
+              "image": "https://www.fathom.com/img/567822856",
+              "uniformity": "",
+              "imaging": {
+                "sensitivity": "",
+                "vertical_distance": [
                   {
-                    "assessment": "pass",
-                    "display_name": "Control Panel",
-                    "img": "",
-                    "notes": []
+                    "unit": "cm",
+                    "display_name": "1",
+                    "baseline": -1.3,
+                    "measured": -1.2,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "2",
+                    "baseline": -1.1,
+                    "measured": -1.0,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "3",
+                    "baseline": -0.9,
+                    "measured": -0.8,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "4",
+                    "baseline": -0.7,
+                    "measured": -0.6,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "5",
+                    "baseline": -0.5,
+                    "measured": -0.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "6",
+                    "baseline": 0,
+                    "measured": 0,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "7",
+                    "baseline": 0.5,
+                    "measured": 0.5,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "8",
+                    "baseline": 1.0,
+                    "measured": 1.0,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "9",
+                    "baseline": 1.5,
+                    "measured": 1.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "10",
+                    "baseline": 2.0,
+                    "measured": 1.9,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "11",
+                    "baseline": 2.5,
+                    "measured": 2.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "12",
+                    "baseline": 3.0,
+                    "measured": 2.9,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "13",
+                    "baseline": 3.5,
+                    "measured": 3.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "14",
+                    "baseline": 4.0,
+                    "measured": 3.9,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "15",
+                    "baseline": 4.5,
+                    "measured": 4.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "16",
+                    "baseline": 5.0,
+                    "measured": 4.9,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "17",
+                    "baseline": 5.5,
+                    "measured": 5.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "18",
+                    "baseline": 6.0,
+                    "measured": 5.9,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "19",
+                    "baseline": 6.5,
+                    "measured": 6.4,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "20",
+                    "baseline": 1.0,
+                    "measured": 6.9,
+                    "tolerance": "",
                   },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Wheels",
-                    "img": "",
-                    "notes": []
-                  },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Cords",
-                    "img": "https://coolimages.com/384784936",
-                    "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                  },
-                  {
-                    "assessment": "pass",
-                    "display_name": "Air Filter",
-                    "img": "",
-                    "notes": []
-                  }],
-                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
-                "uniformity": {},
-                "imaging": {
-                  "sensitivity": {},
-                  "vertical_distance": [{
-                    "unit": "",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [6,8]
-                  }],
-                  "horizontal_distance": {
-                    "row_one":{ 
-                    "unit": "",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [3,5]
-                  },
-                    "row_two":{
-                      "unit": "",
-                      "display_name": "vertical distance",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": [3,6]
+                ],
+                "horizontal_distance": {
+                  "row_one": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": -1.45,
+                      "measured": -1.5,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": 0,
+                      "measured": 0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": 1.47,
+                      "measured": 1.5,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": "",
+                      "measured": "",
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": "",
+                      "measured": "",
+                      "tolerance": "",
                     }
-                  },
-                  "axial_resolution": [{
-                    "unit": "",
-                    "display_name": "axial resolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [4,5]
-                  }],
-                  "lateral_resolution": [{
-                    "unit": "",
-                    "display_name": "lateralresolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [5,7]
-                  }],
-                  "elevational_resolution": [{
-                    "unit": "",
-                    "display_name": "",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [5,6]
-                    }],
-                    "contrast_resolution": [{
-                      "unit": "",
-                      "display_name": "",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": [1,3]
-                  }]
-                }
-              }]
-            }
-          }]
+                  ],
+                  "row_two": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": -4,
+                      "measured": -3.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": -2.0,
+                      "measured": -2.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": 0,
+                      "measured": 0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": 2.1,
+                      "measured": 2.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": 4.1,
+                      "measured": 4.0,
+                      "tolerance": "",
+                    }
+                  ],
+                },
+                "axial_resolution": [
+                  {
+                    "unit": "cm",
+                    "display_name": "2",
+                    "baseline": 0.15,
+                    "measured": 0.17,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "4",
+                    "baseline": 0.13,
+                    "measured": 0.14,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "6",
+                    "baseline": 0.13,
+                    "measured": 0.13,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "8",
+                    "baseline": 0.12,
+                    "measured": 0.11,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "10",
+                    "baseline": 0.11,
+                    "measured": 0.11,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "12",
+                    "baseline": 0.11,
+                    "measured": 0.10,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "14",
+                    "baseline": 0.10,
+                    "measured": 0.09,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "16",
+                    "baseline": 0.09,
+                    "measured": 0.09,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "18",
+                    "baseline": 0.09,
+                    "measured": 0.10,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "20",
+                    "baseline": 0.08,
+                    "measured": 0.08,
+                    "tolerance": "",
+                  }
+                ],
+                "lateral_resolution": [
+                  {
+                    "unit": "cm",
+                    "display_name": "2",
+                    "baseline": 0.07,
+                    "measured": 0.07,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "4",
+                    "baseline": 0.07,
+                    "measured": 0.08,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "6",
+                    "baseline": 0.06,
+                    "measured": 0.07,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "8",
+                    "baseline": 0.08,
+                    "measured": 0.08,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "10",
+                    "baseline": 0.07,
+                    "measured": 0.09,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "12",
+                    "baseline": 0.08,
+                    "measured": 0.07,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "14",
+                    "baseline": 0.07,
+                    "measured": 0.08,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "16",
+                    "baseline": 0.07,
+                    "measured": 0.07,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "18",
+                    "baseline": 0.06,
+                    "measured": 0.06,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "20",
+                    "baseline": 0.06,
+                    "measured": 0.06,
+                    "tolerance": "",
+                  }
+                ],
+                "elevational_resolution": [
+                  {
+                    "unit": "cm",
+                    "display_name": "1",
+                    "baseline": 0.25,
+                    "measured": 0.27,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "3",
+                    "baseline": 0.23,
+                    "measured": 0.24,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "5",
+                    "baseline": 0.23,
+                    "measured": 0.23,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "7",
+                    "baseline": 0.22,
+                    "measured": 0.21,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "9",
+                    "baseline": 0.21,
+                    "measured": 0.21,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "11",
+                    "baseline": 0.21,
+                    "measured": 0.21,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "13",
+                    "baseline": 0.20,
+                    "measured": 0.19,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "15",
+                    "baseline": 0.19,
+                    "measured": 0.19,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "17",
+                    "baseline": 0.19,
+                    "measured": 0.20,
+                    "tolerance": "",
+                  }, {
+                    "unit": "cm",
+                    "display_name": "19",
+                    "baseline": 0.18,
+                    "measured": 0.18,
+                    "tolerance": "",
+                  }
+                ],
 
+                "contrast_resolution": [],
+              }
+            }
+          }
+
+        }]
       },
       {
         "id": '2',
@@ -245,62 +574,62 @@ export class EquipmentService {
           "date_performed": "2021-9-20",
           "assessment": "pass",
           "data":
-            {
-              "physical": [
-                {
-                  "assessment": "pass",
-                  "display_name": "Control Panel",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Wheels",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Cords",
-                  "img": "https://coolimages.com/384784936",
-                  "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Air Filter",
-                  "img": "",
-                  "notes": []
-                }
-              ],
+          {
+            "physical": [
+              {
+                "assessment": "pass",
+                "display_name": "Control Panel",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Wheels",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Cords",
+                "img": "https://coolimages.com/384784936",
+                "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Air Filter",
+                "img": "",
+                "notes": []
+              }
+            ],
 
 
-              "display": [
-                {
-                  "assessment": "pass",
-                  "display_name": "Visible Transitions",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Distinct Line Pairs",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Smooth Greyscale",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Consistent with PACS",
-                  "img": "",
-                  "notes": []
-                }
-              ]
-            }
+            "display": [
+              {
+                "assessment": "pass",
+                "display_name": "Visible Transitions",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Distinct Line Pairs",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Smooth Greyscale",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Consistent with PACS",
+                "img": "",
+                "notes": []
+              }
+            ]
+          }
 
         },
         "transducers": [
@@ -317,94 +646,424 @@ export class EquipmentService {
               "type": "Annual"
             },
             "last_study": {
-              "id": "2",
-              "type": "Annual",
+              "id": '36f483cd-99fb-494d-a8e0-8ee1f75ddb11',
+              "type": 'annual',
               "finalized": false,
-              "date_performed": "07/09/2021",
-              "assessment": "pass",
-              "data": [{
+              "date_performed": '2021-07-10',
+              "assessment": "none",
+              "data": {
                 "physical": [
                   {
                     "assessment": "pass",
-                    "display_name": "Control Panel",
+                    "display_name": "Cables",
                     "img": "",
                     "notes": []
-                  },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Wheels",
-                    "img": "",
-                    "notes": []
-                  },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Cords",
-                    "img": "https://coolimages.com/384784936",
-                    "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                  },
-                  {
+                  }, {
                     "assessment": "pass",
-                    "display_name": "Air Filter",
+                    "display_name": "Cracks/Discoloration",
                     "img": "",
                     "notes": []
-                  }],
-                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
-                "uniformity": {},
+                  }, {
+                    "assessment": "fail",
+                    "display_name": "Connectors",
+                    "img": "https://www.fathom.com/img/934322856",
+                    "notes": [
+                      {
+                        "timestamp": "2021-7-10T12:28",
+                        "type": "eval",
+                        "text": "Connector loose; falls out if bumped"
+                      }
+                    ]
+                  }
+                ],
+                "image": "https://www.fathom.com/img/567822856",
+                "uniformity": "",
                 "imaging": {
-                  "sensitivity": {},
-                  "vertical_distance": [{
-                    "unit": "",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [4,5]
-                  }],
+                  "sensitivity": "",
+                  "vertical_distance": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": -1.3,
+                      "measured": -1.2,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": -1.1,
+                      "measured": -1.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": -0.9,
+                      "measured": -0.8,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": -0.7,
+                      "measured": -0.6,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": -0.5,
+                      "measured": -0.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0,
+                      "measured": 0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "7",
+                      "baseline": 0.5,
+                      "measured": 0.5,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 1.0,
+                      "measured": 1.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "9",
+                      "baseline": 1.5,
+                      "measured": 1.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 2.0,
+                      "measured": 1.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "11",
+                      "baseline": 2.5,
+                      "measured": 2.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 3.0,
+                      "measured": 2.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "13",
+                      "baseline": 3.5,
+                      "measured": 3.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 4.0,
+                      "measured": 3.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "15",
+                      "baseline": 4.5,
+                      "measured": 4.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 5.0,
+                      "measured": 4.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "17",
+                      "baseline": 5.5,
+                      "measured": 5.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 6.0,
+                      "measured": 5.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "19",
+                      "baseline": 6.5,
+                      "measured": 6.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 7.0,
+                      "measured": 6.9,
+                      "tolerance": "",
+                    },
+                  ],
                   "horizontal_distance": {
-                    "row_one":{ 
-                    "unit": "",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [2,6]
+                    "row_one": [
+                      {
+                        "unit": "cm",
+                        "display_name": "1",
+                        "baseline": -1.45,
+                        "measured": -1.5,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "2",
+                        "baseline": 0,
+                        "measured": 0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "3",
+                        "baseline": 1.47,
+                        "measured": 1.5,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "4",
+                        "baseline": "",
+                        "measured": "",
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "5",
+                        "baseline": "",
+                        "measured": "",
+                        "tolerance": "",
+                      }
+                    ],
+                    "row_two": [
+                      {
+                        "unit": "cm",
+                        "display_name": "1",
+                        "baseline": -4,
+                        "measured": -3.9,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "2",
+                        "baseline": -2.0,
+                        "measured": -2.0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "3",
+                        "baseline": 0,
+                        "measured": 0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "4",
+                        "baseline": 2.1,
+                        "measured": 2.0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "5",
+                        "baseline": 4.1,
+                        "measured": 4.0,
+                        "tolerance": "",
+                      }
+                    ],
                   },
-                    "row_two":{
-                      "unit": "",
-                      "display_name": "vertical distance",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": [1,5]
+                  "axial_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": 0.15,
+                      "measured": 0.17,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": 0.13,
+                      "measured": 0.14,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0.13,
+                      "measured": 0.13,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 0.12,
+                      "measured": 0.11,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 0.11,
+                      "measured": 0.11,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 0.11,
+                      "measured": 0.10,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 0.10,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 0.09,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 0.09,
+                      "measured": 0.10,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 0.08,
+                      "measured": 0.08,
+                      "tolerance": "",
                     }
-                  },
-                  "axial_resolution": [{
-                    "unit": "",
-                    "display_name": "axial resolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [2,4]
-                  }],
-                  "lateral_resolution": [{
-                    "unit": "",
-                    "display_name": "lateralresolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [1,4]
-                  }],
-                  "elevational_resolution": [{
-                    "unit": "",
-                    "display_name": "",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [3,4]
-                    }],
-                    "contrast_resolution": [{
-                      "unit": "",
-                      "display_name": "",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": [2,3]
-                  }]
+                  ],
+                  "lateral_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": 0.07,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": 0.07,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0.06,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 0.08,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 0.07,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 0.08,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 0.07,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 0.07,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 0.06,
+                      "measured": 0.06,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 0.06,
+                      "measured": 0.06,
+                      "tolerance": "",
+                    }
+                  ],
+                  "elevational_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": 0.25,
+                      "measured": 0.27,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": 0.23,
+                      "measured": 0.24,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": 0.23,
+                      "measured": 0.23,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "7",
+                      "baseline": 0.22,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "9",
+                      "baseline": 0.21,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "11",
+                      "baseline": 0.21,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "13",
+                      "baseline": 0.20,
+                      "measured": 0.19,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "15",
+                      "baseline": 0.19,
+                      "measured": 0.19,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "17",
+                      "baseline": 0.19,
+                      "measured": 0.20,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "19",
+                      "baseline": 0.18,
+                      "measured": 0.18,
+                      "tolerance": "",
+                    }
+                  ],
+
+                  "contrast_resolution": [],
                 }
-              }]
+              }
             }
           }]
       },
@@ -427,60 +1086,60 @@ export class EquipmentService {
           "date_performed": "2021-9-20",
           "assessment": "pass",
           "data":
-            {
-              "physical": [
-                {
-                  "assessment": "pass",
-                  "display_name": "Control Panel",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Wheels",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "fail",
-                  "display_name": "Cords",
-                  "img": "https://coolimages.com/384784936",
-                  "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Air Filter",
-                  "img": "",
-                  "notes": []
-                }
-              ],
-              "display": [
-                {
-                  "assessment": "pass",
-                  "display_name": "Visible Transitions",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Distinct Line Pairs",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Smooth Greyscale",
-                  "img": "",
-                  "notes": []
-                },
-                {
-                  "assessment": "pass",
-                  "display_name": "Consistent with PACS",
-                  "img": "",
-                  "notes": []
-                }
-              ]
-            }
+          {
+            "physical": [
+              {
+                "assessment": "pass",
+                "display_name": "Control Panel",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Wheels",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "fail",
+                "display_name": "Cords",
+                "img": "https://coolimages.com/384784936",
+                "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Air Filter",
+                "img": "",
+                "notes": []
+              }
+            ],
+            "display": [
+              {
+                "assessment": "pass",
+                "display_name": "Visible Transitions",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Distinct Line Pairs",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Smooth Greyscale",
+                "img": "",
+                "notes": []
+              },
+              {
+                "assessment": "pass",
+                "display_name": "Consistent with PACS",
+                "img": "",
+                "notes": []
+              }
+            ]
+          }
         },
         "transducers": [
           {
@@ -496,94 +1155,424 @@ export class EquipmentService {
               "type": "Acceptance"
             },
             "last_study": {
-              "id": "3",
-              "type": "Acceptance",
+              "id": '36f483cd-99fb-494d-a8e0-8ee1f75ddb12',
+              "type": 'annual',
               "finalized": false,
-              "date_performed": "07/09/2021",
-              "assessment": "pass",
-              "data": [{
+              "date_performed": '2021-07-10',
+              "assessment": "none",
+              "data": {
                 "physical": [
                   {
                     "assessment": "pass",
-                    "display_name": "Control Panel",
+                    "display_name": "Cables",
                     "img": "",
                     "notes": []
-                  },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Wheels",
-                    "img": "",
-                    "notes": []
-                  },
-                  {
-                    "assessment": "fail",
-                    "display_name": "Cords",
-                    "img": "https://coolimages.com/384784936",
-                    "notes": [{ "timestamp": "2021-9-20", "type": "eval", "text": 'cords frayed at plug' }]
-                  },
-                  {
+                  }, {
                     "assessment": "pass",
-                    "display_name": "Air Filter",
+                    "display_name": "Cracks/Discoloration",
                     "img": "",
                     "notes": []
-                  }],
-                "image": "https://getbootstrap.com/docs/5.0/utilities/spacing/",
-                "uniformity": {},
+                  }, {
+                    "assessment": "fail",
+                    "display_name": "Connectors",
+                    "img": "https://www.fathom.com/img/934322856",
+                    "notes": [
+                      {
+                        "timestamp": "2021-7-10T12:28",
+                        "type": "eval",
+                        "text": "Connector loose; falls out if bumped"
+                      }
+                    ]
+                  }
+                ],
+                "image": "https://www.fathom.com/img/567822856",
+                "uniformity": "",
                 "imaging": {
-                  "sensitivity": {},
-                  "vertical_distance": [{
-                    "unit": "1",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [1,3]
-                  }],
-                  "horizontal_distance": {
-                    "row_one":{ 
-                    "unit": "",
-                    "display_name": "vertical distance",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [1,4]
+                  "sensitivity": "",
+                  "vertical_distance": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": -1.3,
+                      "measured": -1.2,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": -1.1,
+                      "measured": -1.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": -0.9,
+                      "measured": -0.8,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": -0.7,
+                      "measured": -0.6,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": -0.5,
+                      "measured": -0.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0,
+                      "measured": 0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "7",
+                      "baseline": 0.5,
+                      "measured": 0.5,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 1.0,
+                      "measured": 1.0,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "9",
+                      "baseline": 1.5,
+                      "measured": 1.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 2.0,
+                      "measured": 1.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "11",
+                      "baseline": 2.5,
+                      "measured": 2.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 3.0,
+                      "measured": 2.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "13",
+                      "baseline": 3.5,
+                      "measured": 3.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 4.0,
+                      "measured": 3.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "15",
+                      "baseline": 4.5,
+                      "measured": 4.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 5.0,
+                      "measured": 4.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "17",
+                      "baseline": 5.5,
+                      "measured": 5.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 6.0,
+                      "measured": 5.9,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "19",
+                      "baseline": 6.5,
+                      "measured": 6.4,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 7.0,
+                      "measured": 6.9,
+                      "tolerance": "",
                     },
-                    "row_two":{
-                      "unit": "2",
-                      "display_name": "vertical distance",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": [1,21]
-                    }
+                  ],
+                  "horizontal_distance": {
+                    "row_one": [
+                      {
+                        "unit": "cm",
+                        "display_name": "1",
+                        "baseline": -1.45,
+                        "measured": -1.5,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "2",
+                        "baseline": 0,
+                        "measured": 0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "3",
+                        "baseline": 1.47,
+                        "measured": 1.5,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "4",
+                        "baseline": "",
+                        "measured": "",
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "5",
+                        "baseline": "",
+                        "measured": "",
+                        "tolerance": "",
+                      }
+                    ],
+                    "row_two": [
+                      {
+                        "unit": "cm",
+                        "display_name": "1",
+                        "baseline": -4,
+                        "measured": -3.9,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "2",
+                        "baseline": -2.0,
+                        "measured": -2.0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "3",
+                        "baseline": 0,
+                        "measured": 0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "4",
+                        "baseline": 2.1,
+                        "measured": 2.0,
+                        "tolerance": "",
+                      }, {
+                        "unit": "cm",
+                        "display_name": "5",
+                        "baseline": 4.1,
+                        "measured": 4.0,
+                        "tolerance": "",
+                      }
+                    ],
                   },
-                  "axial_resolution": [{
-                    "unit": "3",
-                    "display_name": "axial resolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": [1,2]
-                  }],
-                  "lateral_resolution": [{
-                    "unit": "",
-                    "display_name": "lateralresolution",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": []
-                  }],
-                  "elevational_resolution": [{
-                    "unit": "",
-                    "display_name": "",
-                    "baseline": 12345,
-                    "measured": 21212,
-                    "tolerance": []
-                    }],
-                    "contrast_resolution": [{
-                      "unit": "",
-                      "display_name": "",
-                      "baseline": 12345,
-                      "measured": 21212,
-                      "tolerance": []
-                  }]
+                  "axial_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": 0.15,
+                      "measured": 0.17,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": 0.13,
+                      "measured": 0.14,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0.13,
+                      "measured": 0.13,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 0.12,
+                      "measured": 0.11,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 0.11,
+                      "measured": 0.11,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 0.11,
+                      "measured": 0.10,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 0.10,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 0.09,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 0.09,
+                      "measured": 0.10,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 0.08,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }
+                  ],
+                  "lateral_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "2",
+                      "baseline": 0.07,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "4",
+                      "baseline": 0.07,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "6",
+                      "baseline": 0.06,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "8",
+                      "baseline": 0.08,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "10",
+                      "baseline": 0.07,
+                      "measured": 0.09,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "12",
+                      "baseline": 0.08,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "14",
+                      "baseline": 0.07,
+                      "measured": 0.08,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "16",
+                      "baseline": 0.07,
+                      "measured": 0.07,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "18",
+                      "baseline": 0.06,
+                      "measured": 0.06,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "20",
+                      "baseline": 0.06,
+                      "measured": 0.06,
+                      "tolerance": "",
+                    }
+                  ],
+                  "elevational_resolution": [
+                    {
+                      "unit": "cm",
+                      "display_name": "1",
+                      "baseline": 0.25,
+                      "measured": 0.27,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "3",
+                      "baseline": 0.23,
+                      "measured": 0.24,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "5",
+                      "baseline": 0.23,
+                      "measured": 0.23,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "7",
+                      "baseline": 0.22,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "9",
+                      "baseline": 0.21,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "11",
+                      "baseline": 0.21,
+                      "measured": 0.21,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "13",
+                      "baseline": 0.20,
+                      "measured": 0.19,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "15",
+                      "baseline": 0.19,
+                      "measured": 0.19,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "17",
+                      "baseline": 0.19,
+                      "measured": 0.20,
+                      "tolerance": "",
+                    }, {
+                      "unit": "cm",
+                      "display_name": "19",
+                      "baseline": 0.18,
+                      "measured": 0.18,
+                      "tolerance": "",
+                    }
+                  ],
+
+                  "contrast_resolution": [],
                 }
-              }]
+              }
             }
           }]
       }

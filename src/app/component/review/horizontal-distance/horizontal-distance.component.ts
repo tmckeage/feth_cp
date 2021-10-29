@@ -10,20 +10,36 @@ export class HorizontalDistanceComponent implements OnInit {
   transducer: any;
   datalist: any[] = [];
   measurementList: any;
-  horizontal_distance: any;
+  horizontal_distance:any[][] = [[],[]];
   date : any;
+  unitName: any;
+  horizontal_R_One: any;
+  horizontal_R_Two: any;
   constructor(private equipment: EquipmentService) { }
 
   ngOnInit(): void {
     this.datalist =  this.equipment.getScanner();
-    this.datalist.forEach((res:any)=>{
-      this.transducer = res.transducers;
-      this.transducer.forEach((data:any)=>{
-        this.date = data.last_study.date_performed;
-        this.measurementList = data.last_study.data;
-          this.measurementList.forEach((item:any)=>{
-            this.horizontal_distance = item.imaging.horizontal_distance;
+    this.datalist.forEach((res: any) => {
+      this.date = res.last_study.date_performed;
+      let data = res.transducers;
+      data.forEach((item: any) => {
+        this.transducer = item.last_study.data;
+        let imgList: any = [];
+        imgList = item.last_study.data.imaging;
+        let items: any = [];
+        Object.entries(imgList).forEach(([k, v]) => {
+          items.push({
+            name: k,
+            value:v
           });
+          items.forEach((data:any) => {
+            if (data.name == 'horizontal_distance') { 
+              let result = data.value;
+               this.horizontal_distance =  Object.values(result);
+                console.log(this.horizontal_distance);
+            }
+         });
+        });
       });
     });
   }

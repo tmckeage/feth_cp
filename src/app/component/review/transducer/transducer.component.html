@@ -7,27 +7,29 @@
         <div class="card-body">
             <div class="row">
                 <h4 class="h6 text-center fw-bold"> Visual Inspection</h4>
-                <div class="row" *ngFor="let val of visualList">
-                    <div class="col-md-5">{{val.type}}</div>
+                <div class="row" *ngFor="let physical of dataList.physical">
+                    <div class="col-md-5">{{physical.display_name | titlecase}}</div>
                     <div class="col-md-3">Pass</div>
                     <div class="col-md-4">
-                        <i class="fa fa-camera me-2" aria-hidden="true" (click)="onImg(isImgView,val.type)"></i>
-                        <i class="fa fa-edit" aria-hidden="true" (click)="onNotes(isImgView,val.type)"></i>
+                        <i class="fa fa-camera me-2" aria-hidden="true" (click)="onImg(isImgView,physical.type)"></i>
+                        <i class="fa fa-edit" aria-hidden="true" (click)="onNotes(isImgView,physical.type)"></i>
                     </div>
                 </div>
+                </div>
+                <div class="row">
                 <h4 class="h6 text-center mt-2 fw-bold">Image Analysis</h4>
                 <div class="col-md-5"></div>
                 <div class="row">
                     <div class="col-md-6"></div>
-                    <div class="col-md-2 fw-bold">Baseline</div>
-                    <div class="col-md-2 fw-bold">Measurement</div>
-                    <div class="col-md-2 fw-bold">Decision</div>
+                    <div class="col-md-2 fw-bold center">Baseline</div>
+                    <div class="col-md-2 fw-bold center">Measurement</div>
+                    <div class="col-md-2 fw-bold center">Decision</div>
                 </div>
-                <div class="row ml-4" *ngFor="let res of imgData">
-                    <div class="col-md-6">{{res.type}}</div>
-                    <div class="col-md-2 float-center">{{res.baseline}}</div>
-                    <div class="col-md-2 float-center">{{res.measurement}}</div>
-                    <div class="col-md-2 float-center"> <a (click)="onDistance(res.type)">{{res.decision}}</a></div>
+                <div class="row ml-4" *ngFor ="let res of visualList">
+                    <div class="col-md-6" >{{res.type | titlecase}}</div>
+                    <div class="col-md-2 center">{{res.baseline}}</div>  
+                    <div class="col-md-2 center">{{res.measurement}}</div>
+                 <div class="col-md-2 center" (click)="onDistance(res.type)"><a class="link link-default">{{res.decision}}</a></div>
                 </div>
             </div>
         </div>
