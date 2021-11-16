@@ -21,7 +21,9 @@ import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Fontawesome
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// toster masange
+import { ToastrModule } from 'ngx-toastr';
 
 // Angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
@@ -66,7 +68,13 @@ import { UniformityComponent } from './component/review/uniformity/uniformity.co
     AmplifyAngularModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    Ng2SearchPipeModule
+    Ng2SearchPipeModule,
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot({
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    })
   ],
   providers: [
     AmplifyService,

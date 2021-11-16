@@ -14,7 +14,7 @@
             <div class="col-sm-2 col-md-2 col-lg-2 ">
                 <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let item of facilityName" value="{{item}}">{{item}}</option>
+                    <option *ngFor="let scanner of scanners" value="{{scanner.Facility}}">{{scanner.Facility}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -23,7 +23,7 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let item of roomName" value="{{item}}">{{item}}</option>
+                    <option *ngFor="let scanner of scanners" value="{{scanner.Room}}">{{scanner.Room}}</option>
                 </select>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 float-start" id="due-date">
@@ -39,12 +39,12 @@
             </div>
         </div>
         <!-- scanner list -->
-        <div *ngFor="let scanner of scanners" class="scanner-holder mt-4">
+        <div *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
             <div class="row">
-                <div class="col-md-3 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.name}}</div>
-                <div class="col-md-3">{{scanner.cirs}}</div>
-                <div class="col-md-3">{{scanner.rm}}</div>
-                <div class="col-md-3">{{scanner.due}}</div>
+                <div class="col-md-6 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.Make}} {{scanner.Model}} : {{scanner.Serial_Number}}</div>
+                <div class="col-md-2">{{scanner.Facility}}</div>
+                <div class="col-md-2">{{scanner.Room}}</div>
+                <div class="col-md-2">{{scanner.Next_Study_Due.Date | date :'M/d/yy'}}</div>
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-
+ 
 <!-- Add / Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
@@ -69,8 +69,8 @@
                         <mat-label>Make :</mat-label>
                         <input type="text" matInput formControlName="make" required [matAutocomplete]="make"> 
                         <mat-autocomplete #make="matAutocomplete">
-                            <mat-option *ngFor="let make of filteredMake | async" [value]="make">
-                                {{make}}
+                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Make">
+                                {{scanner.Make}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="scannerFormGroup.controls.make.errors?.required">
@@ -83,8 +83,8 @@
                         <mat-label>Facility :</mat-label>
                         <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
                         <mat-autocomplete #facility="matAutocomplete" >
-                            <mat-option *ngFor="let facility of filteredFacility | async" [value]="facility">
-                                {{facility}}
+                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Facility">
+                                {{scanner.Facility}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -96,8 +96,8 @@
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
                         <mat-autocomplete #model="matAutocomplete" >
-                            <mat-option *ngFor="let model of filteredModel | async" [value]="model">
-                                {{model}}
+                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Model">
+                                {{scanner.Model}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="scannerFormGroup.controls.model.errors?.required">
@@ -110,8 +110,8 @@
                         <mat-label>Room :</mat-label>
                         <input type="text" matInput formControlName="room" [matAutocomplete]="room">
                         <mat-autocomplete #room="matAutocomplete" >
-                            <mat-option *ngFor="let room of filteredRoom | async" [value]="room">
-                                {{room}}
+                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Room">
+                                {{scanner.Room}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -131,7 +131,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid">Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid" (click)="onSubmitScanner()">Save</button>
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
@@ -150,8 +150,8 @@
                         <mat-label>Make :</mat-label>
                         <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup)="onKey($event,makeTransducer)">
                         <mat-autocomplete #makeTransducer="matAutocomplete">
-                            <mat-option *ngFor="let makeTransducer of filteredMakeTransducer | async" [value]="makeTransducer"  (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
-                                {{makeTransducer}}
+                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.Make}}" (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
+                                {{scanner.Make}} 
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="transducerFormGroup.controls.makeTransducer.errors?.required">
@@ -177,8 +177,8 @@
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup)="onKey($event, modelTransducer)">
                         <mat-autocomplete #modelTransducer="matAutocomplete" >
-                            <mat-option *ngFor="let modelTransducer of filteredModelTransducer | async" [value]="modelTransducer" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
-                                {{modelTransducer}}
+                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.Model}}" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
+                                {{scanner.Model}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="transducerFormGroup.controls.modelTransducer.errors?.required">
@@ -272,31 +272,32 @@
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.make}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.Make}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
-                <label class="col-form-label-sm me-2 center ">{{viewData.cirs}}</label>
+                <label class="col-form-label-sm me-2 center ">{{viewData.Facility}}</label>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.make}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.Model}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
-                <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
+                <label class="col-form-label-sm text-center">{{viewData.Room}}</label>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.sn}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.Serial_Number}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
+
                 <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                <label class="col-form-label-sm text-center">{{viewData.rm}}</label>
+                <label class="col-form-label-sm text-center">{{viewData.Barcode}}</label>
             </div>
         </div>
     </div>

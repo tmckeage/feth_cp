@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +11,8 @@ export class EquipmentService {
   facilityTransducer: any[] = [];
   roomTransducer: any[] = [];
   typeTransducer: any[] = [];
-
-
-  constructor() {
+  
+  constructor(private http: HttpClient) {
     this.facilityTransducer = ['CIRS', 'Fathom'];
     this.roomTransducer = ['RM1', 'RM2', 'RM3'];
     this.typeTransducer = ['Monthly', 'Quarterly', 'Annual', 'Acceptance']
@@ -1579,5 +1581,14 @@ export class EquipmentService {
     ];
     return scanner1;
   }
+  
+  create(data: any): Observable<any> {
+    return this.http.post(environment.api_url +'/scanner', data);
+  }
+  
+  getAllScanner(): Observable<any> {
+    return this.http.get(environment.api_url +'/scanner');
+  }
+  
 }
 
