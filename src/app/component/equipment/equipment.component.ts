@@ -162,13 +162,20 @@ export class EquipmentComponent implements OnInit {
 		this.equipmentService.getAllScanner()
 			.subscribe(
 				response => {
+					// response.Scanners.filter((res: any) => {
+					// 	if (res.Make) {
+					// 		this.scanners = res;
+					// 		this.scannersObject.push(res);	 
+					// 	}	
+					// });
 					this.scanners = response.Scanners.sort();
-					this.scannersObject = response.Scanners.sort();
+					this.scannersObject = response.Scanners;
 				},
 				error => {
 					console.log(error);
 				});
 	}
+
 	// equipment filter
 	equipmentFilter() {
 		let scannerList = this.scanners;
@@ -190,7 +197,8 @@ export class EquipmentComponent implements OnInit {
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
 			console.log(this.startDate);
 			scannerList = scannerList.filter((item: any) => {
-				return item.Next_Study_Due.Date >= this.startDate;
+			let start:any =  this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				return start >= this.startDate;
 			});
 		}
 		if (this.dueDate.value.end != null) {
@@ -198,7 +206,8 @@ export class EquipmentComponent implements OnInit {
 			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
 			console.log(this.endDate);
 			scannerList = scannerList.filter((item: any) => {
-				return item.due <= this.endDate;
+			let due:any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				return due <= this.endDate;
 			});
 		}
 		this.scannersObject = scannerList;
@@ -259,7 +268,7 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	// scanner api 
+	//add scanner api 
 	onSubmitScanner() {
 		let data = this.scannerFormGroup.value;
 		let obj = {"Scanner":{...data}};
@@ -267,7 +276,7 @@ export class EquipmentComponent implements OnInit {
 		.subscribe(
 		  response => {
 			console.log(response); 
-			this.toastr.success('Scanner Save successfully', '');
+			this.toastr.success('Scanner saved successfully', '');
 			this.modalService.dismissAll();
 		  },
 		  error => {
