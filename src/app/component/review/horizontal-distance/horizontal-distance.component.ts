@@ -10,7 +10,7 @@ export class HorizontalDistanceComponent implements OnInit {
   transducer: any;
   datalist: any[] = [];
   measurementList: any;
-  horizontal_distance: any[] = [];
+  horizontal_distance: any;
   date: any;
   unitName: any;
   horizontal_R_One: any;
@@ -28,17 +28,16 @@ export class HorizontalDistanceComponent implements OnInit {
         imgList = item.last_study.data.imaging;
         let items: any = [];
         Object.entries(imgList).forEach(([k, v]) => {
-          items.push({
+          items.push({ 
             name: k,
             value: v
           });
           items.forEach((data: any) => {
             if (data.name == 'horizontal_distance') {
-              this.horizontal_distance = Object.values(data.value);
-              // let result = data.value.row_one;
-              //   result.forEach((res: any) => {
-           
-              // });
+              this.measurementList = Object.values(data.value);
+              this.measurementList.forEach((res:any) => {
+                this.horizontal_distance = Object.values(res);
+              });
             }
           });
         });

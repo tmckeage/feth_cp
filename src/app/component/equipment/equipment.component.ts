@@ -19,6 +19,7 @@ export class EquipmentComponent implements OnInit {
 	closeResult = '';
 	scanners: any;
 	scannersObject: any;
+	transducerList: any;
 	addModalTitle: any = '';
 	transducerModalTitle: any = '';
 	viewData: any;
@@ -154,6 +155,7 @@ export class EquipmentComponent implements OnInit {
 		this.roomName = this.equipmentService.roomTransducer;
 		this.facilityName = this.equipmentService.facilityTransducer;
 		this.getScanner();
+		this.getAllTransducer();
 	}
 
 	// get scanner list
@@ -162,14 +164,20 @@ export class EquipmentComponent implements OnInit {
 		this.equipmentService.getAllScanner()
 			.subscribe(
 				response => {
-					// response.Scanners.filter((res: any) => {
-					// 	if (res.Make) {
-					// 		this.scanners = res;
-					// 		this.scannersObject.push(res);	 
-					// 	}	
-					// });
-					this.scanners = response.Scanners.sort();
-					this.scannersObject = response.Scanners;
+					this.scanners = response.Scanners;
+					this.scannersObject =  Object.values(response.Scanners);
+				},
+				error => {
+					console.log(error);
+				});
+	}
+
+	// get transducer
+	getAllTransducer() {
+		this.equipmentService.getAllTransducer()
+			.subscribe(
+				response => {
+					this.transducerList = response.transducers;
 				},
 				error => {
 					console.log(error);
@@ -197,7 +205,7 @@ export class EquipmentComponent implements OnInit {
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
 			console.log(this.startDate);
 			scannerList = scannerList.filter((item: any) => {
-			let start:any =  this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				let start: any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
 				return start >= this.startDate;
 			});
 		}
@@ -206,12 +214,11 @@ export class EquipmentComponent implements OnInit {
 			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
 			console.log(this.endDate);
 			scannerList = scannerList.filter((item: any) => {
-			let due:any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				let due: any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
 				return due <= this.endDate;
 			});
 		}
 		this.scannersObject = scannerList;
-		console.log(scannerList);
 	}
 
 	// autocomplete button filter
@@ -268,20 +275,38 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	//add scanner api 
+	//save scanner 
 	onSubmitScanner() {
 		let data = this.scannerFormGroup.value;
-		let obj = {"Scanner":{...data}};
-		this.equipmentService.create(JSON.stringify(obj))
-		.subscribe(
-		  response => {
-			console.log(response); 
-			this.toastr.success('Scanner saved successfully', '');
-			this.modalService.dismissAll();
-		  },
-		  error => {
-			console.log(error);
-		  });
+		let obj = { "Scanner": { ...data } };
+		this.equipmentService.addScanner(JSON.stringify(obj))
+			.subscribe(
+				response => {
+					this.getScanner();
+					this.toastr.success('Scanner saved successfully', '');
+					this.modalService.dismissAll();
+				},
+				error => {
+					console.log(error);
+				});
+	}
+
+	// save tranducer 
+	onSubmitTranducer() {
+		let data = this.transducerFormGroup.value;
+		let obj = { "transducers": { ...data } };
+		console.log("tranducer list", data , obj);
+		this.equipmentService.addTranducer(JSON.stringify(obj))
+			.subscribe(
+				response => {
+					this.getAllTransducer();
+					this.toastr.success('Scanner saved successfully', '');
+					this.modalService.dismissAll();
+				},
+				error => {
+					console.log(error);
+			});
+
 	}
 
 	// on scanner click open view modal

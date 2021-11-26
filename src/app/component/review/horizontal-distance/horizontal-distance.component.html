@@ -17,30 +17,30 @@
                                 <tbody>
                                     <tr class="g-2 text-center">
                                         <td class="text-center w-50">Pin</td>
-                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance[0]">
+                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance">
                                             {{item.display_name}} <span *ngIf="item.display_name.length == 0">-</span></td>
                                     </tr>
                                     <tr class="gap-3">
                                         <td class="text-center">Row 1 Baseline</td>
-                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance[0]">
+                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance">
                                             {{item.baseline}}<span *ngIf="item.baseline.length == 0">-</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-center">Row 2 Baseline</td>
-                                        <td class="text-center me-2" *ngFor="let list of horizontal_distance[1]">
+                                        <td class="text-center me-2" *ngFor="let list of horizontal_distance">
                                             {{list.baseline}}<span *ngIf="list.baseline.length == 0">-</span>
                                         </td>
                                     </tr>
                                     <tr class="gap-3">
                                         <td class="text-center">Row 1 measured</td>
-                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance[0]">
+                                        <td class="text-center me-2" *ngFor="let item of horizontal_distance">
                                             {{item.measured}}<span *ngIf="item.measured.length == 0">-</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-center">Row 2 measured</td>
-                                        <td class="text-center me-2" *ngFor="let list of horizontal_distance[1]">
+                                        <td class="text-center me-2" *ngFor="let list of horizontal_distance">
                                             {{list.measured}}<span *ngIf="list.measured.length == 0">-</span>
                                         </td>
                                     </tr>

@@ -48,13 +48,12 @@
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
-                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducer"><a src="#" (click)="onTransducerDetail(transducer,scanner,transducerView)">{{transducer.scan}}</a></li>
+                    <li class="cursorPointer" *ngFor="let transducer of transducerList"><a src="#" (click)="onTransducerDetail(transducer,scanner,transducerView)">{{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}</a></li>
                 </ul>
             </div>
         </div>
     </div>
 
- 
 <!-- Add / Edit Scanner modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
@@ -70,7 +69,7 @@
                         <input type="text" matInput formControlName="make" required [matAutocomplete]="make"> 
                         <mat-autocomplete #make="matAutocomplete">
                             <mat-option *ngFor="let scanner of scanners" [value]="scanner.Make">
-                                {{scanner.Make}}
+                                {{scanner.make}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="scannerFormGroup.controls.make.errors?.required">
@@ -84,7 +83,7 @@
                         <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
                         <mat-autocomplete #facility="matAutocomplete" >
                             <mat-option *ngFor="let scanner of scanners" [value]="scanner.Facility">
-                                {{scanner.Facility}}
+                                {{scanner.facility}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -96,8 +95,8 @@
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
                         <mat-autocomplete #model="matAutocomplete" >
-                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Model">
-                                {{scanner.Model}}
+                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.model">
+                                {{scanner.model}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="scannerFormGroup.controls.model.errors?.required">
@@ -111,7 +110,7 @@
                         <input type="text" matInput formControlName="room" [matAutocomplete]="room">
                         <mat-autocomplete #room="matAutocomplete" >
                             <mat-option *ngFor="let scanner of scanners" [value]="scanner.Room">
-                                {{scanner.Room}}
+                                {{scanner.room}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
@@ -135,7 +134,6 @@
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
-
 <!-- Add/ Edit transducer modal -->
 <ng-template #transducerModal let-modal>
     <div class="modal-header">
@@ -143,15 +141,15 @@
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body">
-        <form class="form" id="form" [formGroup]="transducerFormGroup">
+        <form class="form" id="form" [formGroup]="transducerFormGroup" >
             <div class="row">
                 <div class="col-lg-6">
                     <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Make :</mat-label>
                         <input type="text" matInput formControlName="makeTransducer" required [matAutocomplete]="makeTransducer"  (keyup)="onKey($event,makeTransducer)">
                         <mat-autocomplete #makeTransducer="matAutocomplete">
-                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.Make}}" (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
-                                {{scanner.Make}} 
+                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.make}}" (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
+                                {{scanner.make}} 
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="transducerFormGroup.controls.makeTransducer.errors?.required">
@@ -177,8 +175,8 @@
                         <mat-label>Model :</mat-label>
                         <input type="text" matInput formControlName="modelTransducer" required [matAutocomplete]="modelTransducer" (keyup)="onKey($event, modelTransducer)">
                         <mat-autocomplete #modelTransducer="matAutocomplete" >
-                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.Model}}" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
-                                {{scanner.Model}}
+                            <mat-option *ngFor="let scanner of scanners" value="{{scanner.model}}" (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
+                                {{scanner.model}}
                             </mat-option>
                         </mat-autocomplete>
                         <mat-error *ngIf="transducerFormGroup.controls.modelTransducer.errors?.required">
@@ -258,7 +256,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         <button type="button" class="btn btn-secondary btn-sm" (click)="onReportsError(reportsError)" *ngIf="isModel">Reports Analysis Window Errors </button>
-        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid">Save</button>
+        <button type="button" class="btn btn-secondary btn-sm" [disabled]="!transducerFormGroup.valid" (click)="onSubmitTranducer()">Save</button>
     </div>
 </ng-template>
 
