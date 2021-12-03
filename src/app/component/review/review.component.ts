@@ -32,6 +32,7 @@ export class ReviewComponent implements OnInit {
 	scannerAcceptance: any;
 	noteValue: any;
 	titleName: any;
+	scannersObject:any;
 
 
 	constructor(private modalService: NgbModal, private router: Router, private equipmentService: EquipmentService) { }
@@ -47,7 +48,20 @@ export class ReviewComponent implements OnInit {
 		this.roomName = this.equipmentService.roomTransducer;
 		this.facilityName = this.equipmentService.facilityTransducer;
 		this.typeName = this.equipmentService.typeTransducer;
+		this.getScanner();
+	}
 
+	// get scanner list
+	getScanner() {
+		// get scannerList
+		this.equipmentService.getAllScanner()
+			.subscribe(
+				response => {
+					this.scannersObject = Object.values(response.scanners);
+				}, 
+				error => {
+					console.log(error);
+				});
 	}
 
 	// equipment filter

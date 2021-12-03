@@ -14,7 +14,7 @@
             <div class="col-sm-2 col-md-2 col-lg-2 ">
                 <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let scanner of scanners" value="{{scanner.Facility}}">{{scanner.Facility}}</option>
+                    <option *ngFor="let scanner of scannersObject" value="{{scanner.facility}}">{{scanner.facility}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -23,7 +23,7 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let scanner of scanners" value="{{scanner.Room}}">{{scanner.Room}}</option>
+                    <option *ngFor="let scanner of scannersObject" value="{{scanner.room}}">{{scanner.room}}</option>
                 </select>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 float-start" id="due-date">
@@ -41,10 +41,10 @@
         <!-- scanner list -->
         <div *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
             <div class="row">
-                <div class="col-md-6 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.Make}} {{scanner.Model}} : {{scanner.Serial_Number}}</div>
-                <div class="col-md-2">{{scanner.Facility}}</div>
-                <div class="col-md-2">{{scanner.Room}}</div>
-                <div class="col-md-2">{{scanner.Next_Study_Due.Date | date :'M/d/yy'}}</div>
+                <div class="col-md-6 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.make}} {{scanner.model}} : {{scanner.serial_Number}}</div>
+                <div class="col-md-2">{{scanner.facility}}</div>
+                <div class="col-md-2">{{scanner.room}}</div>
+                <div class="col-md-2">{{scanner.next_Study_Due.type}}</div>
             </div>
             <div class="row d-inline">
                 <ul class="ms-5">
@@ -68,7 +68,7 @@
                         <mat-label>Make :</mat-label>
                         <input type="text" matInput formControlName="make" required [matAutocomplete]="make"> 
                         <mat-autocomplete #make="matAutocomplete">
-                            <mat-option *ngFor="let scanner of scanners" [value]="scanner.Make">
+                            <mat-option *ngFor="let scanner of scannersObject" [value]="scanner.make">
                                 {{scanner.make}}
                             </mat-option>
                         </mat-autocomplete>
@@ -270,32 +270,32 @@
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.Make}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.make}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
-                <label class="col-form-label-sm me-2 center ">{{viewData.Facility}}</label>
+                <label class="col-form-label-sm me-2 center ">{{viewData.facility}}</label>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.Model}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.model}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
-                <label class="col-form-label-sm text-center">{{viewData.Room}}</label>
+                <label class="col-form-label-sm text-center">{{viewData.room}}</label>
             </div>
         </div>
         <div class="row mb-2">
             <div class="col-6 form-group input-group-sm">
                 <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
-                <label class="col-form-label-sm me-2">{{viewData.Serial_Number}}</label>
+                <label class="col-form-label-sm me-2">{{viewData.serial_number}}</label>
             </div>
             <div class="col-6 form-group input-group-sm">
 
                 <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                <label class="col-form-label-sm text-center">{{viewData.Barcode}}</label>
+                <label class="col-form-label-sm text-center">{{viewData.barcode}}</label>
             </div>
         </div>
     </div>
@@ -356,11 +356,11 @@
             <div class="row mb-2">
                 <div class="col-6 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
-                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.sn}}</label>
+                    <label class="col-form-label-sm me-2 center ">{{viewTransducer.serial_number}}</label>
                 </div>
                 <div class="col-6 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <label class="col-form-label-sm text-center">Barcode</label>
+                    <label class="col-form-label-sm text-center">{{viewTransducer.barcode}}</label>
                 </div>
             </div>
             <div class="row g-2" id="tab" >

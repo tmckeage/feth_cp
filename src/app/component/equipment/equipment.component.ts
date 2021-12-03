@@ -164,8 +164,8 @@ export class EquipmentComponent implements OnInit {
 		this.equipmentService.getAllScanner()
 			.subscribe(
 				response => {
-					this.scanners = response.Scanners;
-					this.scannersObject =  Object.values(response.Scanners);
+					this.scanners =  Object.values(response.scanners);
+					this.scannersObject =  Object.values(response.scanners);
 				},
 				error => {
 					console.log(error);
@@ -190,13 +190,13 @@ export class EquipmentComponent implements OnInit {
 		// facility filter
 		if (this.selectedFacility != 0) {
 			scannerList = scannerList.filter((item: any) => {
-				return item.Facility == this.selectedFacility;
+				return item.facility == this.selectedFacility;
 			});
 		}
 		// room filter
 		if (this.selectedRoom != 0) {
 			scannerList = scannerList.filter((item: any) => {
-				return item.Room == this.selectedRoom;
+				return item.room == this.selectedRoom;
 			});
 		}
 		// due date filter
@@ -205,7 +205,7 @@ export class EquipmentComponent implements OnInit {
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
 			console.log(this.startDate);
 			scannerList = scannerList.filter((item: any) => {
-				let start: any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				let start: any = this.datePipe.transform(item.next_Study_Due.date, 'MM/dd/yy');
 				return start >= this.startDate;
 			});
 		}
@@ -214,7 +214,7 @@ export class EquipmentComponent implements OnInit {
 			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
 			console.log(this.endDate);
 			scannerList = scannerList.filter((item: any) => {
-				let due: any = this.datePipe.transform(item.Next_Study_Due.Date, 'MM/dd/yy');
+				let due: any = this.datePipe.transform(item.next_Study_Due.date, 'MM/dd/yy');
 				return due <= this.endDate;
 			});
 		}
@@ -278,7 +278,7 @@ export class EquipmentComponent implements OnInit {
 	//save scanner 
 	onSubmitScanner() {
 		let data = this.scannerFormGroup.value;
-		let obj = { "Scanner": { ...data } };
+		let obj = { "scanner": { ...data } };
 		this.equipmentService.addScanner(JSON.stringify(obj))
 			.subscribe(
 				response => {
@@ -319,11 +319,7 @@ export class EquipmentComponent implements OnInit {
 
 	// view transducer modal
 	onTransducerDetail(equipment: any, scanner: any, transducerView: any) {
-		const [name, snNo] = scanner.name.split(':');
 		this.viewTransducer = equipment;
-		this.viewTransducer.make = name;
-		this.viewTransducer.sn = snNo;
-		this.viewTransducer.model = name;
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -333,11 +329,11 @@ export class EquipmentComponent implements OnInit {
 	// Edit scanner modal
 	onScannerEdit(viewData: any, content: any) {
 		this.addModalTitle = 'Edit Scanner';
-		this.setMake(viewData.Make);
-		this.setModel(viewData.Model);
-		this.setFacility(viewData.Facility);
-		this.setRoom(viewData.Room);
-		this.setSN(viewData.Serial_Number);
+		this.setMake(viewData.make);
+		this.setModel(viewData.model);
+		this.setFacility(viewData.facility);
+		this.setRoom(viewData.room);
+		this.setSN(viewData.serial_Number);
 		this.modalService.dismissAll();
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -388,7 +384,7 @@ export class EquipmentComponent implements OnInit {
 		this.transducerModalTitle = 'Edit Transducer';
 		this.setMakeTransducer(viewTransducer.make);
 		this.setModelTransducer(viewTransducer.model);
-		this.setSNTransducer(viewTransducer.sn);
+		this.setSNTransducer(viewTransducer.serial_number);
 		this.setScannerTransducer(viewTransducer.scan);
 		this.setImageTransducer(viewTransducer.scan1);
 		this.isModel = true;

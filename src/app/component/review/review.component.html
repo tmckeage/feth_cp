@@ -7,7 +7,8 @@
             <div class="col-sm-2 col-md-2 col-lg-2 ">
                 <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let item of facilityName" value="{{item}}">{{item}}</option>
+                    <option *ngFor="let scanner of scannersObject" value="{{scanner.facility}}">{{scanner.facility}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -16,7 +17,7 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let item of roomName" value="{{item}}">{{item}}</option>
+                    <option *ngFor="let scanner of scannersObject" value="{{scanner.room}}">{{scanner.room}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -25,7 +26,8 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm" [(ngModel)]="selectedType" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let type of typeName" value="{{type}}">{{type}}</option>
+                    <option *ngFor="let scanner of scannersObject" value="{{scanner.next_Study_Due.type}}">
+                        {{scanner.next_Study_Due.type}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -40,22 +42,25 @@
             </div>
         </div>
         <!-- scanner list -->
-        <div *ngFor="let scanner of scanners " class="scanner-holder mt-4">
+        <div *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
             <div class="row">
-                <div class="col-md-3 cursorPointer" (click)="scannerDetail(scanner, scannerView)">{{scanner.make}}</div>
+                <div class="col-md-5 cursorPointer" (click)="scannerDetail(scanner,scannerView)">{{scanner.make}}
+                    {{scanner.model}} : {{scanner.serial_Number}}</div>
                 <div class="col-md-2">{{scanner.facility}}</div>
                 <div class="col-md-2">{{scanner.room}}</div>
-                <div class="col-md-3"><span *ngIf="scanner.last_study.finalized == true">Complete
-                        (</span>{{scanner.last_study.type}}<span *ngIf="scanner.last_study.finalized == true">)</span>
+                <div class="col-md-2">{{scanner.next_Study_Due.type}}</div>
+                <div class="col-md-2"><span *ngIf="scanner.last_study.finalized == true">Complete
+                        (</span>{{scanner.next_Study_Due.type}}<span
+                        *ngIf="scanner.last_study.finalized == true">)</span>
                 </div>
-            </div>
+            </div> 
             <div class="row d-inline">
-                <div class="row ms-4" *ngFor="let transducer of scanner.transducers">
+                <div class="row ms-4" *ngFor="let transducer of scanners.transducers">
                     <div class="col-md-7" (click)="onTransducerDetail(transducer)">{{transducer.make}}</div>
                     <div class="col-md-3"><span *ngIf="scanner.last_study.finalized == true">Complete
                             (</span>{{transducer.last_study.type}}<span
                             *ngIf="scanner.last_study.finalized == true">)</span></div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
@@ -167,4 +172,3 @@
         <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
-
