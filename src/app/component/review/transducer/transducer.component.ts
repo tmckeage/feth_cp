@@ -22,10 +22,10 @@ export class TransducerComponent implements OnInit {
 
   ngOnInit(): void {
     	// check login session
-    	this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
-		if (!this.fathomUserDetails.username) {
-			this.router.navigate(['']);
-		}
+    // 	this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
+		// if (!this.fathomUserDetails.username) {
+		// 	this.router.navigate(['']);
+		// }
     this.visualList = [
       {type:"Cables"},
       {type:'Cracks/Discoloration'},

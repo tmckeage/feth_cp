@@ -28,3 +28,14 @@
 #due-date .mat-form-field {
     width: 60%;
 }
+
+.drop-button {
+width: 110%;
+}
+
+.spinner {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+  }

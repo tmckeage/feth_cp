@@ -1586,16 +1586,20 @@ export class EquipmentService {
     return this.http.post(environment.api_url +'/scanner', data);
   }
   
-  getAllScanner(): Observable<any> {
+  getScanners(): Observable<any> {
     return this.http.get(environment.api_url +'/scanner');
   }
 
   getAllTransducer(): Observable<any> {
     return this.http.get(environment.api_url +'/transducer');
-  }
+  } 
 
   addTranducer(data: any): Observable<any> {
     return this.http.post(environment.api_url +'/transducer', data);
+  }
+
+  getAllScanner(): Observable<any> {
+    return this.http.get(environment.api_Url);
   }
   
 }

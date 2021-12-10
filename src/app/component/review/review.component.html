@@ -5,9 +5,9 @@
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm" [(ngModel)]="selectedFacility" (change)="equipmentFilter()">
+                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility" (change)="equipmentFilter();onRoomList()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let scanner of scannersObject" value="{{scanner.facility}}">{{scanner.facility}}
+                    <option *ngFor="let facility of facilityList" value="{{facility}}">{{facility}}
                     </option>
                 </select>
             </div>
@@ -15,9 +15,9 @@
                 <label for="room" class="col-form-label-sm fw-bold">Room:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm" [(ngModel)]="selectedRoom" (change)="equipmentFilter()">
+                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()"  [disabled]="!isRoom">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let scanner of scannersObject" value="{{scanner.room}}">{{scanner.room}}</option>
+                    <option *ngFor="let room of roomList" value="{{room}}">{{room}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -26,8 +26,8 @@
             <div class="col-sm-2 col-md-2 col-lg-2">
                 <select class="form-select btn-sm" [(ngModel)]="selectedType" (change)="equipmentFilter()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let scanner of scannersObject" value="{{scanner.next_Study_Due.type}}">
-                        {{scanner.next_Study_Due.type}}</option>
+                    <option *ngFor="let type of typeList" value="{{type}}">
+                        {{type}}</option>
                 </select>
             </div>
             <div class="col-sm-2 col-md-1 col-lg-1">
@@ -42,28 +42,29 @@
             </div>
         </div>
         <!-- scanner list -->
-        <div *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
+        <div *ngFor="let scanner of scanners" class="scanner-holder mt-4">
             <div class="row">
-                <div class="col-md-5 cursorPointer" (click)="scannerDetail(scanner,scannerView)">{{scanner.make}}
-                    {{scanner.model}} : {{scanner.serial_Number}}</div>
+                <div class="col-md-5 cursorPointer" (click)="scannerDetail(scanner,scannerView)">{{scanner.make}} {{scanner.model}} : {{scanner.serial_number}}</div>
                 <div class="col-md-2">{{scanner.facility}}</div>
                 <div class="col-md-2">{{scanner.room}}</div>
                 <div class="col-md-2">{{scanner.next_Study_Due.type}}</div>
-                <div class="col-md-2"><span *ngIf="scanner.last_study.finalized == true">Complete
+                <!-- <div class="col-md-2"><span *ngIf="scanner.last_study.finalized == true">Complete
                         (</span>{{scanner.next_Study_Due.type}}<span
                         *ngIf="scanner.last_study.finalized == true">)</span>
-                </div>
+                </div> -->
             </div> 
             <div class="row d-inline">
-                <div class="row ms-4" *ngFor="let transducer of scanners.transducers">
-                    <div class="col-md-7" (click)="onTransducerDetail(transducer)">{{transducer.make}}</div>
-                    <div class="col-md-3"><span *ngIf="scanner.last_study.finalized == true">Complete
-                            (</span>{{transducer.last_study.type}}<span
-                            *ngIf="scanner.last_study.finalized == true">)</span></div>
-                </div> 
+                <ul class="ms-5">
+                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducers"><a src="#" (click)="onTransducerDetail(transducer)">{{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}</a></li>
+                </ul>
             </div>
         </div>
-    </div>
+        <div class="row" *ngIf="loading">
+            <mat-spinner diameter="50" customSpinner color="#fff" *ngIf="loading">
+                loading ...
+            </mat-spinner>
+        </div>
+    </div> 
 </div>
 
 <!-- view scanner  details modal-->

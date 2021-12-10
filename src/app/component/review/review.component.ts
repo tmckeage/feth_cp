@@ -33,77 +33,106 @@ export class ReviewComponent implements OnInit {
 	noteValue: any;
 	titleName: any;
 	scannersObject:any;
-
+	transducerList: any;
+	viewTransducer: any;
+	facilityList: any[] = [];
+	roomList: any[] = [];
+	typeList:any[] = [];
+	isRoom: boolean = false;
+	loading:boolean = true;
 
 	constructor(private modalService: NgbModal, private router: Router, private equipmentService: EquipmentService) { }
 
 	ngOnInit(): void {
 		// check login session
-		this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
-		if (!this.fathomUserDetails.username) {
-			this.router.navigate(['']);
-		}
-		// show for dropDown list
-		this.scanners = this.equipmentService.getScanner();
-		this.roomName = this.equipmentService.roomTransducer;
-		this.facilityName = this.equipmentService.facilityTransducer;
-		this.typeName = this.equipmentService.typeTransducer;
-		this.getScanner();
+		// this.fathomUserDetails = sessionStorage.fathomUserDetails ? JSON.parse(sessionStorage.fathomUserDetails) : '';
+		// if (!this.fathomUserDetails.username) {
+		// 	this.router.navigate(['']);
+		// } 
+		this.getAllScanner();
 	}
-
-	// get scanner list
-	getScanner() {
-		// get scannerList
+     
+	// get scannerList  
+	getAllScanner() {
 		this.equipmentService.getAllScanner()
-			.subscribe(
-				response => {
-					this.scannersObject = Object.values(response.scanners);
-				}, 
-				error => {
-					console.log(error);
+		  .subscribe(
+			  response => {
+				  this.loading = false;
+				  this.scanners =  Object.values(response.scanners);
+				  this.scannersObject =  Object.values(response.scanners);
+				  this.scanners.forEach((res: any) => {
+					  // facility list
+					this.facilityList.push(res.facility);
+					let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
+					this.facilityList = Object.values(result);
+					// room list
+					this.roomList.push(res.room);
+					let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index); 
+					this.roomList = Object.values(room);
+					// type list
+					this.typeList.push(res.next_Study_Due.type);
+					let type = this.typeList.filter((val: any, index: any) => this.typeList.indexOf(val) == index); 
+					this.typeList = Object.values(type);
 				});
-	}
+			  },
+			  error => {
+				  console.log(error);
+			  });
+	  }
+
 
 	// equipment filter
 	equipmentFilter() {
-		let scannerList = this.equipmentService.getScanner();
+		let scannerList = this.scannersObject;
 		// facility filter
 		if (this.selectedFacility != 0) {
-			scannerList = scannerList.filter(item => {
+			this.isRoom = true;
+			scannerList = scannerList.filter((item:any) => {
 				return item.facility === this.selectedFacility;
 			});
 		}
 		// room filter
 		if (this.selectedRoom != 0) {
-			scannerList = scannerList.filter(item => {
-				return item.room === this.selectedRoom;
+			scannerList = scannerList.filter((item:any) => {
+				return item.room == this.selectedRoom && item.facility == this.selectedFacility;
 			});
 		}
 		// type filter
 		if (this.selectedType != 0) {
-			scannerList = scannerList.filter(item => {
+			scannerList = scannerList.filter((item:any) => {
 				return item.last_study.type == this.selectedType;
 			});
 		}
 		// s/n searching
 		if (this.selectedSn != "") {
-			scannerList = scannerList.filter(item => {
+			scannerList = scannerList.filter((item:any) => {
 				return item.serial_number == this.selectedSn;
 			});
 		}
-		this.scanners = scannerList;
+		   this.scanners = scannerList;
+	}
+
+	  // selected facility then show particular room list
+	  onRoomList() {
+		this.roomList = [];
+		if(this.selectedFacility == 0) {
+			this.isRoom = false;
+		}
+		this.scanners.forEach((item:any) => {
+		this.roomList.push(item.room);
+		let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
+		this.roomList = Object.values(room);	
+		});
 	}
 
 	// on scanner click open view modal
 	scannerDetail(scanner: any, scannerView: any) {
 		this.titleName = 'Scanner Acceptance Study';
-		this.viewData = scanner.make;
-		this.date = scanner.last_study.date_performed;
-		this.isFinalized = false;
-		if (scanner.last_study.finalized === true) {
-			this.isFinalized = true;
-		}
-		this.reviewList = scanner.last_study.data;
+		this.viewData = scanner;
+		this.isFinalized = false; 
+		// if (scanner.last_study.finalized === true) {
+		// 	this.isFinalized = true;
+		// }
 		this.modalService.open(scannerView, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
@@ -143,6 +172,7 @@ export class ReviewComponent implements OnInit {
 		this.router.navigate(['/review/transducer']);
 
 	}
+
 }
 
 

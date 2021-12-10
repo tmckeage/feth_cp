@@ -100,4 +100,12 @@ button i.fa-file{
   }
 }
 
+mat-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  stroke: white;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
 

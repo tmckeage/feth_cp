@@ -16,10 +16,10 @@ import { HorizontalDistanceComponent } from '../component/review/horizontal-dist
 import { UniformityComponent } from '../component/review/uniformity/uniformity.component';
 
 const routes: Routes = [
-    { path: '', component: LoginComponent },
+    { path: '', component: EquipmentComponent },
+    { path: 'equipment', component: EquipmentComponent },
     { path: 'login', component: LoginComponent },
     { path: 'analysis', component: AnalysisComponent },
-    { path: 'equipment', component: EquipmentComponent },
     { path: 'reports', component: ReportsComponent },
     { path: 'users', component: UsersComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
