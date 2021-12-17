@@ -1,19 +1,19 @@
 <div class="row justify-content-center mt-5">
     <div class="card mt-2 p-4 col-md-8">
         <div class="header hr">
-            <h5 class="col-form-label-sm fw-bold">Philips: M12345678 </h5>
-            <h5 class="col-form-label-sm me-2"> Date:{{date}}</h5>
+            <h5 class="col-form-label-md fw-bold"> {{scannerName}} Annual Survey</h5>
+            <h5 class="col-form-label-sm me-2"> Date:{{date | date: 'M/d/yyyy'}}</h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <h4 class="h6 text-center fw-bold"> Visual Inspection</h4>
                 <div class="row" *ngFor="let physical of dataList.physical">
-                    <div class="col-md-5">{{physical.display_name | titlecase}}</div>
-                    <div class="col-md-3">Pass</div>
-                    <div class="col-md-4">
-                        <i class="fa fa-camera me-2" aria-hidden="true" (click)="onImg(isImgView,physical.type)"></i>
-                        <i class="fa fa-edit" aria-hidden="true" (click)="onNotes(isImgView,physical.type)"></i>
-                    </div>
+                    <div class="col-md-5 col-lg-5 col-sm-5">{{physical.display_name | titlecase}}</div>
+                    <div class="col-md-3 col-lg-3 col-sm-3">Pass</div>
+                    <div class="col-md-4 col-lg-4 col-sm-4">
+                        <i class="fa fa-camera me-2" aria-hidden="true" (click)="onImg(isImgView,physical.type,date)"></i>
+                        <i class="fa fa-edit" aria-hidden="true" (click)="onNotes(isImgView,physical.type,date)"></i>
+                    </div> 
                 </div>
                 </div>
                 <div class="row">
@@ -21,15 +21,15 @@
                 <div class="col-md-5"></div>
                 <div class="row">
                     <div class="col-md-6"></div>
-                    <div class="col-md-2 fw-bold center">Baseline</div>
-                    <div class="col-md-2 fw-bold center">Measurement</div>
-                    <div class="col-md-2 fw-bold center">Decision</div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 fw-bold center">Baseline</div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 fw-bold center">Measurement</div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 fw-bold center">Decision</div>
                 </div>
                 <div class="row ml-4" *ngFor ="let res of visualList">
-                    <div class="col-md-6" >{{res.type | titlecase}}</div>
-                    <div class="col-md-2 center">{{res.baseline}}</div>  
-                    <div class="col-md-2 center">{{res.measurement}}</div>
-                 <div class="col-md-2 center" (click)="onDistance(res.type)"><a class="link link-default">{{res.decision}}</a></div>
+                    <div class="col-md-6 col-lg-6 col-sm-6" >{{res.type | titlecase}}</div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 center">{{res.baseline}}</div>  
+                    <div class="col-md-2 col-lg-2 col-sm-2 center">{{res.measurement}}</div>
+                 <div class="col-md-2 col-lg-2 col-sm-2 center" (click)="onDistance(res.type)"><a class="link link-default">{{res.decision}}</a></div>
                 </div>
             </div>
         </div>
@@ -43,22 +43,27 @@
 <!-- icon model -->
 <ng-template #isImgView let-modal>
     <div class="modal-header gap-3">
-        <h5 class="modal-title" id="modal-basic-title">Scanner Acceptance Study - {{viewType}}</h5>
+        <h5 class="modal-title" id="modal-basic-title">Transducer Visual Inspection - {{scannerName}}</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
-    <span class="col-form-label-sm me-2"> Date:{{date}}</span>
     <div class="modal-body mb-2">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="p-4 h-100 border"><img class="scanner-img"
-                        src="../../../assets/scanner.png"></div>
+        <span class="col-form-label-sm me-2"> Date: {{date | date: 'M/d/yyyy'}}</span>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="p-4 h-100 border" ng-class="{'my-disable':isSubStudyFlag}"><img class="scanner-img"
+                                src="../../../assets/scanner.png"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <textarea type="textarea" class="textarea w-100 h-100"></textarea>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <textarea type="textarea" class="textarea w-100 h-100"></textarea>
-            </div>
+         </div> 
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss('Cross click')">Done</button>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm">Done</button>
-    </div>
+    </div> 
 </ng-template>
+

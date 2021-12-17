@@ -180,9 +180,9 @@
                             <input type="text" matInput formControlName="scannerTransducer"
                                 [matAutocomplete]="scannerTransducer">
                             <mat-autocomplete #scannerTransducer="matAutocomplete">
-                                <mat-option *ngFor="let scannerTransducer of filteredScanner | async"
-                                    [value]="scannerTransducer">
-                                    {{scannerTransducer}}
+                                <mat-option *ngFor="let scanner of scannerLists"
+                                    [value]="scanner">
+                                    {{scanner}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -366,7 +366,7 @@
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Scanner: </label>&nbsp;
-                        <label class="col-form-label-sm me-2 center ">{{viewTransducer.scan}}</label>
+                        <label class="col-form-label-sm me-2 center ">{{viewTransducer.scanner}}</label>
                     </div>
                 </div>
                 <div class="row mb-2">

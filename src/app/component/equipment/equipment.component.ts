@@ -66,6 +66,7 @@ export class EquipmentComponent implements OnInit {
 	facilityList: any[] = [];
 	roomList: any[] = [];
 	loading:boolean = true;
+	scannerLists: any[]=[];
 
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
@@ -170,12 +171,17 @@ export class EquipmentComponent implements OnInit {
 					this.loading = false;
 					this.scanners = Object.values(response.scanners);
 					this.scanners.forEach((res: any) => {
+						// facility list
 						this.facilityList.push(res.facility);
 						let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
 						this.facilityList = Object.values(result);
+						// room list
 						this.roomList.push(res.room);
 						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
 						this.roomList = Object.values(room);
+						// scanner list 
+						this.scannerLists.push(res.make +""+ res.model +""+ res.serial_number);
+						 
 					});
 
 					this.scannersObject = Object.values(response.scanners);
@@ -308,9 +314,28 @@ export class EquipmentComponent implements OnInit {
 	// save tranducer 
 	onSubmitTranducer() {
 		let data = this.transducerFormGroup.value;
-		let obj = { "transducers": { ...data } };
-		console.log("tranducer list", data, obj);
-		this.equipmentService.addTranducer(JSON.stringify(data))
+		let obj = { 
+				"transducer" :{
+					"make": data.makeTransducer,
+					"model":data.modelTransducer,
+					"serial_number":data.snTransducer,
+				    "type": "acceptance",
+				    "scanner_id": "G94HYmz1RXzbuUBmZPSxXA", 
+					 "analysis_parameters": {			
+					   "x_0": 7,
+					   "y_0": 6,
+					   "x_1": 5,
+					   "y_1": 4,
+					   "theta": 3,
+					   "inner_radius": 2,
+					   "outter_radius": 1
+				   }
+			   
+			   }  
+		};
+		
+		console.log("tranducer list", obj);
+		this.equipmentService.addTranducer(obj)
 			.subscribe(
 				response => {
 					this.getAllScanner();
@@ -334,6 +359,7 @@ export class EquipmentComponent implements OnInit {
 	// view transducer modal
 	onTransducerDetail(equipment: any, scanner: any, transducerView: any) {
 		this.viewTransducer = equipment;
+		this.viewTransducer.scanner = scanner.make +""+ scanner.model +""+ scanner.serial_number;
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -399,7 +425,7 @@ export class EquipmentComponent implements OnInit {
 		this.setMakeTransducer(viewTransducer.make);
 		this.setModelTransducer(viewTransducer.model);
 		this.setSNTransducer(viewTransducer.serial_number);
-		this.setScannerTransducer(viewTransducer.scan);
+		this.setScannerTransducer(viewTransducer.scanner);
 		this.setImageTransducer(viewTransducer.scan1);
 		this.isModel = true;
 		this.modalService.dismissAll();

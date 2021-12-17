@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EquipmentService } from 'src/app/services/equipment.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+
 
 
 @Component({
@@ -32,14 +34,15 @@ export class ReviewComponent implements OnInit {
 	scannerAcceptance: any;
 	noteValue: any;
 	titleName: any;
-	scannersObject:any;
+	scannersObject: any;
 	transducerList: any;
 	viewTransducer: any;
 	facilityList: any[] = [];
 	roomList: any[] = [];
-	typeList:any[] = [];
+	typeList: any[] = [];
 	isRoom: boolean = false;
-	loading:boolean = true;
+	loading: boolean = true;
+
 
 	constructor(private modalService: NgbModal, private router: Router, private equipmentService: EquipmentService) { }
 
@@ -50,35 +53,39 @@ export class ReviewComponent implements OnInit {
 		// 	this.router.navigate(['']);
 		// } 
 		this.getAllScanner();
+		let physical = this.equipmentService.getScanner();
+		physical.forEach((item: any) => {
+			this.reviewList = item.last_study.data;
+		});
 	}
-     
+
 	// get scannerList  
 	getAllScanner() {
 		this.equipmentService.getAllScanner()
-		  .subscribe(
-			  response => {
-				  this.loading = false;
-				  this.scanners =  Object.values(response.scanners);
-				  this.scannersObject =  Object.values(response.scanners);
-				  this.scanners.forEach((res: any) => {
-					  // facility list
-					this.facilityList.push(res.facility);
-					let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
-					this.facilityList = Object.values(result);
-					// room list
-					this.roomList.push(res.room);
-					let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index); 
-					this.roomList = Object.values(room);
-					// type list
-					this.typeList.push(res.next_Study_Due.type);
-					let type = this.typeList.filter((val: any, index: any) => this.typeList.indexOf(val) == index); 
-					this.typeList = Object.values(type);
+			.subscribe(
+				response => {
+					this.loading = false;
+					this.scanners = Object.values(response.scanners);
+					this.scannersObject = Object.values(response.scanners);
+					this.scanners.forEach((res: any) => {
+						// facility list
+						this.facilityList.push(res.facility);
+						let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
+						this.facilityList = Object.values(result);
+						// room list
+						this.roomList.push(res.room);
+						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
+						this.roomList = Object.values(room);
+						// type list
+						this.typeList.push(res.next_Study_Due.type);
+						let type = this.typeList.filter((val: any, index: any) => this.typeList.indexOf(val) == index);
+						this.typeList = Object.values(type);
+					});
+				},
+				error => {
+					console.log(error);
 				});
-			  },
-			  error => {
-				  console.log(error);
-			  });
-	  }
+	}
 
 
 	// equipment filter
@@ -87,49 +94,50 @@ export class ReviewComponent implements OnInit {
 		// facility filter
 		if (this.selectedFacility != 0) {
 			this.isRoom = true;
-			scannerList = scannerList.filter((item:any) => {
+			scannerList = scannerList.filter((item: any) => {
 				return item.facility === this.selectedFacility;
 			});
 		}
 		// room filter
 		if (this.selectedRoom != 0) {
-			scannerList = scannerList.filter((item:any) => {
+			scannerList = scannerList.filter((item: any) => {
 				return item.room == this.selectedRoom && item.facility == this.selectedFacility;
 			});
 		}
 		// type filter
 		if (this.selectedType != 0) {
-			scannerList = scannerList.filter((item:any) => {
+			scannerList = scannerList.filter((item: any) => {
 				return item.last_study.type == this.selectedType;
 			});
 		}
 		// s/n searching
 		if (this.selectedSn != "") {
-			scannerList = scannerList.filter((item:any) => {
+			scannerList = scannerList.filter((item: any) => {
 				return item.serial_number == this.selectedSn;
 			});
 		}
-		   this.scanners = scannerList;
+		this.scanners = scannerList;
 	}
 
-	  // selected facility then show particular room list
-	  onRoomList() {
+	// selected facility then show particular room list
+	onRoomList() {
 		this.roomList = [];
-		if(this.selectedFacility == 0) {
+		if (this.selectedFacility == 0) {
 			this.isRoom = false;
 		}
-		this.scanners.forEach((item:any) => {
-		this.roomList.push(item.room);
-		let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
-		this.roomList = Object.values(room);	
+		this.scanners.forEach((item: any) => {
+			this.roomList.push(item.room);
+			let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
+			this.roomList = Object.values(room);
 		});
 	}
 
 	// on scanner click open view modal
 	scannerDetail(scanner: any, scannerView: any) {
 		this.titleName = 'Scanner Acceptance Study';
-		this.viewData = scanner;
-		this.isFinalized = false; 
+		this.viewData = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
+		this.date = scanner.next_Study_Due.date;
+		this.isFinalized = false;
 		// if (scanner.last_study.finalized === true) {
 		// 	this.isFinalized = true;
 		// }
@@ -167,8 +175,10 @@ export class ReviewComponent implements OnInit {
 	}
 
 	// transducer detail
-	onTransducerDetail(transducer: any) {
+	onTransducerDetail(transducer: any, scanner: any) {
 		this.reviewData = transducer.last_study;
+		this.equipmentService.isScannerList.next(scanner);
+		this.equipmentService.currentScanner(scanner);
 		this.router.navigate(['/review/transducer']);
 
 	}

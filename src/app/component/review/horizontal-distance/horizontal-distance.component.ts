@@ -15,6 +15,7 @@ export class HorizontalDistanceComponent implements OnInit {
   unitName: any;
   horizontal_R_One: any;
   horizontal_R_Two: any;
+  scannerName: any;
   constructor(private equipment: EquipmentService) { }
 
   ngOnInit(): void {
@@ -28,14 +29,14 @@ export class HorizontalDistanceComponent implements OnInit {
         imgList = item.last_study.data.imaging;
         let items: any = [];
         Object.entries(imgList).forEach(([k, v]) => {
-          items.push({ 
+          items.push({
             name: k,
             value: v
           });
           items.forEach((data: any) => {
             if (data.name == 'horizontal_distance') {
               this.measurementList = Object.values(data.value);
-              this.measurementList.forEach((res:any) => {
+              this.measurementList.forEach((res: any) => {
                 this.horizontal_distance = Object.values(res);
               });
             }

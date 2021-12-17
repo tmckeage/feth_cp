@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router,ActivatedRoute, NavigationStart } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EquipmentService } from 'src/app/services/equipment.service';
@@ -17,8 +18,11 @@ export class TransducerComponent implements OnInit {
   closeResult: any;
   viewType: any;
   date: any;
+  scannerName:any;
 
-  constructor(private modalService: NgbModal, private router: Router,  private equipmentService:EquipmentService) { }
+
+  constructor(private modalService: NgbModal, private router: Router, private routers:ActivatedRoute, private equipmentService:EquipmentService) {
+   }
 
   ngOnInit(): void {
     	// check login session
@@ -26,15 +30,23 @@ export class TransducerComponent implements OnInit {
 		// if (!this.fathomUserDetails.username) {
 		// 	this.router.navigate(['']);
 		// }
+  
+    this.equipmentService.isScannerList.subscribe((res:any) => {
+      if (res) {
+            this.scannerName = res.make +""+ " : " +""+ res.model +""+ res.serial_number;
+            this.date = res.next_Study_Due.date;
+          }
+    });
+
     this.visualList = [
       {type:"Cables"},
       {type:'Cracks/Discoloration'},
       {type: 'Connectors'}
     ];
-    
+ 
     this.analysisList = this.equipmentService.getScanner();
     this.analysisList.forEach((res: any) => {
-      this.date = res.last_study.date_performed;
+      //this.date = res.last_study.date_performed;
       let data = res.transducers;
       data.forEach((item: any) => {
         this.dataList = item.last_study.data;
@@ -65,17 +77,17 @@ export class TransducerComponent implements OnInit {
   ];
 
   }
-  onNotes(isImgView:any, content: any){ 
+  onNotes(isImgView:any, content: any, date: any){ 
    this.viewType = content;  
-   this.date = this.date; 
+   this.date = date; 
   // this.modalService.dismissAll();
   this.modalService.open(isImgView, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
     this.closeResult = `Closed with: ${result}`;
   });
   }
-  onImg(isImgView: any, content: any){
+  onImg(isImgView: any, content: any,date: any){
     this.viewType = content;
-    this.date =  this.date; 
+    this.date =  date; 
     // this.modalService.dismissAll();
     this.modalService.open(isImgView, { ariaLabelledBy: 'modal-basic-title',size:'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -93,5 +105,6 @@ export class TransducerComponent implements OnInit {
       this.router.navigate(['/review/uniformity']);
     }
   }
+
 
 }

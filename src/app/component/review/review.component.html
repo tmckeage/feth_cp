@@ -55,7 +55,7 @@
             </div> 
             <div class="row d-inline">
                 <ul class="ms-5">
-                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducers"><a src="#" (click)="onTransducerDetail(transducer)">{{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}</a></li>
+                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducers"><a src="#" (click)="onTransducerDetail(transducer,scanner)">{{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}</a></li>
                 </ul>
             </div>
         </div>
@@ -70,11 +70,11 @@
 <!-- view scanner  details modal-->
 <ng-template #scannerView let-modal>
     <div class="modal-header">
-        <h5 class="modal-title " id="modal-view">Scanner Acceptance Study - {{viewData}}</h5>
+        <h5 class="col-form-label-sm fw-bold" id="modal-view">Scanner Acceptance Study - {{viewData}}</h5>
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body px-2">
-        <h5 class="col-form-label-sm me-2"> Date: {{date}}</h5>
+        <h5 class="col-form-label-sm me-2"> Date: {{date | date: 'M/d/yyyy'}}</h5>
         <div>
             <div class="row mb-2">
                 <div class="col-6 form-group input-group-sm">
@@ -139,20 +139,25 @@
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body mb-2">
-        <span class="col-form-label-sm me-2"> Date: {{date}}</span>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="p-4 h-100 border" ng-class="{'my-disable':isSubStudyFlag}"><img class="scanner-img"
-                        src="../../../assets/scanner.png"></div>
+        <span class="col-form-label-sm me-2"> Date: {{date | date: 'M/d/yyyy'}}</span>
+        <div class="card">
+        <span class="col-form-label-sm px-2">{{scannerAcceptance}}</span>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="p-4 h-100 border" ng-class="{'my-disable':isSubStudyFlag}"><img class="scanner-img"
+                                src="../../../assets/scanner.png"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <textarea type="textarea" class="textarea w-100 h-100" [(ngModel)]="noteValue"></textarea>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6">
-                <textarea type="textarea" class="textarea w-100 h-100" [(ngModel)]="noteValue"></textarea>
-            </div>
+         </div> 
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss('Cross click')">Done</button>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" (click)="modal.dismiss('Cross click')">Done</button>
-    </div>
+    </div>   
 </ng-template>
 
 <!-- substudy assessment -->
@@ -162,7 +167,7 @@
         <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body mb-2">
-        <span class="col-form-label-sm me-2"> Date: {{date}}</span>
+        <span class="col-form-label-sm me-2"> Date: {{date | date: 'M/d/yyyy'}}</span>
         <div class="row">
             <h5 class="col-form-label-sm mb-2">Please provide reason for setting {{review}} to {{assessmentType}} </h5>
             <textarea class="textarea h-100" [(ngModel)]="reasonTextArea"></textarea>

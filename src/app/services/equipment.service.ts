@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -11,6 +11,9 @@ export class EquipmentService {
   facilityTransducer: any[] = [];
   roomTransducer: any[] = [];
   typeTransducer: any[] = [];
+  isScannerList = new BehaviorSubject('');
+  messageSource = new BehaviorSubject('');
+  currentMessage = this.messageSource.asObservable();
   
   constructor(private http: HttpClient) {
     this.facilityTransducer = ['CIRS', 'Fathom'];
@@ -46,6 +49,10 @@ export class EquipmentService {
       ]
     }
   ];
+
+  currentScanner(data:any) { 
+    this.messageSource.next(data)
+  }
 
   getScanner() {
     const scanner1 = [
