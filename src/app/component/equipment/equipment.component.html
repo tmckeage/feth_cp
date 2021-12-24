@@ -292,40 +292,48 @@
         </div>
         <div class="modal-body">
             <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
+                <div class="col-5 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
                     <label class="col-form-label-sm me-2">{{viewData.make}}</label>
                 </div>
-                <div class="col-6 form-group input-group-sm">
+                <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
                     <label class="col-form-label-sm me-2 center ">{{viewData.facility}}</label>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
+                <div class="col-5 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
                     <label class="col-form-label-sm me-2">{{viewData.model}}</label>
                 </div>
-                <div class="col-6 form-group input-group-sm">
+                <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Room: </label>&nbsp;
                     <label class="col-form-label-sm text-center">{{viewData.room}}</label>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-6 form-group input-group-sm">
+            <div class="row mb-2"><br><br>
+                <div class="col-5 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
                     <label class="col-form-label-sm me-2">{{viewData.serial_number}}</label>
                 </div>
-                <div class="col-6 form-group input-group-sm">
-
+                <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <label class="col-form-label-sm text-center">{{viewData.barcode}}</label>
-                </div>
+                        <div id="scannerPrint" #scannerPrint>
+                            <button class="scanner-print" printSectionId="scannerPrint" ngxPrint>
+                                <ngx-barcode6
+                                [bc-format]="'MSI'"
+                                [bc-width]="1"
+                                [bc-height]="20"
+                                [bc-value]="viewData.barcode"
+                                [bc-display-value]="true"
+                                 ></ngx-barcode6>
+                            </button> 
+                        </div>
+                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm"
-                (click)="onScannerEdit(viewData,content)">Edit</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="onScannerEdit(viewData,content)">Edit</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
         </div>
     </ng-template>
@@ -386,7 +394,17 @@
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                        <label class="col-form-label-sm text-center">{{viewTransducer.barcode}}</label>
+                         <div class="barcode" id="tranducerPrint" #tranducerPrint>
+                            <button class="tranducerPrint" printSectionId="tranducerPrint" ngxPrint>
+                                <ngx-barcode6
+                                [bc-format]="'MSI'"
+                                [bc-width]="1"
+                                [bc-height]="20"
+                                [bc-value]="viewData.barcode"
+                                [bc-display-value]="true"
+                                ></ngx-barcode6>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="row g-2" id="tab">

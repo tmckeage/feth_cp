@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/internal/Observable';
@@ -8,8 +8,6 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { index } from 'd3-array';
-
-
 
 
 @Component({
@@ -67,6 +65,9 @@ export class EquipmentComponent implements OnInit {
 	roomList: any[] = [];
 	loading:boolean = true;
 	scannerLists: any[]=[];
+	@ViewChild('pdfTable')
+	pdfTable!: ElementRef;
+  
 
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
@@ -163,6 +164,7 @@ export class EquipmentComponent implements OnInit {
 
 		this.getAllScanner();
 	}
+
 	// get scannerList  
 	getAllScanner() {
 		this.equipmentService.getAllScanner()
@@ -386,6 +388,14 @@ export class EquipmentComponent implements OnInit {
 		if (changeMakeValue) {
 			this.isMake = true;
 		}
+	}
+    
+	// print barcode 
+	onPrint(viewPrint:any) {
+		this.modalService.dismissAll();
+		this.modalService.open(viewPrint, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		});
 	}
 
 	// on change model for transducer

@@ -19,6 +19,7 @@
     height: 100px !important;
     width: 100%;
 } 
+
 #due-date{
     margin-top:-7px ;
 }
@@ -39,3 +40,17 @@ width: 110%;
     left:50%;
     transform: translate(-50%,-50%);
   }
+.barcode  {
+    margin-left: 42%;
+    margin-top: -8%;
+}
+
+.scanner-print {
+    border: none;
+    margin-left: 70px;
+    margin-top: -27px;
+}
+
+.tranducerPrint {
+    border:none;
+}

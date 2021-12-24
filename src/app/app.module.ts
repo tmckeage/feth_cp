@@ -35,6 +35,13 @@ import { TransducerComponent } from './component/review/transducer/transducer.co
 import { VerticalDistanceComponent } from './component/review/vertical-distance/vertical-distance.component';
 import { HorizontalDistanceComponent } from './component/review/horizontal-distance/horizontal-distance.component';
 import { UniformityComponent } from './component/review/uniformity/uniformity.component';
+
+
+// Import ngx-barcode module
+import { NgxBarcode6Module } from 'ngx-barcode6';
+import {NgxPrintModule} from 'ngx-print';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +77,8 @@ import { UniformityComponent } from './component/review/uniformity/uniformity.co
     FontAwesomeModule,
     Ng2SearchPipeModule,
     BrowserAnimationsModule, 
+    NgxBarcode6Module,
+    NgxPrintModule,
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-top-right',
