@@ -37,11 +37,10 @@ export class UniformityComponent implements OnInit {
     this.addXandYAxis();
     this.drawLineAndPath();
     this.datalist = this.equipment.getScanner();
-    // scanner name 
-    this.equipment.isScannerList.subscribe((res: any) => {
-      this.scannerName = res.make +""+ " : " +""+ res.model +""+ res.serial_number;
-      this.date = res.next_Study_Due.date;
-    });
+    
+    // current scanner name in strore on session 
+    this.scannerName = sessionStorage.getItem('currentScanner');
+    this.date = sessionStorage.getItem('currentScannerDate');
 
     this.datalist.forEach((res: any) => {
       this.transducer = res.transducers;

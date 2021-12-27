@@ -12,8 +12,7 @@ export class EquipmentService {
   roomTransducer: any[] = [];
   typeTransducer: any[] = [];
   isScannerList = new BehaviorSubject('');
-  messageSource = new BehaviorSubject('');
-  currentMessage = this.messageSource.asObservable();
+ 
   
   constructor(private http: HttpClient) {
     this.facilityTransducer = ['CIRS', 'Fathom'];
@@ -50,9 +49,6 @@ export class EquipmentService {
     }
   ];
 
-  currentScanner(data:any) { 
-    this.messageSource.next(data)
-  }
 
   getScanner() {
     const scanner1 = [

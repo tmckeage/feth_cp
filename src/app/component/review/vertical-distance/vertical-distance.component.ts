@@ -20,12 +20,10 @@ export class VerticalDistanceComponent implements OnInit {
 
   ngOnInit(): void {
     this.datalist = this.equipment.getScanner();
-    this.equipment.isScannerList.subscribe((res: any) => {
-      if (res) {
-        this.scannerName = res.make +""+ " : " +""+ res.model +""+ res.serial_number;
-        this.date = res.next_Study_Due.date;
-      }
-    });
+      
+    // current scanner name in strore on session 
+    this.scannerName = sessionStorage.getItem('currentScanner');
+    this.date = sessionStorage.getItem('currentScannerDate');
 
     this.datalist.forEach((res: any) => {
       this.date = res.last_study.date_performed;

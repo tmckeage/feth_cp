@@ -178,11 +178,13 @@ export class ReviewComponent implements OnInit {
 	onTransducerDetail(transducer: any, scanner: any) {
 		this.reviewData = transducer.last_study;
 		this.equipmentService.isScannerList.next(scanner);
-		this.equipmentService.currentScanner(scanner);
+		let currentScannerName = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
+		let currentScannerDate = scanner.next_Study_Due.date;
+		sessionStorage.setItem('currentScanner', currentScannerName);
+		sessionStorage.setItem('currentScannerDate', currentScannerDate);
 		this.router.navigate(['/review/transducer']);
 
 	}
-
 }
 
 
