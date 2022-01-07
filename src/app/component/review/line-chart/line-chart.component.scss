@@ -1,0 +1,23 @@
+
+        .line {fill:none; stroke:black;stroke-width: 1.5;}
+        .line-0 {fill:none; stroke:#1f77b4;stroke-width: 1.5;stroke-dasharray:4,10;}
+        .line-1 {fill:none; stroke:#ff7f0e;stroke-width: 1.5;stroke-dasharray:2,5.10;}
+        .line-2 {fill:none; stroke:#2ca02c;stroke-width: 1.5;}
+        .line-3 {fill:none; stroke:#d62728;stroke-width: 1.5;}
+        .line-4 {fill:none; stroke:#9467bd;stroke-width: 1.5;}
+        .line-5 {fill:none; stroke:#8c564b;stroke-width: 1.5;}
+        .line-6 {fill:none; stroke:#e377c2;stroke-width: 1.5;}
+        .line-7 {fill:none; stroke:#7f7f7f;stroke-width: 1.5;}
+        .line-8 {fill:none; stroke:#bcbd22;stroke-width: 1.5;}
+        .line-9 {fill:none; stroke:b#17becf;stroke-width: 1.5;}
+
+        .force-links line {
+          stroke: #999;
+          stroke-opacity: 0.6;
+          }
+   
+          .force-nodes circle {
+          stroke: #fff;
+          stroke-width: 1.5px;
+          }
+   

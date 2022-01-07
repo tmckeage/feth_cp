@@ -19,6 +19,7 @@ export class TransducerComponent implements OnInit {
   viewType: any;
   date: any;
   scannerName:any;
+ 
 
 
   constructor(private modalService: NgbModal, private router: Router, private routers:ActivatedRoute, private equipmentService:EquipmentService) {
@@ -31,13 +32,10 @@ export class TransducerComponent implements OnInit {
 		// 	this.router.navigate(['']);
 		// }
   
-    this.equipmentService.isScannerList.subscribe((res:any) => {
-      if (res) {
-            this.scannerName = res.make +""+ " : " +""+ res.model +""+ res.serial_number;
-            this.date = res.next_Study_Due.date;
-          }
-    });
-
+    // current scanner name in strore on session 
+    this.scannerName = sessionStorage.getItem('currentScanner');
+    this.date = sessionStorage.getItem('currentScannerDate');
+   
     this.visualList = [
       {type:"Cables"},
       {type:'Cracks/Discoloration'},

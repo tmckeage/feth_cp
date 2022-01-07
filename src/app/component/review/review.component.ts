@@ -143,7 +143,7 @@ export class ReviewComponent implements OnInit {
 		// }
 		this.modalService.open(scannerView, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
-		});
+		}); 
 	}
 
 	getKeys(list: any): Array<string> {
@@ -183,7 +183,6 @@ export class ReviewComponent implements OnInit {
 		sessionStorage.setItem('currentScanner', currentScannerName);
 		sessionStorage.setItem('currentScannerDate', currentScannerDate);
 		this.router.navigate(['/review/transducer']);
-
 	}
 }
 

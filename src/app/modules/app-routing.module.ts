@@ -14,6 +14,8 @@ import { TransducerComponent } from '../component/review/transducer/transducer.c
 import { VerticalDistanceComponent } from '../component/review/vertical-distance/vertical-distance.component';
 import { HorizontalDistanceComponent } from '../component/review/horizontal-distance/horizontal-distance.component';
 import { UniformityComponent } from '../component/review/uniformity/uniformity.component';
+import {LineChartComponent} from '../component/review/line-chart/line-chart.component';
+import { path } from 'd3';
 
 const routes: Routes = [
     { path: '', component: EquipmentComponent },
@@ -31,7 +33,8 @@ const routes: Routes = [
         { path:'transducer', component:TransducerComponent},
         { path:'vertical', component:VerticalDistanceComponent},
         { path:'horizontal', component:HorizontalDistanceComponent},
-        { path:'uniformity', component:UniformityComponent}
+        { path:'uniformity', component:UniformityComponent},
+        { path:'line-graph' , component:LineChartComponent}
     ]}
 ];
 

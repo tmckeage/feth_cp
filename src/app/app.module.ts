@@ -20,6 +20,7 @@ import { RequestReceivedComponent } from './component/request-received/request-r
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 // Fontawesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // toster masange
@@ -36,10 +37,13 @@ import { VerticalDistanceComponent } from './component/review/vertical-distance/
 import { HorizontalDistanceComponent } from './component/review/horizontal-distance/horizontal-distance.component';
 import { UniformityComponent } from './component/review/uniformity/uniformity.component';
 
-
 // Import ngx-barcode module
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import {NgxPrintModule} from 'ngx-print';
+import { LineChartComponent } from '../app/component/review/line-chart/line-chart.component';
+// line chart 
+// import { Ng6O2ChartModule } from 'ng6-o2-chart'; 
+// import { O2ChartComponent,ChartConst } from 'o2-chart-lib';
 
 
 @NgModule({
@@ -59,7 +63,8 @@ import {NgxPrintModule} from 'ngx-print';
     TransducerComponent,
     VerticalDistanceComponent,
     HorizontalDistanceComponent,
-    UniformityComponent
+    UniformityComponent,
+    LineChartComponent
     
   ],
   imports: [
@@ -79,6 +84,7 @@ import {NgxPrintModule} from 'ngx-print';
     BrowserAnimationsModule, 
     NgxBarcode6Module,
     NgxPrintModule,
+    // Ng6O2ChartModule,
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-top-right',
