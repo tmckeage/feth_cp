@@ -1,4 +1,3 @@
-
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
@@ -16,9 +15,10 @@
                 <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility" (change)="equipmentFilter();onRoomList()">
+                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility"
+                    (change)="equipmentFilter();onRoomList()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let facility of facilityList" value="{{facility}}" >
+                    <option *ngFor="let facility of facilityList" value="{{facility}}">
                         {{facility}}</option>
                 </select>
             </div>
@@ -26,7 +26,8 @@
                 <label for="room" class="col-form-label-sm fw-bold">Room:</label>
             </div>
             <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()" [disabled]="!isRoom">
+                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()"
+                    [disabled]="!isRoom">
                     <option value="0">--Select--</option>
                     <option *ngFor="let room of roomList" value="{{room}}">{{room}}</option>
                 </select>
@@ -62,11 +63,20 @@
                 </ul>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4 cursorPointer">Unassigned Transducers</div>
+            <div class="row d-inline mt-4">
+                <ul class="ms-5">
+                    <li class="cursorPointer" *ngFor="let transducer of unassignedTransducers"><a src="#"
+                            (click)="onTransducerDetail(transducer,'scanner',transducerView)">{{transducer.make}}
+                            {{transducer.model}} : {{transducer.serial_number}}</a></li>
+                </ul>
+            </div>
+        </div>
         <div class="row" *ngIf="loading">
             <mat-spinner diameter="50" customSpinner color="#fff" *ngIf="loading"></mat-spinner>
-        </div> 
+        </div>
     </div>
-
 
     <!-- Add / Edit Scanner modal -->
     <ng-template #content let-modal>
@@ -80,10 +90,11 @@
                     <div class="col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Make :</mat-label>
-                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
+                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make" (keyup)="modelFilter(make)">
                             <mat-autocomplete #make="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scannersObject" [value]="scanner.make">
-                                    {{scanner.make}}
+                                <mat-option *ngFor="let make of makeNameList" [value]="make"
+                                    (onSelectionChange)="modelFilter(make)">
+                                    {{make}}
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-error *ngIf="scannerFormGroup.controls.make.errors?.required">
@@ -96,8 +107,8 @@
                             <mat-label>Facility :</mat-label>
                             <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
                             <mat-autocomplete #facility="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scanners" [value]="scanner.Facility">
-                                    {{scanner.facility}}
+                                <mat-option *ngFor="let facility of facilityList" [value]="facility">
+                                    {{facility}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -109,8 +120,8 @@
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
                             <mat-autocomplete #model="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scanners" [value]="scanner.model">
-                                    {{scanner.model}}
+                                <mat-option *ngFor="let model of modelNameList" [value]="model">
+                                    {{model}}
                                 </mat-option>
                             </mat-autocomplete>
                             <mat-error *ngIf="scannerFormGroup.controls.model.errors?.required">
@@ -123,8 +134,8 @@
                             <mat-label>Room :</mat-label>
                             <input type="text" matInput formControlName="room" [matAutocomplete]="room">
                             <mat-autocomplete #room="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scanners" [value]="scanner.Room">
-                                    {{scanner.room}}
+                                <mat-option *ngFor="let room of roomList" [value]="room">
+                                    {{room}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -134,8 +145,8 @@
                     <div class="col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>S/N :</mat-label>
-                            <input type="text" matInput formControlName="sn" required>
-                            <mat-error *ngIf="scannerFormGroup.controls.sn.errors?.required">
+                            <input type="text" matInput formControlName="serial_number" required>
+                            <mat-error *ngIf="scannerFormGroup.controls.serial_number.errors?.required">
                                 S/N is required
                             </mat-error>
                         </mat-form-field>
@@ -149,6 +160,7 @@
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
+
     <!-- Add/ Edit transducer modal -->
     <ng-template #transducerModal let-modal>
         <div class="modal-header">
@@ -161,15 +173,15 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Make :</mat-label>
-                            <input type="text" matInput formControlName="makeTransducer" required
-                                [matAutocomplete]="makeTransducer" (keyup)="onKey($event,makeTransducer)">
-                            <mat-autocomplete #makeTransducer="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scanners" value="{{scanner.make}}"
-                                    (onSelectionChange)="onChangeMakeTransducer(makeTransducer)">
-                                    {{scanner.make}}
+                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make"
+                                (keyup)="onKey($event,make);modelTranducerFilter(make)">
+                            <mat-autocomplete #make="matAutocomplete">
+                                <mat-option *ngFor="let make of makeTranducerNameList" value="{{make}}"
+                                    (onSelectionChange)="onChangeMakeTransducer(make);modelTranducerFilter(make)">
+                                    {{make}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="transducerFormGroup.controls.makeTransducer.errors?.required">
+                            <mat-error *ngIf="transducerFormGroup.controls.make.errors?.required">
                                 Make is required
                             </mat-error>
                         </mat-form-field>
@@ -177,12 +189,10 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Scanner:</mat-label>
-                            <input type="text" matInput formControlName="scannerTransducer"
-                                [matAutocomplete]="scannerTransducer">
-                            <mat-autocomplete #scannerTransducer="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scannerLists"
-                                    [value]="scanner">
-                                    {{scanner}}
+                            <input type="text" matInput formControlName="scanner" [matAutocomplete]="scanner">
+                            <mat-autocomplete #scanner="matAutocomplete" [displayWith]="getScannerId.bind(this)">
+                                <mat-option *ngFor="let scanner of scannerLists" value="{{scanner.scanner_id}}">
+                                    {{scanner.scannerName}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -192,15 +202,15 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Model :</mat-label>
-                            <input type="text" matInput formControlName="modelTransducer" required
-                                [matAutocomplete]="modelTransducer" (keyup)="onKey($event, modelTransducer)">
-                            <mat-autocomplete #modelTransducer="matAutocomplete">
-                                <mat-option *ngFor="let scanner of scanners" value="{{scanner.model}}"
-                                    (onSelectionChange)="onChangeModalTransducer(modelTransducer)">
-                                    {{scanner.model}}
+                            <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
+                                (keyup)="onKey($event, model)">
+                            <mat-autocomplete #model="matAutocomplete">
+                                <mat-option *ngFor="let model of modelTranducerNameList" value="{{model}}"
+                                    (onSelectionChange)="onChangeModalTransducer(model)">
+                                    {{model}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="transducerFormGroup.controls.modelTransducer.errors?.required">
+                            <mat-error *ngIf="transducerFormGroup.controls.model.errors?.required">
                                 Model is required
                             </mat-error>
                         </mat-form-field>
@@ -222,9 +232,25 @@
                     <div class="col-lg-6">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>S/N :</mat-label>
-                            <input type="text" matInput formControlName="snTransducer" required>
-                            <mat-error *ngIf="transducerFormGroup.controls.snTransducer.errors?.required">
+                            <input type="text" matInput formControlName="serial_number" required>
+                            <mat-error *ngIf="transducerFormGroup.controls.serial_number.errors?.required">
                                 S/N is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <mat-form-field appearance="fill" class="matInput">
+                            <mat-label>Type :</mat-label>
+                            <input type="text" matInput formControlName="type" required [matAutocomplete]="type">
+                            <mat-autocomplete #type="matAutocomplete" [displayWith]="getType.bind(this)">
+                                <mat-option *ngFor="let type of typeTransducerOption" value="{{type.value}}">
+                                    {{type.name}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <mat-error *ngIf="transducerFormGroup.controls.type.errors?.required">
+                                Type is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -318,22 +344,18 @@
                 </div>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                        <div id="scannerPrint" #scannerPrint>
-                            <button class="scanner-print" printSectionId="scannerPrint" ngxPrint>
-                                <ngx-barcode6
-                                [bc-format]="'MSI'"
-                                [bc-width]="1"
-                                [bc-height]="20"
-                                [bc-value]="viewData.barcode"
-                                [bc-display-value]="true"
-                                 ></ngx-barcode6>
-                            </button> 
-                        </div>
-                 </div>
+                    <div id="scannerPrint" #scannerPrint class="scanner-print">
+                        <button printSectionId="scannerPrint" ngxPrint>
+                            <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
+                                [bc-value]="viewData.barcode" [bc-display-value]="true"></ngx-barcode6>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" (click)="onScannerEdit(viewData,content)">Edit</button>
+            <button type="button" class="btn btn-secondary btn-sm"
+                (click)="onScannerEdit(viewData,content)">Edit</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
         </div>
     </ng-template>
@@ -369,22 +391,27 @@
             <form class="form" id="form" [formGroup]="transducerFormGroup">
                 <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
+                        <label class="col-form-label-sm fw-bold">Make:</label>&nbsp;
                         <label class="col-form-label-sm me-2">{{viewTransducer.make}}</label>
                     </div>
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Scanner: </label>&nbsp;
+                        <label class="col-form-label-sm fw-bold">Scanner:</label>&nbsp;
                         <label class="col-form-label-sm me-2 center ">{{viewTransducer.scanner}}</label>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Model: </label>&nbsp;
+                        <label class="col-form-label-sm fw-bold">Model:</label>&nbsp;
                         <label class="col-form-label-sm me-2 center ">{{viewTransducer.model}}</label>
                     </div>
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Image Setup: </label>&nbsp;
-                        <label class="col-form-label-sm me-2 center ">{{viewTransducer.scan1}}</label>
+                        <label class="col-form-label-sm fw-bold">Barcode:</label>&nbsp;
+                        <div id="tranducerPrint" #tranducerPrint class="tranducer">
+                            <button class="tranducerPrint" printSectionId="tranducerPrint" ngxPrint>
+                                <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="10"
+                                    [bc-value]="viewTransducer.barcode" [bc-display-value]="true"></ngx-barcode6>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -392,19 +419,11 @@
                         <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
                         <label class="col-form-label-sm me-2 center ">{{viewTransducer.serial_number}}</label>
                     </div>
+                </div>
+                <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                         <div class="barcode" id="tranducerPrint" #tranducerPrint>
-                            <button class="tranducerPrint" printSectionId="tranducerPrint" ngxPrint>
-                                <ngx-barcode6
-                                [bc-format]="'MSI'"
-                                [bc-width]="1"
-                                [bc-height]="20"
-                                [bc-value]="viewData.barcode"
-                                [bc-display-value]="true"
-                                ></ngx-barcode6>
-                            </button>
-                        </div>
+                        <label class="col-form-label-sm fw-bold">Type: </label>&nbsp;
+                        <label class="col-form-label-sm me-2 center ">{{viewTransducer.type}}</label>
                     </div>
                 </div>
                 <div class="row g-2" id="tab">

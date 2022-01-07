@@ -41,16 +41,18 @@ width: 110%;
     transform: translate(-50%,-50%);
   }
 .barcode  {
-    margin-left: 42%;
-    margin-top: -8%;
+    display: inline-flex
 }
 
 .scanner-print {
-    border: none;
-    margin-left: 70px;
-    margin-top: -27px;
+    display: contents;
 }
 
 .tranducerPrint {
-    border:none;
+    border: none!important;
+    height: 1px!important;
+}
+
+.tranducer {
+    display: contents;
 }
