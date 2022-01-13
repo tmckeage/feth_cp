@@ -28,23 +28,22 @@ export class EquipmentComponent implements OnInit {
 	scannerFormGroup: FormGroup;
 	transducerFormGroup: FormGroup;
 	makeOptions: any[] = [];
-	facilityOptions: any[] = [];
 	modelOptions: any[] = [];
 	roomOptions: any[] = [];
+	facilityOptions: any[] = [];
 	scannerOptions: any[] = [];
 	imageOptions: any[] = [];
 	modelTransducerOption: any[] = [];
 	makeTransducerOption: any[] = [];
-	filteredMake: Observable<any[]> | undefined;
-	filteredFacility: Observable<any[]> | undefined;
-	filteredModel: Observable<any[]> | undefined;
-	filteredRoom: Observable<any[]> | undefined;
-	filteredScanner: Observable<any[]> | undefined;
-	filteredMakeTransducer: Observable<any[]> | undefined;
-	filteredModelTransducer: Observable<any[]> | undefined;
-	filteredSnTransducer: Observable<any[]> | undefined;
-	filteredImageTransducer: Observable<any[]> | undefined;
-	filteredType: Observable<any[]> | undefined;
+	filteredMake: Observable<any[]>;
+	filteredFacility: Observable<any[]>;
+	filteredModel: Observable<any[]>;
+	filteredRoom: Observable<any[]>;
+	filteredScanner: Observable<any[]>;
+	filteredMakeTransducer: Observable<any[]>;
+	filteredModelTransducer: Observable<any[]>;
+	filteredImageTransducer: Observable<any[]>;
+	filteredType: Observable<any[]>;
 	isMake: boolean = false;
 	isModel: boolean = false;
 	isEmpty: boolean = false;
@@ -54,7 +53,7 @@ export class EquipmentComponent implements OnInit {
 	make: any = '';
 	model: any = ''
 	serial_number: any = '';
-	isTab:boolean = false;
+	isTab: boolean = false;
 	fathomUserDetails: any;
 	startDate: any;
 	endDate: any;
@@ -62,14 +61,14 @@ export class EquipmentComponent implements OnInit {
 	facilityList: any[] = [];
 	roomList: any[] = [];
 	loading: boolean = true;
-	scannerLists: any;
+	scannerLists: any[] = [];
 	typeOptions: any;
 	typeTransducerOption: any;
 	makeNameList: any[] = [];
 	modelNameList: any[] = [];
 	makeTranducerNameList: any[] = [];
 	modelTranducerNameList: any[] = [];
-    unassignedTransducers: any[] = [];
+	unassignedTransducers: any[] = [];
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -105,6 +104,54 @@ export class EquipmentComponent implements OnInit {
 			"type": new FormControl('', [Validators.required]),
 			"image": new FormControl('', []),
 		});
+
+		// filter values in autocomplete
+		this.filteredMake = this.scannerFormGroup.controls['make'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.make_filter(value))
+		);
+
+		this.filteredFacility = this.scannerFormGroup.controls['facility'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.facility_filter(value))
+		);
+
+		this.filteredModel = this.scannerFormGroup.controls['model'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.model_filter(value))
+		);
+
+		this.filteredRoom = this.scannerFormGroup.controls['room'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.room_filter(value))
+		);
+
+		this.filteredMakeTransducer = this.transducerFormGroup.controls['make'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.makeTransducer_filter(value))
+		);
+
+		this.filteredModelTransducer = this.transducerFormGroup.controls['model'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.modelTransducer_filter(value))
+		);
+
+		this.filteredScanner = this.transducerFormGroup.controls['scanner'].valueChanges.pipe(
+			startWith(''),
+			map(value => typeof value === 'string' ? value : value.name),
+			map(name => name ? this.scanner_filter(name) : this.scannerOptions.slice())
+		);
+
+		this.filteredType = this.transducerFormGroup.controls['type'].valueChanges.pipe(
+			startWith(''),
+			map(values => typeof values === 'string' ? values : values.name),
+			map(name => name ? this.type_filter(name) : this.typeTransducerOption.slice())
+		);
+
+		this.filteredImageTransducer = this.transducerFormGroup.controls['image'].valueChanges.pipe(
+			startWith(''),
+			map(value => this.image_filter(value))
+		);
 	}
 
 	ngOnInit(): void {
@@ -118,82 +165,13 @@ export class EquipmentComponent implements OnInit {
 		this.scannerFormGroup.controls['model'].disable();
 		this.transducerFormGroup.controls['model'].disable();
 
-		// filter values in autocomplete
-		this.filteredMake = this.scannerFormGroup.controls.make.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterMake(name) : this.makeOptions.slice())
-		);
 
-		this.filteredFacility = this.scannerFormGroup.controls.facility.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterFacility(name) : this.facilityOptions.slice())
-		);
-
-		this.filteredModel = this.scannerFormGroup.controls.model.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterModel(name) : this.modelOptions.slice())
-		);
-
-		this.filteredRoom = this.scannerFormGroup.controls.room.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterRoom(name) : this.roomOptions.slice())
-		);
-
-		this.filteredMakeTransducer = this.transducerFormGroup.controls.make.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterMakeTransducer(name) : this.makeTransducerOption.slice())
-		);
-
-		this.filteredModelTransducer = this.transducerFormGroup.controls.model.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterModelTransducer(name) : this.modelTransducerOption.slice())
-		);
-
-		this.filteredScanner = this.transducerFormGroup.controls.scanner.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterScanner(name) : this.scannerOptions.slice())
-		);
-
-		this.filteredType = this.transducerFormGroup.controls.type.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterType(name) : this.typeOptions.slice())
-		);
-
-		this.filteredImageTransducer = this.transducerFormGroup.controls.image.valueChanges.pipe(
-			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this._filterImageTransducer(name) : this.imageOptions.slice())
-		);
-      
 		this.getAllScanner();  // scanner API 
 	}
 
 	// type list finding
 	getType(typeId: any) {
 		return this.typeTransducerOption.find((type: any) => type.value === typeId).name;
-	}
-	
-	// scanner id
-	getScannerId(scanner_id: any) {
-		    var scannerNameList:any;
-		 	// scanner list 
-			 this.scannerLists.forEach((res: any) => {
-				let scannerName: any[] = [];
-				scannerName.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
-				let sName = scannerName.filter((val: any, index: any) => scannerName.indexOf(val) == index);
-				scannerNameList = [
-					{scanner_id: res.scanner_id, scannerName:sName}
-				]
-			 });
-		    return this.scannerLists.find((scanner: any) => scanner.scanner_id === scanner_id).scannerName;
 	}
 
 	// get scannerList  
@@ -205,26 +183,20 @@ export class EquipmentComponent implements OnInit {
 					this.scanners = Object.values(response.scanners);
 					this.unassignedTransducers = Object.values(response.unassigned_transducers);
 					this.scanners.forEach((res: any) => {
-
 						// facility list
 						this.facilityList.push(res.facility);
 						let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
-						this.facilityList = Object.values(result);
+						this.facilityOptions = Object.values(result);
 
 						// room list
 						this.roomList.push(res.room);
 						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
-						this.roomList = Object.values(room);
+						this.roomOptions = Object.values(room);
 
 						//make list
 						this.makeNameList.push(res.make);
 						let make = this.makeNameList.filter((val: any, index: any) => this.makeNameList.indexOf(val) == index);
-						this.makeNameList = Object.values(make);
-						// scanner list 
-						let scannerName: any[] = [];
-						scannerName.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
-						let sName = scannerName.filter((val: any, index: any) => scannerName.indexOf(val) == index);
-						this.scannerLists = [{ scanner_id: res.scanner_id, scannerName: sName }];
+						this.makeOptions = Object.values(make);
 
 						// transducer make list
 						let tranducerObj = res.transducers;
@@ -232,7 +204,7 @@ export class EquipmentComponent implements OnInit {
 							//make list
 							this.makeTranducerNameList.push(response.make);
 							let make = this.makeTranducerNameList.filter((val: any, index: any) => this.makeTranducerNameList.indexOf(val) == index);
-							this.makeTranducerNameList = Object.values(make);
+							this.makeTransducerOption = Object.values(make);
 						});
 					});
 					this.scannersObject = Object.values(response.scanners);
@@ -242,18 +214,34 @@ export class EquipmentComponent implements OnInit {
 					console.log(error);
 				});
 	}
+
+	// scanner id
+	getScannerId(scanner_id: any) {
+		var scannerNameList:any;
+		 // scanner list 
+		 this.scannerLists.forEach((res: any) => {
+			let scannerName: any[] = [];
+			scannerName.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
+			let sName = scannerName.filter((val: any, index: any) => scannerName.indexOf(val) == index);
+			scannerNameList = [
+				{scanner_id: res.scanner_id, scannerName:sName}
+			]
+		 });
+		return this.scannerLists.find((scanner: any) => scanner.scanner_id === scanner_id).scannerName;
+    }
+
 	// modelNameList filter on make
 	modelFilter(make: any) {
+		this.modelNameList = [];
 		let data = make;
 		let scannerList = this.scanners;
-		this.modelNameList = [];
 		if (data) {
 			// duplicate value remove in model list
 			this.scannerFormGroup.controls['model'].enable()
 			let modelName = scannerList.filter((item: any) => { return item.make == data });
 			modelName.forEach((item: any) => {
 				this.modelNameList.push(item.model);
-				this.modelNameList = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
 		} else {
 			this.scannerFormGroup.controls['model'].disable()
@@ -274,7 +262,7 @@ export class EquipmentComponent implements OnInit {
 			let modelName = transducerList.filter((item: any) => { return item.make == data });
 			modelName.forEach((item: any) => {
 				this.modelTranducerNameList.push(item.model);
-				this.modelTranducerNameList = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
 		} else {
 			this.transducerFormGroup.controls['model'].disable()
@@ -330,51 +318,57 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	// autocomplete button filter
-	private _filterMake(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.makeOptions.filter(option => option.toLowerCase().includes(filterValue));
+	//scanner make autocomplete
+	private make_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.makeOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterFacility(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.facilityOptions.filter(option => option.toLowerCase().includes(filterValue));
+	// scanner model autocomplete
+	private model_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.modelOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+	}
+	//scanner room autocomplete
+	private room_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.roomOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterModel(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.modelOptions.filter(option => option.toLowerCase().includes(filterValue));
+	//scanner facility autocomplete
+	private facility_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.facilityOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterRoom(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.roomOptions.filter(option => option.toLowerCase().includes(filterValue));
-	}
-
-	private _filterScanner(name: string): any[] {
+	//scanner scanner autocomplete
+	private scanner_filter(name: string): string[] {
 		const filterValue = name.toLowerCase();
 		return this.scannerOptions.filter(option => option.toLowerCase().includes(filterValue));
 	}
 
-
-	private _filterType(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.scannerOptions.filter(option => option.toLowerCase().includes(filterValue));
+	// Transducer model autocomplete
+	private modelTransducer_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.modelTransducerOption.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterMakeTransducer(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.makeTransducerOption.filter(option => option.toLowerCase().includes(filterValue));
+	// Transducer make autocomplete
+	private makeTransducer_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.makeTransducerOption.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterModelTransducer(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.modelTransducerOption.filter(option => option.toLowerCase().includes(filterValue));
+	// Transducer type autocomplete
+	private type_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.typeTransducerOption.filter((option: string) => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
-	private _filterImageTransducer(name: string): any[] {
-		const filterValue = name.toLowerCase();
-		return this.imageOptions.filter(option => option.toLowerCase().includes(filterValue));
+	// Transducer image autocomplete
+	private image_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.imageOptions.filter((option: string) => option.toLowerCase().indexOf(filterValue) === 0);
 	}
 
 	// add scanner modal
@@ -410,7 +404,6 @@ export class EquipmentComponent implements OnInit {
 
 	// save tranducer 
 	onSubmitTranducer() {
-		let scannerId;
 		let data = this.transducerFormGroup.value;
 		let obj = {
 			"transducer": {
@@ -431,7 +424,7 @@ export class EquipmentComponent implements OnInit {
 
 			}
 		};
-		console.log("tranducer list", obj);
+
 		this.equipmentService.addTranducer(obj)
 			.subscribe(
 				response => {
@@ -455,12 +448,13 @@ export class EquipmentComponent implements OnInit {
 
 	// view transducer modal
 	onTransducerDetail(equipment: any, scanner: any, transducerView: any) {
-		 var scannerName: any;
+		var scannerName: any;
 		if (scanner == 'scanner') {
-			scannerName ='';
-		} else { 
-		scannerName = scanner.make + " " + scanner.model + "" + ' : ' + "" + scanner.serial_number;
+			scannerName = '';
+		} else {
+			scannerName = scanner.make + " " + scanner.model + "" + ' : ' + "" + scanner.serial_number;
 		}
+
 		this.viewTransducer = {
 			make: equipment.make,
 			model: equipment.model,
@@ -542,6 +536,7 @@ export class EquipmentComponent implements OnInit {
 	onTransducerEdit(viewTransducer: any, transducerModal: any) {
 		this.transducerModalTitle = 'Edit Transducer';
 		this.transducerFormGroup.controls['model'].enable();
+
 		this.setMakeTransducer(viewTransducer.make);
 		this.setModelTransducer(viewTransducer.model);
 		this.setSNTransducer(viewTransducer.serial_number);
@@ -557,6 +552,16 @@ export class EquipmentComponent implements OnInit {
 	// add transducer modal
 	onTransducer(transducerModal: any) {
 		this.transducerModalTitle = 'New Transducer';
+
+		// scanner list 
+		this.scannersObject.forEach((res: any) => {
+			let scannerNameList: any[] = [];
+			scannerNameList.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
+			let result = scannerNameList.filter((val: any, index: any) => scannerNameList.indexOf(val) == index);
+			let obj = {scanner_id: res.scanner_id, scannerName:result};
+			this.scannerLists.push(obj);	
+		});
+		
 		this.setMakeTransducer('');
 		this.setModelTransducer('');
 		this.setSNTransducer('');
