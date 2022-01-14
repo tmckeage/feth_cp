@@ -374,11 +374,11 @@
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
                     <div id="scannerPrint" #scannerPrint class="scanner-print">
-                        <button printSectionId="scannerPrint" ngxPrint  [useExistingCss]="true">
+                        <button id="scanner" printSectionId="scannerPrint" ngxPrint  [useExistingCss]="true" class="tranducerPrint" (click)="isPrint()">
                             <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
-                                [bc-value]="viewData.barcode" [bc-display-value]="true" ></ngx-barcode6>
-                        </button>
-                    </div>
+                                [bc-value]="viewData.barcode" [bc-display-value]="true"></ngx-barcode6>
+                        </button> 
+                    </div> 
                 </div>
             </div>
         </div>

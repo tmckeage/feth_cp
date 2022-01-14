@@ -69,6 +69,7 @@ export class EquipmentComponent implements OnInit {
 	makeTranducerNameList: any[] = [];
 	modelTranducerNameList: any[] = [];
 	unassignedTransducers: any[] = [];
+	clicked: boolean = false;
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -579,6 +580,12 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
+	}
+
+	isPrint(){
+		var x: any = document.getElementById('#scannerPrint') as HTMLFormElement;
+ 		 x.style.height = "300px";
+		 x.style.width = "300px";
 	}
 
 	// Reports Error
