@@ -139,8 +139,7 @@ export class EquipmentComponent implements OnInit {
 
 		this.filteredScanner = this.transducerFormGroup.controls['scanner'].valueChanges.pipe(
 			startWith(''),
-			map(value => typeof value === 'string' ? value : value.name),
-			map(name => name ? this.scanner_filter(name) : this.scannerOptions.slice())
+			map(value => this.modelTransducer_filter(value))
 		);
 
 		this.filteredType = this.transducerFormGroup.controls['type'].valueChanges.pipe(
@@ -343,9 +342,9 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	//scanner scanner autocomplete
-	private scanner_filter(name: string): string[] {
-		const filterValue = name.toLowerCase();
-		return this.scannerOptions.filter(option => option.toLowerCase().includes(filterValue));
+	private scanner_filter(value: string): string[] {
+		const filterValue = value.toLowerCase();
+		return this.scannerLists.filter(option => option.name.toLowerCase().includes(filterValue));
 	}
 
 	// Transducer model autocomplete
@@ -553,6 +552,7 @@ export class EquipmentComponent implements OnInit {
 	// add transducer modal
 	onTransducer(transducerModal: any) {
 		this.transducerModalTitle = 'New Transducer';
+		this.scannerLists = [];
 
 		// scanner list 
 		this.scannersObject.forEach((res: any) => {
