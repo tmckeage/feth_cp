@@ -584,8 +584,8 @@ export class EquipmentComponent implements OnInit {
 
 	isPrint(){
 		var x: any = document.getElementById('#scannerPrint') as HTMLFormElement;
- 		 x.style.height = "300px";
-		 x.style.width = "300px";
+ 		 x.style.height = "100px";
+		 x.style.width = "100px"
 	}
 
 	// Reports Error
