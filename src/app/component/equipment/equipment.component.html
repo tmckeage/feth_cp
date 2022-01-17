@@ -18,7 +18,7 @@
                 <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility"
                     (change)="equipmentFilter();onRoomList()">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let facility of facilityList" value="{{facility}}">
+                    <option *ngFor="let facility of facilityOptions" value="{{facility}}">
                         {{facility}}</option>
                 </select>
             </div>
@@ -29,7 +29,7 @@
                 <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()"
                     [disabled]="!isRoom">
                     <option value="0">--Select--</option>
-                    <option *ngFor="let room of filteredRoom | async" value="{{room}}">{{room}}</option>
+                    <option *ngFor="let room of roomList" value="{{room}}">{{room}}</option>
                 </select>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-6 float-start" id="due-date">
@@ -68,7 +68,7 @@
             <div class="row d-inline mt-4">
                 <ul class="ms-5">
                     <li class="cursorPointer" *ngFor="let transducer of unassignedTransducers"><a src="#"
-                           (click)="onTransducerDetail(transducer,'scanner',transducerView)">{{transducer.make}}
+                            (click)="onTransducerDetail(transducer,'scanner',transducerView)">{{transducer.make}}
                             {{transducer.model}} : {{transducer.serial_number}}</a></li>
                 </ul>
             </div>
@@ -90,10 +90,10 @@
                     <div class="col-md-6">
                         <mat-form-field appearance="fill">
                             <mat-label>Make :</mat-label>
-                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make" (keyup)="modelFilter(make)">
-                            <mat-autocomplete #make="matAutocomplete">
-                                <mat-option *ngFor="let make of filteredMake | async" [value]="make"
-                                    (onSelectionChange)="modelFilter(make)">
+                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
+                            <mat-autocomplete #make="matAutocomplete"
+                                (optionSelected)='modelFilter($event.option.value)'>
+                                <mat-option *ngFor="let make of filteredMake | async" [value]="make">
                                     {{make}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -120,7 +120,7 @@
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
                             <mat-autocomplete #model="matAutocomplete">
-                                <mat-option *ngFor="let model of filteredModel | async" [value]="model">
+                                <mat-option *ngFor="let model of modelOptions" [value]="model">
                                     {{model}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -175,9 +175,9 @@
                             <mat-label>Make :</mat-label>
                             <input type="text" matInput formControlName="make" required [matAutocomplete]="make"
                                 (keyup)="onKey($event,make);modelTranducerFilter(make)">
-                            <mat-autocomplete #make="matAutocomplete">
-                                <mat-option *ngFor="let make of filteredMakeTransducer | async" value="{{make}}"
-                                    (onSelectionChange)="onChangeMakeTransducer(make);modelTranducerFilter(make)">
+                            <mat-autocomplete #make="matAutocomplete"
+                                (optionSelected)='modelTranducerFilter($event.option.value)'>
+                                <mat-option *ngFor="let make of filteredMakeTransducer | async" value="{{make}}">
                                     {{make}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -205,7 +205,7 @@
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
                                 (keyup)="onKey($event, model)">
                             <mat-autocomplete #model="matAutocomplete">
-                                <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}"
+                                <mat-option *ngFor="let model of modelTranducerNameList" value="{{model}}"
                                     (onSelectionChange)="onChangeModalTransducer(model)">
                                     {{model}}
                                 </mat-option>
@@ -373,12 +373,13 @@
                 </div>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <div id="scannerPrint" #scannerPrint class="scanner-print">
-                        <button id="scanner" printSectionId="scannerPrint" ngxPrint  [useExistingCss]="true" class="tranducerPrint" (click)="isPrint()">
+                    <div class="scanner-print">
+                        <button id="scanner" printSectionId="scannerPrint" ngxPrint [useExistingCss]="true"
+                            class="tranducerPrint" (click)="printScanner(viewData.barcode)">
                             <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
                                 [bc-value]="viewData.barcode" [bc-display-value]="true"></ngx-barcode6>
-                        </button> 
-                    </div> 
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -435,8 +436,9 @@
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Barcode:</label>&nbsp;
-                        <div id="tranducerPrint" #tranducerPrint class="scanner-print">
-                            <button class="tranducerPrint" printSectionId="tranducerPrint" ngxPrint>
+                        <div class="scanner-print">
+                            <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint
+                                (click)="printScanner(viewTransducer.barcode)">
                                 <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
                                     [bc-value]="viewTransducer.barcode" [bc-display-value]="true"></ngx-barcode6>
                             </button>
@@ -551,3 +553,10 @@
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
+
+    <!-- Barcode print code -->
+    <div id="scannerPrint" #scannerPrint class="scanner-print hide" *ngIf="printScannerFlag">
+        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
+            [bc-fontSize]="20" [bc-display-value]="true">
+        </ngx-barcode6>
+    </div>

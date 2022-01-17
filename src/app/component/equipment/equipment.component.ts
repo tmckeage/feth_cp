@@ -70,6 +70,8 @@ export class EquipmentComponent implements OnInit {
 	modelTranducerNameList: any[] = [];
 	unassignedTransducers: any[] = [];
 	clicked: boolean = false;
+	printScannerFlag: boolean = false;
+	barcodeValue: any;
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -229,7 +231,7 @@ export class EquipmentComponent implements OnInit {
 		 });
 		return this.scannerLists.find((scanner: any) => scanner.scanner_id === scanner_id).scannerName;
     }
-
+    
 	// modelNameList filter on make
 	modelFilter(make: any) {
 		this.modelNameList = [];
@@ -239,33 +241,44 @@ export class EquipmentComponent implements OnInit {
 			// duplicate value remove in model list
 			this.scannerFormGroup.controls['model'].enable()
 			let modelName = scannerList.filter((item: any) => { return item.make == data });
-			modelName.forEach((item: any) => {
+		 	modelName.forEach((item: any) => {
 				this.modelNameList.push(item.model);
 				this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
 		} else {
-			this.scannerFormGroup.controls['model'].disable()
+			this.scannerFormGroup.controls['model'].disable();
+			this.modelNameList = [];
 		}
+
 	}
 
 	// modelNameList filter on make
 	modelTranducerFilter(make: any) {
 		let data = make;
-		let transducerList: any;
+		let transducerList: any[] = [];
 		this.modelTranducerNameList = [];
-		this.scanners.forEach((res: any) => {
-			transducerList = res.transducers;
+		// transducer list
+		this.scannersObject.forEach((res: any) => {
+			transducerList.push(res.transducers);
 		});
+
 		if (data) {
 			// duplicate value remove in model list
-			this.transducerFormGroup.controls['model'].enable()
-			let modelName = transducerList.filter((item: any) => { return item.make == data });
-			modelName.forEach((item: any) => {
+			this.transducerFormGroup.controls['model'].enable();
+			transducerList.forEach((res: any) => {
+	         // unassigned Transducers list
+		     this.unassignedTransducers.forEach((elements: any) => {
+			  transducerList.push(elements);
+		    });
+			let modelName = res.filter((item: any) => { return item.make == data });
+			 modelName.forEach((item: any) => {
 				this.modelTranducerNameList.push(item.model);
-				this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				this.modelTranducerNameList = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
+		});
+
 		} else {
-			this.transducerFormGroup.controls['model'].disable()
+			this.transducerFormGroup.controls['model'].disable();
 		}
 	}
 	// equipment filter
@@ -594,6 +607,13 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.open(reportsError, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
+	}
+	// scanner print
+	printScanner(barcode: any) {
+	this.printScannerFlag = true;
+	this.barcodeValue = barcode;
+	
+
 	}
 
 	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
