@@ -39,7 +39,7 @@ export class EquipmentComponent implements OnInit {
 	filteredFacility: Observable<any[]>;
 	filteredModel: Observable<any[]>;
 	filteredRoom: Observable<any[]>;
-	filteredScanner: Observable<any[]>;
+	// filteredScanner: Observable<any[]>;
 	filteredMakeTransducer: Observable<any[]>;
 	filteredModelTransducer: Observable<any[]>;
 	filteredImageTransducer: Observable<any[]>;
@@ -139,10 +139,10 @@ export class EquipmentComponent implements OnInit {
 			map(value => this.modelTransducer_filter(value))
 		);
 
-		this.filteredScanner = this.transducerFormGroup.controls['scanner'].valueChanges.pipe(
-			startWith(''),
-			map(value => this.modelTransducer_filter(value))
-		);
+		// this.filteredScanner = this.transducerFormGroup.controls['scanner'].valueChanges.pipe(
+		// 	startWith(''),
+		// 	map(value => this.scannerTransducer_filter(value))
+		// );
 
 		this.filteredType = this.transducerFormGroup.controls['type'].valueChanges.pipe(
 			startWith(''),
@@ -273,7 +273,7 @@ export class EquipmentComponent implements OnInit {
 			let modelName = res.filter((item: any) => { return item.make == data });
 			 modelName.forEach((item: any) => {
 				this.modelTranducerNameList.push(item.model);
-				this.modelTranducerNameList = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
 		});
 
@@ -371,6 +371,12 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = value.toLowerCase();
 		return this.makeTransducerOption.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
+
+	//
+	// private scannerTransducer_filter(value: string): string[] {
+	// 	const filterValue = value.toLowerCase();
+	// 	return this.scannerOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+	// }
 
 	// Transducer type autocomplete
 	private type_filter(value: string): string[] {
