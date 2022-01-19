@@ -219,19 +219,19 @@ export class EquipmentComponent implements OnInit {
 
 	// scanner id
 	getScannerId(scanner_id: any) {
-		var scannerNameList:any;
-		 // scanner list 
-		 this.scannerLists.forEach((res: any) => {
+		var scannerNameList: any;
+		// scanner list 
+		this.scannerLists.forEach((res: any) => {
 			let scannerName: any[] = [];
 			scannerName.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
 			let sName = scannerName.filter((val: any, index: any) => scannerName.indexOf(val) == index);
 			scannerNameList = [
-				{scanner_id: res.scanner_id, scannerName:sName}
+				{ scanner_id: res.scanner_id, scannerName: sName }
 			]
-		 });
+		});
 		return this.scannerLists.find((scanner: any) => scanner.scanner_id === scanner_id).scannerName;
-    }
-    
+	}
+
 	// modelNameList filter on make
 	modelFilter(make: any) {
 		this.modelNameList = [];
@@ -241,7 +241,7 @@ export class EquipmentComponent implements OnInit {
 			// duplicate value remove in model list
 			this.scannerFormGroup.controls['model'].enable()
 			let modelName = scannerList.filter((item: any) => { return item.make == data });
-		 	modelName.forEach((item: any) => {
+			modelName.forEach((item: any) => {
 				this.modelNameList.push(item.model);
 				this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
@@ -266,16 +266,16 @@ export class EquipmentComponent implements OnInit {
 			// duplicate value remove in model list
 			this.transducerFormGroup.controls['model'].enable();
 			transducerList.forEach((res: any) => {
-	         // unassigned Transducers list
-		     this.unassignedTransducers.forEach((elements: any) => {
-			  transducerList.push(elements);
-		    });
-			let modelName = res.filter((item: any) => { return item.make == data });
-			 modelName.forEach((item: any) => {
-				this.modelTranducerNameList.push(item.model);
-				this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				// unassigned Transducers list
+				this.unassignedTransducers.forEach((elements: any) => {
+					transducerList.push(elements);
+				});
+				let modelName = res.filter((item: any) => { return item.make == data });
+				modelName.forEach((item: any) => {
+					this.modelTranducerNameList.push(item.model);
+					this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+				});
 			});
-		});
 
 		} else {
 			this.transducerFormGroup.controls['model'].disable();
@@ -330,13 +330,11 @@ export class EquipmentComponent implements OnInit {
 			this.roomList = Object.values(room);
 		});
 	}
-
 	//scanner make autocomplete
 	private make_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
 		return this.makeOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
-
 	// scanner model autocomplete
 	private model_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
@@ -578,10 +576,10 @@ export class EquipmentComponent implements OnInit {
 			let scannerNameList: any[] = [];
 			scannerNameList.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
 			let result = scannerNameList.filter((val: any, index: any) => scannerNameList.indexOf(val) == index);
-			let obj = {scanner_id: res.scanner_id, scannerName:result};
-			this.scannerLists.push(obj);	
+			let obj = { scanner_id: res.scanner_id, scannerName: result };
+			this.scannerLists.push(obj);
 		});
-		
+
 		this.setMakeTransducer('');
 		this.setModelTransducer('');
 		this.setSNTransducer('');
@@ -601,10 +599,10 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	isPrint(){
+	isPrint() {
 		var x: any = document.getElementById('#scannerPrint') as HTMLFormElement;
- 		 x.style.height = "100px";
-		 x.style.width = "100px"
+		x.style.height = "100px";
+		x.style.width = "100px"
 	}
 
 	// Reports Error
@@ -616,9 +614,9 @@ export class EquipmentComponent implements OnInit {
 	}
 	// scanner print
 	printScanner(barcode: any) {
-	this.printScannerFlag = true;
-	this.barcodeValue = barcode;
-	
+		this.printScannerFlag = true;
+		this.barcodeValue = barcode;
+
 
 	}
 
