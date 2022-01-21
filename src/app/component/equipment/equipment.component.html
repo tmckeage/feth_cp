@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" (click) ="onModel()">
                         <mat-form-field appearance="fill">
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
@@ -161,7 +161,7 @@
         </div>
     </ng-template>
 
-    
+
     <!-- Add/ Edit transducer modal -->
     <ng-template #transducerModal let-modal>
         <div class="modal-header">
@@ -200,7 +200,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" (click)="onModelTranducer()">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
