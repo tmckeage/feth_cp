@@ -69,7 +69,6 @@ export class EquipmentComponent implements OnInit {
 	modelTranducerNameList: any[] = [];
 	unassignedTransducers: any[] = [];
 	clicked: boolean = false;
-	printScannerFlag: boolean = false;
 	barcodeValue: any;
 	selectedMake: any;
 	selectedTransducerModel: any;
@@ -594,7 +593,6 @@ export class EquipmentComponent implements OnInit {
 	}
 	// scanner print
 	printScanner(barcode: any) {
-		this.printScannerFlag = true;
 		this.barcodeValue = barcode;
 
 

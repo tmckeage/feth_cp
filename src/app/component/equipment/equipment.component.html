@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6" (click) ="onModel()">
+                    <div class="col-md-6" (click)="onModel()">
                         <mat-form-field appearance="fill">
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
@@ -374,7 +374,7 @@
                 </div>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <div class="scanner-print">
+                    <div class="scanner-print" (click)="printScanner(viewData.barcode)">
                         <button id="scanner" printSectionId="scannerPrint" ngxPrint [useExistingCss]="true"
                             class="tranducerPrint" (click)="printScanner(viewData.barcode)">
                             <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
@@ -437,7 +437,7 @@
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Barcode:</label>&nbsp;
-                        <div class="scanner-print">
+                        <div class="scanner-print" (click)="printScanner(viewTransducer.barcode)">
                             <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint
                                 (click)="printScanner(viewTransducer.barcode)">
                                 <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
@@ -556,7 +556,7 @@
     </ng-template>
 
     <!-- Barcode print code -->
-    <div id="scannerPrint" #scannerPrint class="scanner-print hide" *ngIf="printScannerFlag">
+    <div id="scannerPrint" #scannerPrint class="scanner-print hidePrintView">
         <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
             [bc-fontSize]="20" [bc-display-value]="true">
         </ngx-barcode6>
