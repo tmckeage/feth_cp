@@ -63,7 +63,7 @@
                 </ul>
             </div>
         </div>
-        <div class="" *ngIf="!loading">
+        <div class="h-4" *ngIf="!loading">
             <div class="col-md-4 cursorPointer">Unassigned Transducers</div>
             <div class="row d-inline mt-4">
                 <ul class="ms-5">
@@ -76,6 +76,13 @@
         <div class="row" *ngIf="loading">
             <mat-spinner diameter="50" customSpinner color="#fff" *ngIf="loading"></mat-spinner>
         </div>
+    </div>
+
+    <!-- Barcode print code -->
+    <div id="scannerPrint" #scannerPrint class="scanner-print" *ngFor="let res of barcodeValue">
+        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="res"
+            [bc-fontSize]="20" [bc-display-value]="true">
+        </ngx-barcode6>
     </div>
 
     <!-- Add / Edit Scanner modal -->
@@ -264,24 +271,38 @@
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">4cm</label>
+                                            <div class="row">
+                                                <div class="col-md-2 col-lg-2 col-sm-2">
+                                                    <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
+                                                </div>
+                                                <div class="col-md-10 col-lg-10 col-sm-10">
+                                                    <input type="text" class="w-30 me-1 h-30" formControlName="p0_x">
+                                                    <input type="text" class="w-30 h-30" formControlName="p0_y">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">520,-200</label>
+                                            <div class="row">
+                                                <div class="col-md-2 col-lg-2 col-sm-2">
+                                                    <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
+                                                </div>
+                                                <div class="col-md-10 col-lg-10 col-sm-10">
+                                                    <input type="text" class="w-25 h-75 me-1" formControlName="p1_x">
+                                                    <input type="text" class="w-25 h-75" formControlName="p1_y">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">60</label>
+                                            <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
+                                            <input type="text" class="w-50 h-75" formControlName="radius_one">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">360 cm</label>
+                                            <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
+                                            <input type="text" class="w-50 h-75" formControlName="radius_two">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">600 cm</label>
+                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
+                                            <input type="text" class="w-50 h-75" formControlName="theta">
                                         </div>
                                     </div>
                                 </div>
@@ -296,24 +317,24 @@
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">4cm</label>
+                                            <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"></label>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">520,-200</label>
+                                            <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"></label>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">60</label>
+                                            <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"></label>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">360 cm</label>
+                                            <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"></label>
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">600 cm</label>
+                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -374,11 +395,12 @@
                 </div>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
-                    <div class="scanner-print" (click)="printScanner(viewData.barcode)">
+                    <div class="scanner-print">
                         <button id="scanner" printSectionId="scannerPrint" ngxPrint [useExistingCss]="true"
-                            class="tranducerPrint" (click)="printScanner(viewData.barcode)">
+                            class="tranducerPrint">
                             <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
-                                [bc-value]="viewData.barcode" [bc-display-value]="true"></ngx-barcode6>
+                                (click)="printScanner(viewData.barcode)" [bc-value]="viewData.barcode"
+                                [bc-display-value]="true"></ngx-barcode6>
                         </button>
                     </div>
                 </div>
@@ -437,11 +459,11 @@
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Barcode:</label>&nbsp;
-                        <div class="scanner-print" (click)="printScanner(viewTransducer.barcode)">
-                            <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint
-                                (click)="printScanner(viewTransducer.barcode)">
+                        <div class="scanner-print">
+                            <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint>
                                 <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
-                                    [bc-value]="viewTransducer.barcode" [bc-display-value]="true"></ngx-barcode6>
+                                    (click)="printScanner(viewTransducer.barcode)" [bc-value]="viewTransducer.barcode"
+                                    [bc-display-value]="true"></ngx-barcode6>
                             </button>
                         </div>
                     </div>
@@ -465,30 +487,40 @@
                                 <div class="col-4">
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">4cm</label>
+                                        <div class="form-group input-group-sm" *ngIf="uniformity_analysis.p0 != null">
+                                            <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end">{{uniformity_analysis.p0.x}} ,
+                                                {{uniformity_analysis.p0.y}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">520,-200</label>
+                                        <div class="form-group input-group-sm" *ngIf="uniformity_analysis.p1 != null">
+                                            <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end">
+                                                <span>{{uniformity_analysis?.p1?.x}} , {{uniformity_analysis?.p1?.y}}
+                                                </span></label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">60</label>
+
+                                        <div class="form-group input-group-sm"
+                                            *ngIf="uniformity_analysis.radius_one != null">
+                                            <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
+                                            <label
+                                                class="col-form-label-sm float-end">{{uniformity_analysis.radius_one}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">360 cm</label>
+                                        <div class="form-group input-group-sm"
+                                            *ngIf="uniformity_analysis.radius_two != null">
+                                            <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
+                                            <label
+                                                class="col-form-label-sm float-end">{{uniformity_analysis.radius_two}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">600 cm</label>
+                                        <div class="form-group input-group-sm"
+                                            *ngIf="uniformity_analysis.theta != null">
+                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
+                                            <label
+                                                class="col-form-label-sm float-end">{{uniformity_analysis.theta}}</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-8">
-                                    <img class="scanner-img" src="../../../assets/scanner.png">
+                                <div class="col-8" *ngIf="uniformity_analysis.img != null">
+                                    <img class="scanner-img" src="{{image_analysis.img}}">
                                 </div>
                             </div>
                         </mat-tab>
@@ -497,30 +529,37 @@
                                 <div class="col-4">
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Depth: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">4cm</label>
+                                        <div class="form-group input-group-sm" *ngIf="image_analysis.p0 != null">
+                                            <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end">{{image_analysis.p0.x}} ,
+                                                {{image_analysis.p0.y}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Origin: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">520,-200</label>
+                                        <div class="form-group input-group-sm" *ngIf="image_analysis.p1 != null">
+                                            <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end"> <span>{{image_analysis?.p1?.x}}
+                                                    , {{image_analysis?.p1?.y}} </span></label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Field of view: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">60</label>
+
+                                        <div class="form-group input-group-sm"
+                                            *ngIf="image_analysis.radius_one != null">
+                                            <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
+                                            <label
+                                                class="col-form-label-sm float-end">{{image_analysis.radius_one}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Start Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">360 cm</label>
+                                        <div class="form-group input-group-sm"
+                                            *ngIf="image_analysis.radius_two != null">
+                                            <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
+                                            <label
+                                                class="col-form-label-sm float-end">{{image_analysis.radius_two}}</label>
                                         </div>
-                                        <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">End Radius: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end">600 cm</label>
+                                        <div class="form-group input-group-sm" *ngIf="image_analysis.theta != null">
+                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
+                                            <label class="col-form-label-sm float-end">{{image_analysis.theta}}</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-8">
-                                    <img class="scanner-img" src="../../../assets/scanner.png">
+                                <div class="col-8" *ngIf="image_analysis.img != null">
+                                    <img class="scanner-img" src="{{image_analysis.img}}">
                                 </div>
                             </div>
                         </mat-tab>
@@ -533,7 +572,8 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm"
-                (click)="onTransducerEdit(viewTransducer,transducerModal)">Edit </button>
+                (click)="onTransducerEdit(viewTransducer,transducerModal, image_analysis, uniformity_analysis)">Edit
+            </button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
         </div>
     </ng-template>
@@ -554,10 +594,3 @@
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
-
-    <!-- Barcode print code -->
-    <div id="scannerPrint" #scannerPrint class="scanner-print hidePrintView">
-        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
-            [bc-fontSize]="20" [bc-display-value]="true">
-        </ngx-barcode6>
-    </div>

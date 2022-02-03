@@ -24,6 +24,8 @@ export class EquipmentComponent implements OnInit {
 	transducerModalTitle: any = '';
 	viewData: any;
 	viewTransducer: any;
+	image_analysis: any;
+	uniformity_analysis: any;
 	dueDate: FormGroup;
 	scannerFormGroup: FormGroup;
 	transducerFormGroup: FormGroup;
@@ -69,9 +71,10 @@ export class EquipmentComponent implements OnInit {
 	modelTranducerNameList: any[] = [];
 	unassignedTransducers: any[] = [];
 	clicked: boolean = false;
-	barcodeValue: any;
+	barcodeValue: any[] = [];
 	selectedMake: any;
 	selectedTransducerModel: any;
+	isUniformityAnalysis: boolean = false;
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -89,7 +92,7 @@ export class EquipmentComponent implements OnInit {
 			"model": new FormControl('', [Validators.required]),
 			"room": new FormControl('', []),
 			"facility": new FormControl('', []),
-			"serial_number": new FormControl('', [Validators.required]),
+			"serial_number": new FormControl('', [Validators.required])
 		});
 
 		// due date calendar form
@@ -106,6 +109,13 @@ export class EquipmentComponent implements OnInit {
 			"serial_number": new FormControl('', [Validators.required]),
 			"type": new FormControl('', [Validators.required]),
 			"image": new FormControl('', []),
+			"p0_x": new FormControl('', []),
+			"p0_y": new FormControl('', []),
+			"p1_x": new FormControl('', []),
+			"p1_y": new FormControl('', []),
+			"radius_one": new FormControl('', []),
+			"radius_two": new FormControl('', []),
+			"theta": new FormControl('', [])
 		});
 
 		// filter values in autocomplete
@@ -466,6 +476,28 @@ export class EquipmentComponent implements OnInit {
 			type: equipment.type
 		};
 
+		let imageAnalysis = equipment.analysis_parameters.image_quality_analysis;
+		let uniformityAnalysis = equipment.analysis_parameters.uniformity_analysis;
+
+		this.image_analysis = {
+			p0: imageAnalysis.p0,
+			p1: imageAnalysis.p1,
+			radius_one: imageAnalysis.radius_one,
+			radius_two: imageAnalysis.radius_two,
+			theta: imageAnalysis.theta,
+			img: imageAnalysis.img
+		}
+
+		this.uniformity_analysis = {
+			p0: uniformityAnalysis.p0,
+			p1: uniformityAnalysis.p1,
+			radius_one: uniformityAnalysis.radius_one,
+			radius_two: uniformityAnalysis.radius_two,
+			theta: uniformityAnalysis.theta,
+			img: uniformityAnalysis.img
+		}
+
+
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -535,7 +567,7 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	// transducer edit modal
-	onTransducerEdit(viewTransducer: any, transducerModal: any) {
+	onTransducerEdit(viewTransducer: any, transducerModal: any, image_analysis: any, uniformity_analysis: any) {
 		this.transducerModalTitle = 'Edit Transducer';
 		this.transducerFormGroup.controls['model'].enable();
 
@@ -544,6 +576,7 @@ export class EquipmentComponent implements OnInit {
 		this.setSNTransducer(viewTransducer.serial_number);
 		this.setScannerTransducer(viewTransducer.scanner);
 		this.setTypeTransducer(viewTransducer.type);
+		
 		this.isModel = true;
 		this.modalService.dismissAll();
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
@@ -593,9 +626,8 @@ export class EquipmentComponent implements OnInit {
 	}
 	// scanner print
 	printScanner(barcode: any) {
-		this.barcodeValue = barcode;
-
-
+		this.barcodeValue.push(barcode);
+		console.log(this.barcodeValue);
 	}
 
 	// on select make autocomplete display model list
