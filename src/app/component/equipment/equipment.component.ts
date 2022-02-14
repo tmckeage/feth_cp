@@ -71,10 +71,11 @@ export class EquipmentComponent implements OnInit {
 	modelTranducerNameList: any[] = [];
 	unassignedTransducers: any[] = [];
 	clicked: boolean = false;
-	barcodeValue: any[] = [];
+	barcodeValue: any;
 	selectedMake: any;
 	selectedTransducerModel: any;
 	isUniformityAnalysis: boolean = false;
+	isDeleteFlag: any = '0';
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -497,6 +498,12 @@ export class EquipmentComponent implements OnInit {
 			img: uniformityAnalysis.img
 		}
 
+		if (imageAnalysis == undefined || uniformityAnalysis == undefined) {
+			this.modalService.dismissAll();
+			this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
+				this.closeResult = `Closed with: ${result}`;
+			});
+		}
 
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
@@ -517,6 +524,46 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		});
+	}
+
+	isDelete(viewData: any, deleteScanner: any) {
+		this.modalService.open(deleteScanner, { ariaLabelledBy: 'modal-basic-title', size: 'sm' }).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		});
+	}
+
+	TransducerDelete(viewTransducer: any, deleteScanner: any) {
+		this.modalService.open(deleteScanner, { ariaLabelledBy: 'modal-basic-title', size: 'sm' }).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		});
+	}
+
+	// delete scanner  scanner_id
+	deleteValue(id: any, deleteScanner: any) {
+		let data = id.scanner_id;
+		this.equipmentService.deleteScanner(data)
+			.subscribe(
+				response => {
+					this.toastr.success('Scanner delete successfully', '');
+					this.getAllScanner();
+					this.modalService.dismissAll();
+				},
+				error => {
+					console.log(error);
+				});
+	}
+
+	// delete deleteTransducer
+	deleteTransducerValue(id: any) {
+		this.equipmentService.deleteTranducer(id.scanner_id)
+			.subscribe(
+				response => {
+					this.getAllScanner();
+					this.toastr.success('Transducer delete successfully', '');
+				},
+				error => {
+					console.log(error);
+				});
 	}
 
 	// on change make for transducer
@@ -576,7 +623,7 @@ export class EquipmentComponent implements OnInit {
 		this.setSNTransducer(viewTransducer.serial_number);
 		this.setScannerTransducer(viewTransducer.scanner);
 		this.setTypeTransducer(viewTransducer.type);
-		
+
 		this.isModel = true;
 		this.modalService.dismissAll();
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
@@ -626,8 +673,7 @@ export class EquipmentComponent implements OnInit {
 	}
 	// scanner print
 	printScanner(barcode: any) {
-		this.barcodeValue.push(barcode);
-		console.log(this.barcodeValue);
+		this.barcodeValue = barcode;
 	}
 
 	// on select make autocomplete display model list
@@ -675,6 +721,7 @@ export class EquipmentComponent implements OnInit {
 			this.transducerFormGroup.controls['model'].disable();
 		}
 	}
+
 
 	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }

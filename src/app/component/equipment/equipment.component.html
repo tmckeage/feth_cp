@@ -56,7 +56,7 @@
                 <div class="col-md-2">{{scanner.next_Study_Due.date | date: 'M/d/yyyy'}}</div>
             </div>
             <div class="row d-inline">
-                <ul class="ms-5">
+                <ul class="ms-5 col-md-10 col-sm-10 col-lg-10">
                     <li class="cursorPointer" *ngFor="let transducer of scanner.transducers"><a src="#"
                             (click)="onTransducerDetail(transducer,scanner,transducerView)">{{transducer.make}}
                             {{transducer.model}} : {{transducer.serial_number}}</a></li>
@@ -79,8 +79,8 @@
     </div>
 
     <!-- Barcode print code -->
-    <div id="scannerPrint" #scannerPrint class="scanner-print" *ngFor="let res of barcodeValue">
-        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="res"
+    <div id="scannerPrint" #scannerPrint class="scanner-print">
+        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
             [bc-fontSize]="20" [bc-display-value]="true">
         </ngx-barcode6>
     </div>
@@ -271,26 +271,14 @@
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
                                         <div class="form-group input-group-sm">
-                                            <div class="row">
-                                                <div class="col-md-2 col-lg-2 col-sm-2">
-                                                    <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
-                                                </div>
-                                                <div class="col-md-10 col-lg-10 col-sm-10">
-                                                    <input type="text" class="w-30 me-1 h-30" formControlName="p0_x">
-                                                    <input type="text" class="w-30 h-30" formControlName="p0_y">
-                                                </div>
-                                            </div>
+                                            <label class="col-form-label-sm fw-bold me-5">P0: </label>&nbsp;&nbsp;&nbsp;
+                                            <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p0_x">
+                                            <input type="text" class="w-25 h-75" formControlName="p0_y">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <div class="row">
-                                                <div class="col-md-2 col-lg-2 col-sm-2">
-                                                    <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
-                                                </div>
-                                                <div class="col-md-10 col-lg-10 col-sm-10">
-                                                    <input type="text" class="w-25 h-75 me-1" formControlName="p1_x">
-                                                    <input type="text" class="w-25 h-75" formControlName="p1_y">
-                                                </div>
-                                            </div>
+                                            <label class="col-form-label-sm fw-bold me-5">P1: </label>&nbsp;&nbsp;&nbsp;
+                                            <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p1_x">
+                                            <input type="text" class="w-25 h-75" formControlName="p1_y">
                                         </div>
                                         <div class="form-group input-group-sm">
                                             <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
@@ -301,7 +289,7 @@
                                             <input type="text" class="w-50 h-75" formControlName="radius_two">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
+                                            <label class="col-form-label-sm fw-bold me-5">Theta: </label>
                                             <input type="text" class="w-50 h-75" formControlName="theta">
                                         </div>
                                     </div>
@@ -317,24 +305,26 @@
                                     <div class="row">
                                         <h4 class="text-cente fs-6">Analysis Parameters</h4>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">P0: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end"></label>
+                                            <label class="col-form-label-sm fw-bold me-5">P0: </label>&nbsp;&nbsp;&nbsp;
+                                            <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p0_x">
+                                            <input type="text" class="w-25 h-75" formControlName="p0_y">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">P1: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end"></label>
+                                            <label class="col-form-label-sm fw-bold me-5">P1: </label>&nbsp;&nbsp;&nbsp;
+                                            <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p1_x">
+                                            <input type="text" class="w-25 h-75" formControlName="p1_y">
                                         </div>
                                         <div class="form-group input-group-sm">
                                             <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end"></label>
+                                            <input type="text" class="w-50 h-75" formControlName="radius_one">
                                         </div>
                                         <div class="form-group input-group-sm">
                                             <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end"></label>
+                                            <input type="text" class="w-50 h-75" formControlName="radius_two">
                                         </div>
                                         <div class="form-group input-group-sm">
-                                            <label class="col-form-label-sm fw-bold">Theta: </label>&nbsp;
-                                            <label class="col-form-label-sm float-end"></label>
+                                            <label class="col-form-label-sm fw-bold me-5">Theta: </label>
+                                            <input type="text" class="w-50 h-75" formControlName="theta">
                                         </div>
                                     </div>
                                 </div>
@@ -410,6 +400,8 @@
             <button type="button" class="btn btn-secondary btn-sm"
                 (click)="onScannerEdit(viewData,content)">Edit</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
+            <button type="button" class="btn btn-danger btn-sm"
+                (click)="isDelete(viewData,deleteScanner)">Delete</button>
         </div>
     </ng-template>
 
@@ -574,6 +566,8 @@
             <button type="button" class="btn btn-secondary btn-sm"
                 (click)="onTransducerEdit(viewTransducer,transducerModal, image_analysis, uniformity_analysis)">Edit
             </button>
+            <button type="button" class="btn btn-danger btn-sm"
+                (click)="TransducerDelete(viewTransducer,deleteTranducer)">Delete</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
         </div>
     </ng-template>
@@ -592,5 +586,31 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm">Upload </button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+    </ng-template>
+
+    <!-- delete scanner msg alerts -->
+    <ng-template #deleteScanner let-modal>
+        <div class="modal-body">
+            <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this ?</h5>
+        </div>
+        <div class="text-center p-2">
+            <button type="button" class="btn btn-secondary btn-sm p-0 me-2"
+                (click)="deleteValue(viewData,deleteScanner)">Ok</button>
+            <button type="button" class="btn btn-primary btn-sm p-0"
+                (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+    </ng-template>
+
+    <!-- delete transducer msg alerts -->
+    <ng-template #deleteTranducer let-modal>
+        <div class="modal-body">
+            <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this ?</h5>
+        </div>
+        <div class="text-center p-2">
+            <button type="button" class="btn btn-secondary btn-sm p-0 me-2"
+                (click)="deleteTransducerValue(viewTransducer)">Ok</button>
+            <button type="button" class="btn btn-primary btn-sm p-0"
+                (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
