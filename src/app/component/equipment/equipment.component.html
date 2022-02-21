@@ -77,7 +77,6 @@
             <mat-spinner diameter="50" customSpinner color="#fff" *ngIf="loading"></mat-spinner>
         </div>
     </div>
-
     <!-- Barcode print code -->
     <div id="scannerPrint" #scannerPrint class="scanner-print">
         <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
@@ -167,7 +166,6 @@
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
-
 
     <!-- Add/ Edit transducer modal -->
     <ng-template #transducerModal let-modal>
