@@ -53,10 +53,13 @@ export class ReviewComponent implements OnInit {
 		// 	this.router.navigate(['']);
 		// } 
 		this.getAllScanner();
+		this.studieScanner();
+		
 		let physical = this.equipmentService.getScanner();
 		physical.forEach((item: any) => {
 			this.reviewList = item.last_study.data;
 		});
+	
 	}
 
 	// get scannerList  
@@ -132,6 +135,14 @@ export class ReviewComponent implements OnInit {
 		});
 	}
 
+    studieScanner () { 
+		let data = '0iAZc35Xxhze_m9ZLInW2g';
+		this.equipmentService.studieScanner(data).subscribe(
+			response => {
+			    console.log(response);
+			});
+	}
+
 	// on scanner click open view modal
 	scannerDetail(scanner: any, scannerView: any) {
 		this.titleName = 'Scanner Acceptance Study';
@@ -144,6 +155,10 @@ export class ReviewComponent implements OnInit {
 		this.modalService.open(scannerView, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		}); 
+	}
+
+	reason(e: any) { 
+
 	}
 
 	getKeys(list: any): Array<string> {
@@ -170,14 +185,9 @@ export class ReviewComponent implements OnInit {
 		}, 200);
 	}
 
-	reason(reason: any) {
-
-	}
-
 	// transducer detail
 	onTransducerDetail(transducer: any, scanner: any) {
 		this.reviewData = transducer.last_study;
-		this.equipmentService.isScannerList.next(scanner);
 		let currentScannerName = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
 		let currentScannerDate = scanner.next_Study_Due.date;
 		sessionStorage.setItem('currentScanner', currentScannerName);

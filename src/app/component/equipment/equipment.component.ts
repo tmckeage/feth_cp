@@ -566,6 +566,7 @@ export class EquipmentComponent implements OnInit {
 				});
 	}
 
+
 	// on change make for transducer
 	onChangeMakeTransducer(makeTransducer: any) {
 		let changeMakeValue = makeTransducer;
