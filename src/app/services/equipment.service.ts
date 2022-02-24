@@ -1601,19 +1601,19 @@ export class EquipmentService {
   }
 
   getAllTransducer(): Observable<any> {
-    return this.http.get(environment.api_url + '/transducer');
+    return this.http.get(environment.api_url + 'transducer');
   }
 
   addTranducer(data: any): Observable<any> {
-    return this.http.post(environment.api_url + '/transducer', data);
+    return this.http.post(environment.api_url + 'transducer', data);
   }
 
   deleteTranducer(id: any): Observable<any> {
-    return this.http.delete(environment.api_url + '/transducer/' + id);
+    return this.http.delete(environment.api_url + 'transducer/' + id);
   }
 
   getAllScanner(): Observable<any> {
-    return this.http.get(environment.api_Url); 
+    return this.http.get(environment.api_url +'equipment'); 
   }
 
   getStudyList(): Observable<any> {
