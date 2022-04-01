@@ -210,9 +210,8 @@
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
                                 (keyup)="onKey($event, model)">
-                            <mat-autocomplete #model="matAutocomplete">
-                                <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}"
-                                    (onSelectionChange)="onChangeModalTransducer(model)">
+                            <mat-autocomplete #model="matAutocomplete" (onSelectionChange)="onChangeModalTransducer(model)">
+                                <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
                                     {{model}}
                                 </mat-option>
                             </mat-autocomplete>
@@ -593,9 +592,9 @@
             <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this?</h5>
         </div>
         <div class="text-center p-2">
-            <button type="button" class="btn btn-secondary btn-sm p-0 me-2"
+            <button type="button" class="btn btn-secondary btn-sm p-1 me-2"
                 (click)="deleteValue(viewData,deleteScanner)">Ok</button>
-            <button type="button" class="btn btn-primary btn-sm p-0"
+            <button type="button" class="btn btn-primary btn-sm p-1"
                 (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
@@ -606,9 +605,9 @@
             <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this?</h5>
         </div>
         <div class="text-center p-2">
-            <button type="button" class="btn btn-secondary btn-sm p-0 me-2"
+            <button type="button" class="btn btn-secondary btn-md p-1 me-2"
                 (click)="deleteTransducerValue(viewTransducer)">Ok</button>
-            <button type="button" class="btn btn-primary btn-sm p-0"
+            <button type="button" class="btn btn-primary btn-sm p-1"
                 (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>

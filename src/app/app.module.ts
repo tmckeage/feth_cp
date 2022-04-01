@@ -42,8 +42,7 @@ import { NgxBarcode6Module } from 'ngx-barcode6';
 import {NgxPrintModule} from 'ngx-print';
 import { LineChartComponent } from '../app/component/review/line-chart/line-chart.component';
 // line chart 
-// import { Ng6O2ChartModule } from 'ng6-o2-chart'; 
-// import { O2ChartComponent,ChartConst } from 'o2-chart-lib';
+import { ChartsModule } from 'ng2-charts'; 
 
 
 @NgModule({
@@ -84,7 +83,7 @@ import { LineChartComponent } from '../app/component/review/line-chart/line-char
     BrowserAnimationsModule, 
     NgxBarcode6Module,
     NgxPrintModule,
-    // Ng6O2ChartModule,
+    ChartsModule,
     ToastrModule.forRoot({
       timeOut: 10000,
       positionClass: 'toast-top-right',
@@ -93,7 +92,7 @@ import { LineChartComponent } from '../app/component/review/line-chart/line-char
   ],
   providers: [
     AmplifyService,
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -10,6 +10,7 @@ export class EquipmentService {
   facilityTransducer: any[] = [];
   roomTransducer: any[] = [];
   typeTransducer: any[] = [];
+    stadies: any[]  = [];
 
 
 
@@ -17,8 +18,11 @@ export class EquipmentService {
     this.facilityTransducer = ['CIRS', 'Fathom'];
     this.roomTransducer = ['RM1', 'RM2', 'RM3'];
     this.typeTransducer = ['Monthly', 'Quarterly', 'Annual', 'Acceptance']
+   
   }
 
+ 
+  
   scanners = [
     {
       name: "GE Logiq: L12345678",
@@ -53,6 +57,13 @@ export class EquipmentService {
   }
 
 
+  getStudy() 
+  {
+
+    
+
+  }
+  
   getScanner() {
     const scanner1 = [
       {
@@ -1601,19 +1612,19 @@ export class EquipmentService {
   }
 
   getAllTransducer(): Observable<any> {
-    return this.http.get(environment.api_url + '/transducer');
+    return this.http.get(environment.api_url + 'transducer');
   }
 
   addTranducer(data: any): Observable<any> {
-    return this.http.post(environment.api_url + '/transducer', data);
+    return this.http.post(environment.api_url + 'transducer', data);
   }
-
+ 
   deleteTranducer(id: any): Observable<any> {
-    return this.http.delete(environment.api_url + '/transducer/' + id);
-  }
+    return this.http.delete(environment.api_url + 'transducer/' + id);
+  } 
 
-  getAllScanner(): Observable<any> {
-    return this.http.get(environment.api_Url); 
+  getAllScanner(): Observable<any> { 
+    return this.http.get(environment.api_url + 'equipment'); 
   }
 
   getStudyList(): Observable<any> {

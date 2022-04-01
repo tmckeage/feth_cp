@@ -1,20 +1,19 @@
 <div class="row justify-content-center mt-5">
     <div class="card mt-2 p-4 col-md-8">
-        <div class="header hr">
-            <div class="row">
-                <span class="col-md-8 fw-bold text-end">{{scannerName}} Uniformity Assessment</span>
-                <span class="col-md-4 text-start"> - {{date}}</span>
-            </div>
-        </div>
-
         <div class="card-body">
+            <div class="header hr">
+                <div class="row">
+                    <span class="col-md-8 fw-bold text-end">{{scannerName}} Uniformity Assessment</span>
+                    <span class="col-md-4 text-start"> - {{date}}</span>
+                </div>
+            </div>
          <div class="row border">
             <div class="col-md-6 scanner"><img class="scanner-img"
                 src="../../../assets/scanner.png">
             </div>
             <div class="col-md-10 scanner ">
              <h6 class="text-centerd mt-4 me-2">Distances from reference pin 6(cm)</h6>
-             <svg width="500" height="500"></svg>
+            <app-line-chart></app-line-chart>
             </div>
          </div>
         </div>

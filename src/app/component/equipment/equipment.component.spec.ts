@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { EquipmentComponent } from './equipment.component';
+
 
 describe('EquipmentComponent', () => {
   let component: EquipmentComponent;
@@ -18,7 +19,13 @@ describe('EquipmentComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // testing 
+  it('should render title in a h1 tag', async(() => {
+    const fixture = TestBed.createComponent(EquipmentComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-unit-test!');
+  }));
+
+
 });

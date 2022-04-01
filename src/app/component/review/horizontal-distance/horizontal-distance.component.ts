@@ -9,18 +9,45 @@ import { EquipmentService } from '../../../services/equipment.service';
 export class HorizontalDistanceComponent implements OnInit {
   transducer: any;
   datalist: any[] = [];
-  measurementList: any;
+  measurementList: any[] = [];
   horizontal_distance: any;
   date: any;
   unitName: any;
   horizontal_R_One: any;
   horizontal_R_Two: any;
   scannerName: any;
+  h_pins: any[] = [];
+   
   constructor(private equipment: EquipmentService) { }
 
   ngOnInit(): void {
     this.datalist = this.equipment.getScanner();
-   
+  
+    this.equipment.getStudyList().subscribe(
+      response => {
+        console.log("thet", response);
+        this.h_pins = response.h_pins;
+        // this.h_pins.forEach((res: any) => {
+          console.log("testing h_pins",  this.h_pins);
+          let items: any = [];
+          Object.entries(this.h_pins).forEach(([k, v]) => {
+            this.measurementList.push({
+              name: k,
+              value: v 
+            });
+            console.log("measurementList", this.measurementList);
+            this.measurementList.forEach((data: any) => {
+                this.horizontal_distance = Object.values(data.value);
+                console.log("horizintal", this.horizontal_distance);
+                // this.measurementList.forEach((res: any) => {
+                //   this.horizontal_distance = Object.values(res);
+                // });
+            });
+          }); 
+          
+        // });
+    });
+    
     // current scanner name in strore on session 
     this.scannerName = sessionStorage.getItem('currentScanner');
     this.date = sessionStorage.getItem('currentScannerDate');
@@ -38,17 +65,18 @@ export class HorizontalDistanceComponent implements OnInit {
             name: k,
             value: v
           });
-          items.forEach((data: any) => {
-            if (data.name == 'horizontal_distance') {
-              this.measurementList = Object.values(data.value);
-              this.measurementList.forEach((res: any) => {
-                this.horizontal_distance = Object.values(res);
-              });
-            }
-          });
+          // items.forEach((data: any) => {
+          //   if (data.name == 'horizontal_distance') {
+          //     this.measurementList = Object.values(data.value);
+          //     this.measurementList.forEach((res: any) => {
+          //       this.horizontal_distance = Object.values(res);
+          //     });
+          //   }
+          // });
         });
       });
     });
   }
+  
 
 }

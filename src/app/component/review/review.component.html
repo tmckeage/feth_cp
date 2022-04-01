@@ -81,16 +81,16 @@
                     <label class="col-form-label-sm fw-bold">Physical Condition </label>
                 </div>
             </div>
-            <div class="row mb-2" *ngFor="let res of reviewList.physical">
+            <div class="row mb-2" *ngFor="let res of physical">
                 <div class="col-4 form-group input-group-sm">
-                    <label class="col-form-label-sm ">{{res.display_name |titlecase}}</label>&nbsp;
+                    <label class="col-form-label-sm ">{{res[0] |titlecase}}</label>&nbsp;
                 </div>
                 <div class="col-4 form-group input-group-sm">
                     <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
                         (click)="onSubStudy(isSubStudyAvailable, $event ,res.display_name)"
                         [(ngModel)]="res.assessment">
-                        <option value="pass" [selected]="res.assessment=='pass'">PASS</option>
-                        <option value="fail" [selected]="res.assessment=='fail'">FAIL</option>
+                        <option value="pass" [selected]="res[1].assessment=='pass'">PASS</option>
+                        <option value="fail" [selected]="res[1].assessment=='fail'">FAIL</option>
                     </select>
                 </div>
                 <div class="col-4 form-grou p input-group-sm">
@@ -105,16 +105,16 @@
                     <label class="col-form-label-sm fw-bold">Display Evaluation</label>
                 </div>
             </div>
-            <div class="row mb-2" *ngFor="let res of reviewList.display">
+            <div class="row mb-2" *ngFor="let res of display">
                 <div class="col-4 form-group input-group-sm">
-                    <label class="col-form-label-sm ">{{res.display_name |titlecase}}</label>&nbsp;
+                    <label class="col-form-label-sm ">{{res[0] |titlecase}}</label>&nbsp;
                 </div>
                 <div class="col-4 form-group input-group-sm">
                     <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
                         (click)="onSubStudy(isSubStudyAvailable, $event ,res.display_name)"
                         [(ngModel)]="res.assessment">
-                        <option value="pass" [selected]="res.assessment=='pass'">PASS</option>
-                        <option value="fail" [selected]="res.assessment=='fail'">FAIL</option>
+                        <option value="pass" [selected]="res[1] =='pass'">PASS</option>
+                        <option value="fail" [selected]="res[1] =='fail'">FAIL</option>
                     </select>
                 </div>
                 <div class="col-4 form-group input-group-sm">

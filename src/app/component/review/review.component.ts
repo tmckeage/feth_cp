@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { EquipmentService } from 'src/app/services/equipment.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
+import { toArray } from 'underscore';
 
 
 
@@ -42,6 +43,10 @@ export class ReviewComponent implements OnInit {
 	typeList: any[] = [];
 	isRoom: boolean = false;
 	loading: boolean = true;
+	physical: any;
+	display: any;
+	studies: any;
+
 
 
 	constructor(private modalService: NgbModal, private router: Router, private equipmentService: EquipmentService) { }
@@ -53,12 +58,8 @@ export class ReviewComponent implements OnInit {
 		// 	this.router.navigate(['']);
 		// } 
 		this.getAllScanner();
-		this.studieScanner();
+	
 		
-		let physical = this.equipmentService.getScanner();
-		physical.forEach((item: any) => {
-			this.reviewList = item.last_study.data;
-		});
 	
 	}
 
@@ -89,7 +90,7 @@ export class ReviewComponent implements OnInit {
 					console.log(error);
 				});
 	}
-
+    
 
 	// equipment filter
 	equipmentFilter() {
@@ -135,13 +136,9 @@ export class ReviewComponent implements OnInit {
 		});
 	}
 
-    studieScanner () { 
-		let data = '0iAZc35Xxhze_m9ZLInW2g';
-		this.equipmentService.studieScanner(data).subscribe(
-			response => {
-			    console.log(response);
-			});
-	}
+ 
+
+
 
 	// on scanner click open view modal
 	scannerDetail(scanner: any, scannerView: any) {
@@ -149,9 +146,22 @@ export class ReviewComponent implements OnInit {
 		this.viewData = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
 		this.date = scanner.next_Study_Due.date;
 		this.isFinalized = false;
+
 		// if (scanner.last_study.finalized === true) {
 		// 	this.isFinalized = true;
-		// }
+		// } 
+		let data = '0iAZc35Xxhze_m9ZLInW2g';
+		this.equipmentService.studieScanner(data).subscribe(
+			response => {
+				this.studies = response.studies;
+			    console.log(this.studies); 
+				 this.studies.forEach((res: any) => {
+						this.physical = Object.entries(res.data.physical);
+						this.display = Object.entries(res.data.display);
+						
+				 });
+
+			});
 		this.modalService.open(scannerView, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		}); 

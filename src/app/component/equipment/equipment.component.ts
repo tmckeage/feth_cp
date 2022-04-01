@@ -474,7 +474,8 @@ export class EquipmentComponent implements OnInit {
 			serial_number: equipment.serial_number,
 			barcode: equipment.barcode,
 			scanner: scannerName,
-			type: equipment.type
+			type: equipment.type,
+			transducer_id :equipment.transducer_id
 		};
 
 		let imageAnalysis = equipment.analysis_parameters.image_quality_analysis;
@@ -555,11 +556,12 @@ export class EquipmentComponent implements OnInit {
 
 	// delete deleteTransducer
 	deleteTransducerValue(id: any) {
-		this.equipmentService.deleteTranducer(id.scanner_id)
+		this.equipmentService.deleteTranducer(id.transducer_id)
 			.subscribe(
 				response => {
 					this.getAllScanner();
 					this.toastr.success('Transducer delete successfully', '');
+					this.modalService.dismissAll();
 				},
 				error => {
 					console.log(error);

@@ -10,16 +10,26 @@ export class VerticalDistanceComponent implements OnInit {
   transducer: any;
   datalist: any[] = [];
   measurementList: any;
-  vertical_distance: any;
+  vertical_distance: any[] = [];
   date: any;
   unitName: any;
   scannerName: any;
+  v_pins: any[] = [];
 
 
   constructor(private equipment: EquipmentService) { }
 
   ngOnInit(): void {
     this.datalist = this.equipment.getScanner();
+
+    // json file row datalist
+    this.equipment.getStudyList().subscribe(
+      response => {
+        console.log("thet", response);
+        this.v_pins = response.v_pins;
+          console.log("testing v_pins",  this.v_pins); 
+      //  this.vertical_distance = this.v_pins;    
+    });
       
     // current scanner name in strore on session 
     this.scannerName = sessionStorage.getItem('currentScanner');

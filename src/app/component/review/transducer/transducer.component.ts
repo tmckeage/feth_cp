@@ -103,6 +103,4 @@ export class TransducerComponent implements OnInit {
       this.router.navigate(['/review/uniformity']);
     }
   }
-
-
 }
