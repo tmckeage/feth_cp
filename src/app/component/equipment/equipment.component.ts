@@ -481,6 +481,13 @@ export class EquipmentComponent implements OnInit {
 		let imageAnalysis = equipment.analysis_parameters.image_quality_analysis;
 		let uniformityAnalysis = equipment.analysis_parameters.uniformity_analysis;
 
+		if (imageAnalysis == undefined || uniformityAnalysis == undefined) {
+			this.modalService.dismissAll();
+			this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
+				this.closeResult = `Closed with: ${result}`;
+			});
+		}
+		
 		this.image_analysis = {
 			p0: imageAnalysis.p0,
 			p1: imageAnalysis.p1,
@@ -497,13 +504,6 @@ export class EquipmentComponent implements OnInit {
 			radius_two: uniformityAnalysis.radius_two,
 			theta: uniformityAnalysis.theta,
 			img: uniformityAnalysis.img
-		}
-
-		if (imageAnalysis == undefined || uniformityAnalysis == undefined) {
-			this.modalService.dismissAll();
-			this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
-				this.closeResult = `Closed with: ${result}`;
-			});
 		}
 
 		this.modalService.dismissAll();
