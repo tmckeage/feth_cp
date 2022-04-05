@@ -43,8 +43,8 @@ export class ReviewComponent implements OnInit {
 	typeList: any[] = [];
 	isRoom: boolean = false;
 	loading: boolean = true;
-	physical: any;
-	display: any;
+	physical: any[] = [];
+	display: any[] = [];
 	studies: any;
 
 
@@ -156,8 +156,12 @@ export class ReviewComponent implements OnInit {
 				this.studies = response.studies;
 			    console.log(this.studies); 
 				 this.studies.forEach((res: any) => {
+
 						this.physical = Object.entries(res.data.physical);
-						this.display = Object.entries(res.data.display);
+						// this.physical.forEach(res => {
+						// 	return  res[0].replace(/\_/g, ' ');
+						// })
+		                this.display = Object.entries(res.data.display);
 						
 				 });
 

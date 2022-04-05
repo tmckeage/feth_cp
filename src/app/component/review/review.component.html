@@ -83,21 +83,21 @@
             </div>
             <div class="row mb-2" *ngFor="let res of physical">
                 <div class="col-4 form-group input-group-sm">
-                    <label class="col-form-label-sm ">{{res[0] |titlecase}}</label>&nbsp;
+                    <label class="col-form-label-sm ">{{res[0].replace('_', ' ') |titlecase}}</label>&nbsp;
                 </div>
                 <div class="col-4 form-group input-group-sm">
                     <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
-                        (click)="onSubStudy(isSubStudyAvailable, $event ,res.display_name)"
+                        (click)="onSubStudy(isSubStudyAvailable, $event ,res)"
                         [(ngModel)]="res.assessment">
                         <option value="pass" [selected]="res[1].assessment=='pass'">PASS</option>
                         <option value="fail" [selected]="res[1].assessment=='fail'">FAIL</option>
                     </select>
                 </div>
                 <div class="col-4 form-grou p input-group-sm">
-                    <i class="fa fa-camera me-2" aria-hidden="true" [class.imgClass]="res.img.length == 0"
-                        (click)="subStudy(subStudyView,res.display_name, res)"></i>
-                    <i class="fa fa-edit" [class.noteClass]="res.notes.length == 0" (click)="subStudy(
-                        subStudyView,res.display_name, res)"></i>
+                    <i class="fa fa-camera me-2" aria-hidden="true" 
+                        (click)="subStudy(subStudyView,res, res)"></i>
+                    <i class="fa fa-edit" (click)="subStudy(
+                        subStudyView,res, res)"></i>
                 </div>
             </div>
             <div class="row mb-2">
@@ -107,7 +107,7 @@
             </div>
             <div class="row mb-2" *ngFor="let res of display">
                 <div class="col-4 form-group input-group-sm">
-                    <label class="col-form-label-sm ">{{res[0] |titlecase}}</label>&nbsp;
+                    <label class="col-form-label-sm ">{{res[0].replace('_', ' ') |titlecase}}</label>&nbsp;
                 </div>
                 <div class="col-4 form-group input-group-sm">
                     <select class="col-md-8 col-form-label-sm me-2 " [disabled]="isFinalized"
@@ -118,12 +118,12 @@
                     </select>
                 </div>
                 <div class="col-4 form-group input-group-sm">
-                    <i class="fa fa-camera me-2" aria-hidden="true" [class.imgClass]="res.img.length == 0"
+                    <i class="fa fa-camera me-2" aria-hidden="true" 
                         (click)="subStudy(subStudyView,res.display_name, res)"></i>
-                    <i class="fa fa-edit" [class.noteClass]="res.notes.length == 0" (click)="subStudy(
+                    <i class="fa fa-edit" (click)="subStudy(
                     subStudyView,res.display_name, res)"></i>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
     <div class="modal-footer">
