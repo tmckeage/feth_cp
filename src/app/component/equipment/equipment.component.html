@@ -210,7 +210,7 @@
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
                                 (keyup)="onKey($event, model)">
-                            <mat-autocomplete #model="matAutocomplete" (onSelectionChange)="onChangeModalTransducer(model)">
+                            <mat-autocomplete #model="matAutocomplete" (onSelectionChange)="onChangeModalTransducer(model);onKey($event, model)">
                                 <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
                                     {{model}}
                                 </mat-option>

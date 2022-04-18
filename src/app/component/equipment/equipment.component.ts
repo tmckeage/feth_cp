@@ -76,6 +76,7 @@ export class EquipmentComponent implements OnInit {
 	selectedTransducerModel: any;
 	isUniformityAnalysis: boolean = false;
 	isDeleteFlag: any = '0';
+	box:any;
 
 	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
@@ -174,7 +175,7 @@ export class EquipmentComponent implements OnInit {
 
 	// type list finding
 	getType(typeId: any) {
-		return this.typeTransducerOption.find((type: any) => type.value === typeId).name;
+		return this.typeTransducerOption.find((type: any) => type.value == typeId).name;
 	}
 
 	// get scannerList  
@@ -230,7 +231,7 @@ export class EquipmentComponent implements OnInit {
 				{ scanner_id: res.scanner_id, scannerName: sName }
 			]
 		});
-		return this.scannerLists.find((scanner: any) => scanner.scanner_id === scanner_id).scannerName;
+		return this.scannerLists.find((scanner: any) => scanner.scanner_id == scanner_id).scannerName;
 	}
 
 	// modelNameList filter on make 
@@ -365,7 +366,7 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = value.toLowerCase();
 		return this.modelTransducerOption.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
-
+ 
 	// Transducer make autocomplete
 	private makeTransducer_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
@@ -598,23 +599,28 @@ export class EquipmentComponent implements OnInit {
 	// Enter new value in input make
 	onKey(event: any, makeTransducer: any) {
 		let modelValue = event.target.value;
-		this.modelOptions.forEach(item => {
-			if (modelValue == item && this.isMake === true) {
-				this.isModel = true;
-				this.isEmpty = false;
-			} else if (modelValue == "" && this.isMake === false) {
-				this.isEmpty = false;
-				this.isModel = false;
-			} else {
-				if (modelValue && this.isModel == false) {
-					this.isEmpty = true;
-				} else {
+		this.onChangeMakeTransducer(modelValue);
+		this.filteredModelTransducer.forEach(item => {
+			 item.forEach(res => {
+				if (modelValue == res && this.isMake == true) {
+					this.isModel = true;
+					this.isEmpty = false;
+				} else if (modelValue == "" && this.isMake == false) {
 					this.isEmpty = false;
 					this.isModel = false;
+				} else {
+					if (modelValue && this.isModel == false) {
+						this.isEmpty = true;
+					} else {
+						this.isEmpty = false;
+						this.isModel = false;
+					}
 				}
-			}
+
+			 });
 		})
 	}
+
 
 	// transducer edit modal
 	onTransducerEdit(viewTransducer: any, transducerModal: any, image_analysis: any, uniformity_analysis: any) {
