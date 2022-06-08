@@ -33,10 +33,9 @@ export class UsersComponent implements OnInit {
 	];
 	userTypes: any[] =  [
 		{ value: '', name: 'SELECT' },
-		{ value: 1, name: 'All' },
-		{ value: 2, name: 'Leigh' },
-		{ value: 3, name: 'Norfolk General' },
-		{ value: 4, name: 'Beach General' },
+		{ value: 1, name: 'Manger'},
+		{ value: 2, name: 'Tech' },
+		{ value: 3, name: 'Inactive' },
 	];
 	selectedItem: string | undefined;
 
@@ -47,7 +46,7 @@ export class UsersComponent implements OnInit {
 			"user_type": new FormControl(null, [Validators.required]),
 			"facility": new FormControl(null, [Validators.required]),
 			"email": new FormControl('',[Validators.required, Validators.email]),
-			"reset_password": new FormControl(false, [Validators.required])
+			"reset_password": new FormControl(null, [Validators.required])
 		});
 	}
 
