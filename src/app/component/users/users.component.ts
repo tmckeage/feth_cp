@@ -3,7 +3,9 @@ import { UserService } from '../../services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarService } from '../../services/navbar.service';
+import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -20,6 +22,23 @@ export class UsersComponent implements OnInit {
 	viewData:any;
 	viewName: any;
 	fathomUserDetails: any;
+	facilityOptions: any[] =  [
+		{ value: '', name: 'SELECT' },
+		{ value: 1, name: 'All' },
+		{ value: 2, name: 'Leigh' },
+		{ value: 3, name: 'Norfolk General' },
+		{ value: 4, name: 'Beach General' },
+		{ value: 5, name: 'Careplex' },
+		{ value: 6, name: 'Princess Anne' },
+	];
+	userTypes: any[] =  [
+		{ value: '', name: 'SELECT' },
+		{ value: 1, name: 'All' },
+		{ value: 2, name: 'Leigh' },
+		{ value: 3, name: 'Norfolk General' },
+		{ value: 4, name: 'Beach General' },
+	];
+	selectedItem: string | undefined;
 
 	constructor(private nav: NavbarService, private userService:UserService, private modalService: NgbModal, private router: Router) {
 		this.userForms = new FormGroup({

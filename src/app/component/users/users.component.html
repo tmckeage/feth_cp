@@ -28,62 +28,58 @@
 		<span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
 	<div class="modal-body">
-		<form class="form-inline" [formGroup]="userForms">
-			<div class="row mb-2">
-				<div class="col-6 form-group input-group-sm">
-					<label for="first-name" class="col-form-label-sm">First Name:</label>
-					<input type="text" formControlName="first_name" class="form-control" id="first-name" placeholder="Enter First Name" name="first-name">
-					<div *ngIf="userForm.first_name.touched && userForm.first_name.invalid" class="msg    col-form-label-sm">
-						<div *ngIf="userForm.first_name.errors && userForm.first_name.errors.required">First name is required</div>
-						<div *ngIf="userForm.first_name.errors && userForm.first_name.errors.first_name">Please enter valid first name</div>
-					</div>
+		<form class="example-form" [formGroup]="userForms">
+			<div class="row">
+				<div class="col-md-6">
+					<mat-form-field appearance="fill">
+						<mat-label>First Name :</mat-label>
+						<input type="text" matInput formControlName="first_name" required >
+						<mat-error *ngIf="userForms.controls.first_name.errors?.required">
+							First Name is required
+						</mat-error>
+					</mat-form-field>
 				</div>
-				<div class="col-6 form-group input-group-sm">
-					<label for="last-name" class="col-form-label-sm">Last Name:</label>
-					<input type="text" formControlName="last_name" class="form-control" id="last-name" placeholder="Enter Last Name" name="last-name">
-					<div *ngIf="userForm.last_name.touched && userForm.last_name.invalid" class="msg col-form-label-sm">
-						<div *ngIf="userForm.last_name.errors && userForm.last_name.errors.required">Last name is required</div>
-						<div *ngIf="userForm.last_name.errors && userForm.last_name.errors.last_name">Please enter valid last name</div>
-					</div>
-				</div>
-			</div>
-			<div class="row mb-2">
-				<div class="col-6 form-group input-group-sm">
-					<label for="user-type" class="col-form-label-sm">User Type:</label>
-					<select class="form-select" formControlName="user_type" >
-						<option selected>Select</option>
-						<option value="1">Manger</option>
-						<option value="2">Tech</option>
-						<option value="3">Inactive</option>
-					</select>
-				</div>
-				<div class="col-6 form-group input-group-sm">
-					<label for="facility" class="col-form-label-sm">Facility:</label>
-					<select class="form-select" formControlName="facility">
-						<option selected>Select</option>
-						<option value="1">All</option>
-						<option value="2">Leigh</option>
-						<option value="3">Norfolk General</option>
-						<option value="4">Beach General</option>
-						<option value="5">Careplex</option>
-						<option value="6">Princess Anne</option>
-					</select>
+				<div class="col-md-6">
+					<mat-form-field appearance="fill">
+						<mat-label>Last Name :</mat-label>
+						<input type="text" matInput formControlName="last_name" required >
+						<mat-error *ngIf="userForms.controls.last_name.errors?.required">
+							Last Name is required
+						</mat-error>
+					</mat-form-field>
 				</div>
 			</div>
-			<div class="row mb-2">
-				<div class="col-6 form-group input-group-sm">
-					<label for="email" class="col-form-label-sm">Email:</label>
-					<input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter Email Address" name="email">
-					<div *ngIf="userForm.email.touched && userForm.email.invalid" class="msg col-form-label-sm">
-				    <div *ngIf="userForm.email.errors && userForm.email.errors.required">Email is required</div>
-					<div *ngIf="userForm.email.errors && userForm.email.errors.email">Please enter valid email</div>
-					</div>
+			<div class="row">
+				<div class="col-md-6">
+					<mat-form-field>
+						<mat-label>User Type:</mat-label>
+						<mat-select [(ngModel)]="selectedItem">
+						<mat-option *ngFor="let userType of userTypes" [value]="userType.name">
+							{{userType.name}}
+						</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="col-md-6">
+					<mat-form-field>
+						<mat-label>Facility:</mat-label>
+						<mat-select [(ngModel)]="selectedItem">
+						<mat-option *ngFor="let facility of facilityOptions" [value]="facility.name">
+							{{facility.name}}
+						</mat-option>
+						</mat-select>
+					</mat-form-field>
 				</div>
 			</div>
-			<div class="row mb-2">
-				<div class="col-6 form-group input-group-sm">
-					<input class="form-check-input me-2 mt-2" formControlName="reset_password"  type="checkbox" name="reset-password">
-					<label for="reset_password" class="col-form-label-sm">Reset Password</label>
+			<div class="row">
+				<div class="col-md-6">
+					<mat-form-field appearance="fill">
+						<mat-label>Email :</mat-label>
+						<input type="text" matInput formControlName="email" required>
+						<mat-error *ngIf="userForms.controls.email.errors?.required">
+							Email is required
+						</mat-error>
+					</mat-form-field>
 				</div>
 			</div>
 		</form>
