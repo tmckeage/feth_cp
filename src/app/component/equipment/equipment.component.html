@@ -93,12 +93,11 @@
         <div class="modal-body">
             <form class="example-form" [formGroup]="scannerFormGroup">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill">
                             <mat-label>Make :</mat-label>
                             <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
-                            <mat-autocomplete #make="matAutocomplete"
-                                (optionSelected)='modelFilter($event.option.value)'>
+                            <mat-autocomplete #make="matAutocomplete"(optionSelected)='modelFilter($event.option.value)'>
                                 <mat-option *ngFor="let make of filteredMake | async" [value]="make">
                                     {{make}}
                                 </mat-option>
@@ -108,7 +107,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill">
                             <mat-label>Facility :</mat-label>
                             <input type="text" matInput formControlName="facility" [matAutocomplete]="facility">
@@ -121,7 +120,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6" (click)="onModel()">
+                    <div class="col-md-6 mb-3" (click)="onModel()">
                         <mat-form-field appearance="fill">
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
@@ -135,7 +134,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill">
                             <mat-label>Room :</mat-label>
                             <input type="text" matInput formControlName="room" [matAutocomplete]="room">
@@ -148,7 +147,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill">
                             <mat-label>S/N :</mat-label>
                             <input type="text" matInput formControlName="serial_number" required>
@@ -176,7 +175,7 @@
         <div class="modal-body">
             <form class="form" id="form" [formGroup]="transducerFormGroup">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Make :</mat-label>
                             <input type="text" matInput formControlName="make" required [matAutocomplete]="make"
@@ -192,7 +191,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Scanner:</mat-label>
                             <input type="text" matInput formControlName="scanner" [matAutocomplete]="scanner">
@@ -205,12 +204,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6" (click)="onModelTranducer()">
+                    <div class="col-md-6 mb-3" (click)="onModelTranducer()">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Model :</mat-label>
                             <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
                                 (keyup)="onKey($event, model)">
-                            <mat-autocomplete #model="matAutocomplete" (onSelectionChange)="onChangeModalTransducer(model);onKey($event, model)">
+                            <mat-autocomplete #model="matAutocomplete"
+                                (onSelectionChange)="onChangeModalTransducer(model);onKey($event, model)">
                                 <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
                                     {{model}}
                                 </mat-option>
@@ -220,7 +220,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-lg-6" *ngIf="isEmpty">
+                    <div class="col-md-6 mb-3" *ngIf="isEmpty">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Image Setup:</mat-label>
                             <input type="text" matInput formControlName="image" required [matAutocomplete]="image">
@@ -234,7 +234,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>S/N :</mat-label>
                             <input type="text" matInput formControlName="serial_number" required>
@@ -245,7 +245,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill" class="matInput">
                             <mat-label>Type :</mat-label>
                             <input type="text" matInput formControlName="type" required [matAutocomplete]="type">

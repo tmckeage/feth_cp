@@ -30,7 +30,7 @@
 	<div class="modal-body">
 		<form class="example-form" [formGroup]="userForms">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-form-field appearance="fill">
 						<mat-label>First Name :</mat-label>
 						<input type="text" matInput formControlName="first_name" required >
@@ -39,7 +39,7 @@
 						</mat-error>
 					</mat-form-field>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-form-field appearance="fill">
 						<mat-label>Last Name :</mat-label>
 						<input type="text" matInput formControlName="last_name" required >
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-form-field>
 						<mat-label>User Type:</mat-label>
 						<mat-select [(ngModel)]="selectedItem">
@@ -60,7 +60,7 @@
 						</mat-select>
 					</mat-form-field>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-form-field>
 						<mat-label>Facility:</mat-label>
 						<mat-select [(ngModel)]="selectedItem">
@@ -72,7 +72,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-form-field appearance="fill">
 						<mat-label>Email :</mat-label>
 						<input type="text" matInput formControlName="email" required>
@@ -83,10 +83,9 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 mb-3">
 					<mat-checkbox>
 						<mat-label>Reset Password </mat-label>
-						<input type="text" matInput formControlName="reset_password">
 					</mat-checkbox>
 				</div>
 			</div>
