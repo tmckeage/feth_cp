@@ -1,44 +1,45 @@
 <div class="row justify-content-center mt-5">
     <div class="card mt-2 p-4 col-md-8">
         <div class="row">
-            <div class="col-sm-2 col-md-1 col-lg-1 ">
-                <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
+            <div class="col-md-3 mb-3">
+                <mat-form-field>
+                    <mat-label>Facility:</mat-label>
+                    <mat-select [(ngModel)]="selectedFacility" (selectionChange) ="equipmentFilter();onRoomList()">
+                        <mat-option value="0">Select</mat-option>   
+                        <mat-option *ngFor="let facility of facilityList" value="{{facility}}">
+                            {{facility}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility" (change)="equipmentFilter();onRoomList()">
-                    <option value="0">--Select--</option>
-                    <option *ngFor="let facility of facilityList" value="{{facility}}">{{facility}}
-                    </option>
-                </select>
+            <div class="col-md-3 mb-3">
+                <mat-form-field>
+                    <mat-label>Room:</mat-label>
+                    <mat-select [(ngModel)]="selectedRoom" (selectionChange)="equipmentFilter()" [disabled]="!isRoom">
+                        <mat-option value="0">Select</mat-option>   
+                        <mat-option *ngFor="let room of roomList" value="{{room}}">
+                            {{room}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-1 col-lg-1">
-                <label for="room" class="col-form-label-sm fw-bold">Room:</label>
+            <div class="col-md-3 mb-3">
+                <mat-form-field>
+                    <mat-label>Type:</mat-label>
+                    <mat-select [(ngModel)]="selectedType" (selectionChange)="equipmentFilter()">
+                        <mat-option value="0">Select</mat-option>   
+                        <mat-option *ngFor="let type of typeList" value="{{type}}">
+                            {{type}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()"  [disabled]="!isRoom">
-                    <option value="0">--Select--</option>
-                    <option *ngFor="let room of roomList" value="{{room}}">{{room}}</option>
-                </select>
-            </div>
-            <div class="col-sm-2 col-md-1 col-lg-1">
-                <label for="room" class="col-form-label-sm fw-bold">Type:</label>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm" [(ngModel)]="selectedType" (change)="equipmentFilter()">
-                    <option value="0">--Select--</option>
-                    <option *ngFor="let type of typeList" value="{{type}}">
-                        {{type}}</option>
-                </select>
-            </div>
-            <div class="col-sm-2 col-md-1 col-lg-1">
-                <label for="room" class="col-form-label-sm fw-bold">S/N:</label>
-            </div>
-            <div class="col-sm-2 col-md-2">
-                <div class="search">
-                    <input type="text" class="form-control btn-sm" placeholder="Search" [(ngModel)]="selectedSn"
-                        (keyup)="equipmentFilter()">
-                    <i class="fa fa-search"></i>
-                </div>
+            <div class="col-md-1 mb-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>S/N :</mat-label>
+                    <input matInput placeholder="Search" [(ngModel)]="selectedSn" 
+                    (keyup)="equipmentFilter()">
+                </mat-form-field>
             </div>
         </div>
         <!-- scanner list -->

@@ -11,30 +11,31 @@
     </div>
     <div class="card mt-2 p-4 col-md-8">
         <div class="row">
-            <div class="col-sm-2 col-md-1 col-lg-1 ">
-                <label for="facility" class="col-form-label-sm fw-bold">Facility:</label>
+            <div class="col-md-3 mb-3">
+                <mat-form-field>
+                    <mat-label>Facility:</mat-label>
+                    <mat-select [(ngModel)]="selectedFacility" (selectionChange) ="equipmentFilter();onRoomList()">
+                        <mat-option value="0">Select</mat-option>
+                        <mat-option *ngFor="let facility of facilityOptions" value="{{facility}}">
+                            {{facility}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-2 col-lg-2 ">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedFacility"
-                    (change)="equipmentFilter();onRoomList()">
-                    <option value="0">--Select--</option>
-                    <option *ngFor="let facility of facilityOptions" value="{{facility}}">
-                        {{facility}}</option>
-                </select>
+            <div class="col-md-3 mb-3">
+                <mat-form-field>
+                    <mat-label>Room:</mat-label>
+                    <mat-select [(ngModel)]="selectedRoom" (selectionChange)="equipmentFilter()" [disabled]="!isRoom">
+                        <mat-option value="0">Select</mat-option>
+                        <mat-option *ngFor="let room of roomList" value="{{room}}">
+                            {{room}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
-            <div class="col-sm-2 col-md-1 col-lg-1">
-                <label for="room" class="col-form-label-sm fw-bold">Room:</label>
-            </div>
-            <div class="col-sm-2 col-md-2 col-lg-2">
-                <select class="form-select btn-sm drop-button" [(ngModel)]="selectedRoom" (change)="equipmentFilter()"
-                    [disabled]="!isRoom">
-                    <option value="0">--Select--</option>
-                    <option *ngFor="let room of roomList" value="{{room}}">{{room}}</option>
-                </select>
-            </div>
-            <div class="col-sm-6 col-md-6 col-lg-6 float-start" id="due-date">
-                <label for="due-date" class="col-form-label-sm fw-bold">Due Date:</label>
-                <mat-form-field class="btn-sm mat-form-field-infix-new size" appearance="outline">
+            <div class="col-md-6 mb-6" id="due-date">
+                <mat-form-field appearance="fill" class="btn-sm mat-form-field-infix-new size" >
+                    <mat-label>Enter a due date range</mat-label>
                     <mat-date-range-input [formGroup]="dueDate" [rangePicker]="picker">
                         <input matStartDate formControlName="start" placeholder="Start date"
                             (dateChange)="equipmentFilter()">
@@ -88,7 +89,7 @@
     <ng-template #content let-modal>
         <div class="modal-header">
             <h5 class="modal-title" id="modal-basic-title">{{addModalTitle}}</h5>
-            <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+            <span class="close close-btn" (click)="modal.dismissAll('Cross click')">&times;</span>
         </div>
         <div class="modal-body">
             <form class="example-form" [formGroup]="scannerFormGroup">
@@ -170,7 +171,7 @@
     <ng-template #transducerModal let-modal>
         <div class="modal-header">
             <h5 class="modal-title" id="modal-basic-title">{{transducerModalTitle}}</h5>
-            <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+            <span class="close close-btn" (click)="modalService.dismissAll('Cross click')">&times;</span>
         </div>
         <div class="modal-body">
             <form class="form" id="form" [formGroup]="transducerFormGroup">

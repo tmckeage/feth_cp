@@ -7,6 +7,7 @@ import { EquipmentService } from 'src/app/services/equipment.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Auth } from '@aws-amplify/auth';
 
 
 @Component({
@@ -76,11 +77,10 @@ export class EquipmentComponent implements OnInit {
 	selectedTransducerModel: any;
 	isUniformityAnalysis: boolean = false;
 	isDeleteFlag: any = '0';
-	box:any;
 
-	constructor(private toastr: ToastrService, private modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
+	constructor(private toastr: ToastrService, public modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
 
-		// Type list 
+		// Type list
 		this.typeTransducerOption = [
 			{ name: 'Linear', value: 'linear' },
 			{ name: 'Endocavity', value: 'endocavity' },
@@ -175,6 +175,7 @@ export class EquipmentComponent implements OnInit {
 
 	// type list finding
 	getType(typeId: any) {
+		if (typeId == '') return;
 		return this.typeTransducerOption.find((type: any) => type.value == typeId).name;
 	}
 
@@ -221,16 +222,8 @@ export class EquipmentComponent implements OnInit {
 
 	// scanner id
 	getScannerId(scanner_id: any) {
-		var scannerNameList: any;
-		// scanner list 
-		this.scannerLists.forEach((res: any) => {
-			let scannerName: any[] = [];
-			scannerName.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
-			let sName = scannerName.filter((val: any, index: any) => scannerName.indexOf(val) == index);
-			scannerNameList = [
-				{ scanner_id: res.scanner_id, scannerName: sName }
-			]
-		});
+
+		if (scanner_id == '' ) return;
 		return this.scannerLists.find((scanner: any) => scanner.scanner_id == scanner_id).scannerName;
 	}
 

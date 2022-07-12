@@ -58,9 +58,6 @@ export class ReviewComponent implements OnInit {
 		// 	this.router.navigate(['']);
 		// } 
 		this.getAllScanner();
-	
-		
-	
 	}
 
 	// get scannerList  
@@ -156,13 +153,8 @@ export class ReviewComponent implements OnInit {
 				this.studies = response.studies;
 			    console.log(this.studies); 
 				 this.studies.forEach((res: any) => {
-
 						this.physical = Object.entries(res.data.physical);
-						// this.physical.forEach(res => {
-						// 	return  res[0].replace(/\_/g, ' ');
-						// })
-		                this.display = Object.entries(res.data.display);
-						
+		                this.display = Object.entries(res.data.display);	
 				 });
 
 			});

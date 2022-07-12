@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router,ActivatedRoute, NavigationStart } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EquipmentService } from 'src/app/services/equipment.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-transducer',
@@ -22,7 +23,7 @@ export class TransducerComponent implements OnInit {
  
 
 
-  constructor(private modalService: NgbModal, private router: Router, private routers:ActivatedRoute, private equipmentService:EquipmentService) {
+  constructor(private modalService: NgbModal, private router: Router, private routers:ActivatedRoute, private equipmentService:EquipmentService, private location: Location) {
    }
 
   ngOnInit(): void {
@@ -102,5 +103,9 @@ export class TransducerComponent implements OnInit {
     if(type == 'Uniformity') {
       this.router.navigate(['/review/uniformity']);
     }
+  }
+
+  actionBack() {
+    this.location.back();
   }
 }

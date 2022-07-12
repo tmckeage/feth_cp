@@ -1,14 +1,16 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { EquipmentComponent } from './equipment.component';
 
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { EquipmentComponent } from './equipment.component';
+import { ToastrModule } from 'ngx-toastr';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('EquipmentComponent', () => {
   let component: EquipmentComponent;
   let fixture: ComponentFixture<EquipmentComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EquipmentComponent ]
+      declarations: [EquipmentComponent],
+      imports: [ToastrModule.forRoot(),RouterTestingModule],
     })
     .compileComponents();
   });
@@ -19,13 +21,7 @@ describe('EquipmentComponent', () => {
     fixture.detectChanges();
   });
 
-  // testing 
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(EquipmentComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-unit-test!');
-  }));
-
-
+  it('should create', () => {
+    expect(component.closeResult).toBe('');
+  });
 });
