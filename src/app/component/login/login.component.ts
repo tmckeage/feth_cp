@@ -3,6 +3,7 @@ import { NavbarService } from '../../services/navbar.service';
 import { Auth } from '@aws-amplify/auth';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
 	});
 	showLoading = false;
 
-  	constructor(private nav: NavbarService, private router: Router) {}
+  	constructor(private nav: NavbarService, private auth:AuthService, private router: Router) {}
 
 	ngOnInit(): void {
 		this.nav.hide();
@@ -35,6 +36,14 @@ export class LoginComponent implements OnInit {
 				this.showLoading = false;
 				sessionStorage.setItem('fathomUserDetails', JSON.stringify(user));
 				this.router.navigate(['/users']);
+
+				// Set token
+				Auth.currentSession().then(res=> {
+					let accessToken = res.getAccessToken();
+					let jwtToken = accessToken.getJwtToken();
+					this.auth.setJWTToken(jwtToken);
+					this.auth.setAccessToken(JSON.stringify(accessToken));
+				});
 			})  
 			.catch(err => {
 				console.log(err);

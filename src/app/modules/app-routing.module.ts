@@ -15,27 +15,28 @@ import { VerticalDistanceComponent } from '../component/review/vertical-distance
 import { HorizontalDistanceComponent } from '../component/review/horizontal-distance/horizontal-distance.component';
 import { UniformityComponent } from '../component/review/uniformity/uniformity.component';
 import {LineChartComponent} from '../component/review/line-chart/line-chart.component';
+import { AuthGuard } from '../guard/auth.guard';
 import { path } from 'd3';
 
 const routes: Routes = [
-    { path: '', component: EquipmentComponent },
-    { path: 'equipment', component: EquipmentComponent },
+    { path: '', component: EquipmentComponent, canActivate: [AuthGuard]},
     { path: 'login', component: LoginComponent },
-    { path: 'analysis', component: AnalysisComponent },
-    { path: 'reports', component: ReportsComponent },
-    { path: 'users', component: UsersComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'set-password', component: SetPasswordComponent },
     { path: 'request', component: RequestReceivedComponent },
     { path: 'verify-user/:userName/:code', component:VerifyUserComponent },
+    { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] },
+    { path: 'analysis', component: AnalysisComponent, canActivate: [AuthGuard] },
+    { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] },
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
     { path: 'review', children:[
         { path:'', component: ReviewComponent},
         { path:'transducer', component:TransducerComponent},
         { path:'vertical', component:VerticalDistanceComponent},
         { path:'horizontal', component:HorizontalDistanceComponent},
         { path:'uniformity', component:UniformityComponent},
-        { path:'line-graph' , component:LineChartComponent}
-    ]}
+        { path:'line-graph' , component:LineChartComponent, }
+    ], canActivate: [AuthGuard]}
 ];
 
 @NgModule({

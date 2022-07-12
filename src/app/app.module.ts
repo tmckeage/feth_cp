@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AgGridModule } from 'ag-grid-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -15,6 +15,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SetPasswordComponent } from './component/set-password/set-password.component';
 import { RequestReceivedComponent } from './component/request-received/request-received.component';
+
+// Interceptors
+import { AuthTokenInterceptor } from './interceptor/AuthTokenInterceptor';
 
 // AWS
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular';
@@ -36,13 +39,16 @@ import { TransducerComponent } from './component/review/transducer/transducer.co
 import { VerticalDistanceComponent } from './component/review/vertical-distance/vertical-distance.component';
 import { HorizontalDistanceComponent } from './component/review/horizontal-distance/horizontal-distance.component';
 import { UniformityComponent } from './component/review/uniformity/uniformity.component';
+import { LineChartComponent } from '../app/component/review/line-chart/line-chart.component';
 
 // Import ngx-barcode module
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import {NgxPrintModule} from 'ngx-print';
-import { LineChartComponent } from '../app/component/review/line-chart/line-chart.component';
+
 // line chart 
-import { ChartsModule } from 'ng2-charts'; 
+import { ChartsModule } from 'ng2-charts';
+import { AuthService } from './services/auth.service';
+
 
 
 @NgModule({
@@ -64,7 +70,6 @@ import { ChartsModule } from 'ng2-charts';
     HorizontalDistanceComponent,
     UniformityComponent,
     LineChartComponent
-    
   ],
   imports: [
     BrowserModule,
@@ -92,7 +97,9 @@ import { ChartsModule } from 'ng2-charts';
   ],
   providers: [
     AmplifyService,
+    AuthService,
     DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true, deps: [AuthService]}
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

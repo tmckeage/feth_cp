@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../../services/navbar.service';
 import { Auth } from '@aws-amplify/auth';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-navbar',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-    constructor(public nav: NavbarService, private router: Router) { }
+    constructor(public nav: NavbarService, private auth:AuthService, private router: Router) { }
 
     ngOnInit(): void {
 
@@ -19,7 +20,8 @@ export class NavbarComponent implements OnInit {
     doLogout() {
         Auth.signOut().then(user => {
             sessionStorage.removeItem('fathomUserDetails');
-            this.router.navigate(['']);
+            this.auth.removeToken();
+            this.router.navigate(['/login']);
         })
         .catch(err => console.log(err));
     }
