@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavbarService } from '../../services/navbar.service';
+import { NavbarService } from '../../../services/navbar.service';
 import { Auth } from '@aws-amplify/auth';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';

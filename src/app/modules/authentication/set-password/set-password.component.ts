@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { NavbarService } from '../../services/navbar.service';
+import { NavbarService } from '../../../services/navbar.service';
 
 @Component({
   selector: 'app-set-password',

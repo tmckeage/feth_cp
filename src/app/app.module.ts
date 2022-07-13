@@ -4,16 +4,13 @@ import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './component/login/login.component';
 import { EquipmentComponent } from './component/equipment/equipment.component';
 import { ReviewComponent } from './component/review/review.component';
 import { ReportsComponent } from './component/reports/reports.component';
 import { AnalysisComponent } from './component/analysis/analysis.component';
 import { UsersComponent } from './component/users/users.component';
-import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SetPasswordComponent } from './component/set-password/set-password.component';
 import { RequestReceivedComponent } from './component/request-received/request-received.component';
 
 // Interceptors
@@ -32,7 +29,6 @@ import { ToastrModule } from 'ngx-toastr';
 // Angular material
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
 import { NavbarComponent } from './component/navbar/navbar.component';
-import { VerifyUserComponent } from './component/verify-user/verify-user.component';
 import { DatePipe } from '@angular/common';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { TransducerComponent } from './component/review/transducer/transducer.component';
@@ -43,28 +39,26 @@ import { LineChartComponent } from '../app/component/review/line-chart/line-char
 
 // Import ngx-barcode module
 import { NgxBarcode6Module } from 'ngx-barcode6';
-import {NgxPrintModule} from 'ngx-print';
+import { NgxPrintModule } from 'ngx-print';
 
 // line chart 
 import { ChartsModule } from 'ng2-charts';
 import { AuthService } from './services/auth.service';
 
+// Authentication module
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     EquipmentComponent,
     ReviewComponent,
     ReportsComponent,
     AnalysisComponent,
     UsersComponent,
-    ForgotPasswordComponent,
-    SetPasswordComponent,
     RequestReceivedComponent,
     NavbarComponent,
-    VerifyUserComponent,
     TransducerComponent,
     VerticalDistanceComponent,
     HorizontalDistanceComponent,
@@ -72,6 +66,7 @@ import { AuthService } from './services/auth.service';
     LineChartComponent
   ],
   imports: [
+    AuthenticationModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

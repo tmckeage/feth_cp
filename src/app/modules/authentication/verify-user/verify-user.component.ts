@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '@aws-amplify/auth';
 import { ActivatedRoute } from '@angular/router';
-import { NavbarService } from '../../services/navbar.service';
+import { Router } from '@angular/router';
+import { NavbarService } from '../../../services/navbar.service';
 
 @Component({
   selector: 'app-verify-user',
@@ -13,7 +14,7 @@ export class VerifyUserComponent implements OnInit {
   code: any;
   isMessage: any;
 
-  constructor(private actRoute: ActivatedRoute, private nav: NavbarService) { }
+  constructor(private actRoute: ActivatedRoute, private router: Router, private nav: NavbarService) { }
 
   ngOnInit(): void {
     this.nav.hide();
@@ -30,5 +31,9 @@ export class VerifyUserComponent implements OnInit {
         this.isMessage = false;
       });
     } 
+  }
+
+  redirectToLogin() {
+    this.router.navigate(['/login']);
   }
 }
