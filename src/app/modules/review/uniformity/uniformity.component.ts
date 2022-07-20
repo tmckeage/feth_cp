@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EquipmentService } from '../../../services/equipment.service';
+import { Location } from '@angular/common';
 import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
@@ -20,7 +21,7 @@ export class UniformityComponent implements OnInit {
   date: any;
   scannerName: any;
   data:any;
-  constructor(private equipment: EquipmentService) {
+  constructor(private equipment: EquipmentService, private location: Location) {
 
   }
 
@@ -185,8 +186,10 @@ export class UniformityComponent implements OnInit {
     //     });
     //   });
     // });
+  }
 
-
+  actionBack() {
+    this.location.back();
   }
 
  }

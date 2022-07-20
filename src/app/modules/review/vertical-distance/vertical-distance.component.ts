@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EquipmentService } from '../../../services/equipment.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-vertical-distance',
@@ -17,7 +18,7 @@ export class VerticalDistanceComponent implements OnInit {
   v_pins: any[] = [];
 
 
-  constructor(private equipment: EquipmentService) { }
+  constructor(private equipment: EquipmentService, private location:Location) { }
 
   ngOnInit(): void {
     this.datalist = this.equipment.getScanner();
@@ -56,5 +57,9 @@ export class VerticalDistanceComponent implements OnInit {
         });
       });
     });
+  }
+
+  actionBack() {
+    this.location.back();
   }
 }

@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { AppComponent } from './app.component';
 import { EquipmentComponent } from './component/equipment/equipment.component';
-import { ReviewComponent } from './component/review/review.component';
+import { ReviewComponent } from './modules/review/review/review.component';
 import { ReportsComponent } from './component/reports/reports.component';
 import { AnalysisComponent } from './component/analysis/analysis.component';
 import { UsersComponent } from './component/users/users.component';
@@ -31,11 +31,11 @@ import { AngularMaterialModule } from './modules/angular-material/angular-materi
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { DatePipe } from '@angular/common';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { TransducerComponent } from './component/review/transducer/transducer.component';
-import { VerticalDistanceComponent } from './component/review/vertical-distance/vertical-distance.component';
-import { HorizontalDistanceComponent } from './component/review/horizontal-distance/horizontal-distance.component';
-import { UniformityComponent } from './component/review/uniformity/uniformity.component';
-import { LineChartComponent } from '../app/component/review/line-chart/line-chart.component';
+import { TransducerComponent } from './modules/review/transducer/transducer.component';
+import { VerticalDistanceComponent } from './modules/review/vertical-distance/vertical-distance.component';
+import { HorizontalDistanceComponent } from './modules/review/horizontal-distance/horizontal-distance.component';
+import { UniformityComponent } from './modules/review/uniformity/uniformity.component';
+import { LineChartComponent } from './modules/review/line-chart/line-chart.component';
 
 // Import ngx-barcode module
 import { NgxBarcode6Module } from 'ngx-barcode6';
@@ -48,25 +48,22 @@ import { AuthService } from './services/auth.service';
 // Authentication module
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 
+// Review module
+import { ReviewModule } from './modules/review/review.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     EquipmentComponent,
-    ReviewComponent,
     ReportsComponent,
     AnalysisComponent,
     UsersComponent,
     RequestReceivedComponent,
-    NavbarComponent,
-    TransducerComponent,
-    VerticalDistanceComponent,
-    HorizontalDistanceComponent,
-    UniformityComponent,
-    LineChartComponent
+    NavbarComponent
   ],
   imports: [
     AuthenticationModule,
+    ReviewModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
