@@ -4,10 +4,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/internal/Observable';
 import { filter, map, startWith } from 'rxjs/operators';
 import { EquipmentService } from 'src/app/services/equipment.service';
+import { UtilitiesService } from 'src/app/services/utilities.services';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '@aws-amplify/auth';
+
 
 
 @Component({
@@ -77,8 +79,19 @@ export class EquipmentComponent implements OnInit {
 	selectedTransducerModel: any;
 	isUniformityAnalysis: boolean = false;
 	isDeleteFlag: any = '0';
+	addingScanner: any;
+	addingTransducer: any;
+	transducerSpinner: any;
+	scannerId: any = null;
+	transducerId: any = null;
 
-	constructor(private toastr: ToastrService, public modalService: NgbModal, private equipmentService: EquipmentService, private datePipe: DatePipe, private router: Router) {
+	constructor(
+		private toastr: ToastrService,
+		public modalService: NgbModal,
+		private equipmentService: EquipmentService,
+		private datePipe: DatePipe,
+		private router: Router,
+		private utilitiesService: UtilitiesService) {
 
 		// Type list
 		this.typeTransducerOption = [
@@ -90,10 +103,10 @@ export class EquipmentComponent implements OnInit {
 
 		// scanner form 
 		this.scannerFormGroup = new FormGroup({
+			"facility": new FormControl('', []),
 			"make": new FormControl('', [Validators.required]),
 			"model": new FormControl('', [Validators.required]),
 			"room": new FormControl('', []),
-			"facility": new FormControl('', []),
 			"serial_number": new FormControl('', [Validators.required])
 		});
 
@@ -170,7 +183,7 @@ export class EquipmentComponent implements OnInit {
 		this.transducerFormGroup.controls['model'].disable();
 
 
-		this.getAllScanner();  // scanner API 
+		this.getAllEquipments();  // scanner API 
 	}
 
 	// type list finding
@@ -180,9 +193,8 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	// get scannerList  
-	getAllScanner() {
-		this.equipmentService.getAllScanner()
-			.subscribe(
+	getAllEquipments() {
+		this.equipmentService.getAllEquipments().subscribe(
 				response => {
 					this.loading = false;
 					this.scanners = Object.values(response.scanners);
@@ -190,17 +202,17 @@ export class EquipmentComponent implements OnInit {
 					this.scanners.forEach((res: any) => {
 						// facility list
 						this.facilityList.push(res.facility);
-						let result = this.facilityList.filter((val: any, index: any) => this.facilityList.indexOf(val) == index);
+						let result = this.facilityList.filter((val: any, index: any) => val !== null && this.facilityList.indexOf(val) == index);
 						this.facilityOptions = Object.values(result);
 
 						// room list
 						this.roomList.push(res.room);
-						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
+						let room = this.roomList.filter((val: any, index: any) => val !== null && this.roomList.indexOf(val) == index);
 						this.roomOptions = Object.values(room);
 
 						//make list
 						this.makeNameList.push(res.make);
-						let make = this.makeNameList.filter((val: any, index: any) => this.makeNameList.indexOf(val) == index);
+						let make = this.makeNameList.filter((val: any, index: any) => val !== null && this.makeNameList.indexOf(val) == index);
 						this.makeOptions = Object.values(make);
 
 						// transducer make list
@@ -213,18 +225,10 @@ export class EquipmentComponent implements OnInit {
 						});
 					});
 					this.scannersObject = Object.values(response.scanners);
-					console.log("", response.scanners);
 				},
 				error => {
 					console.log(error);
-				});
-	}
-
-	// scanner id
-	getScannerId(scanner_id: any) {
-
-		if (scanner_id == '' ) return;
-		return this.scannerLists.find((scanner: any) => scanner.scanner_id == scanner_id).scannerName;
+		});
 	}
 
 	// modelNameList filter on make 
@@ -243,7 +247,6 @@ export class EquipmentComponent implements OnInit {
 			this.scannerFormGroup.controls['model'].disable();
 			this.modelNameList = [];
 		}
-
 	}
 
 	// modelNameList filter on make
@@ -298,16 +301,15 @@ export class EquipmentComponent implements OnInit {
 			this.startDate = this.dueDate.value.start;
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
 			scannerList = scannerList.filter((item: any) => {
-				let start: any = this.datePipe.transform(item.next_Study_Due.date, 'MM/dd/yy');
+				let start: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
 				return start >= this.startDate;
 			});
 		}
 		if (this.dueDate.value.end != null) {
 			this.endDate = this.dueDate.value.end;
 			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
-			console.log(this.endDate);
 			scannerList = scannerList.filter((item: any) => {
-				let due: any = this.datePipe.transform(item.next_Study_Due.date, 'MM/dd/yy');
+				let due: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
 				return due <= this.endDate;
 			});
 		}
@@ -369,7 +371,7 @@ export class EquipmentComponent implements OnInit {
 	// Transducer type autocomplete
 	private type_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
-		return this.typeTransducerOption.filter((option: string) => option.toLowerCase().indexOf(filterValue) === 0);
+		return this.typeTransducerOption.filter((option: string) => option.toString().toLowerCase().indexOf(filterValue) === 0);
 	}
 
 	// Transducer image autocomplete
@@ -390,72 +392,94 @@ export class EquipmentComponent implements OnInit {
 		this.modelFilter(make);
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
-		});
+		}, (reason)=>{ 
+ 
+ 		});
 	}
 
 	//save scanner 
-	onSubmitScanner() {
+	onSubmitScanner(scannerId: any) {
+		this.addingScanner = true;
 		let data = this.scannerFormGroup.value;
-		let obj = { "scanner": { ...data } };
-		this.equipmentService.addScanner(JSON.stringify(obj))
-			.subscribe(
-				response => {
-					this.getAllScanner();
+		let scannerModel = this.utilitiesService.prepareScannerModel(data);
+
+		if (scannerId == null) {
+
+			this.equipmentService.addScanner(scannerModel)
+				.subscribe( response => {
+					this.addingScanner = false;
+					this.getAllEquipments();
 					this.toastr.success('Scanner saved successfully', '');
 					this.modalService.dismissAll();
 				},
 				error => {
 					console.log(error);
 				});
+		} else {
+			this.equipmentService.editScanner(scannerModel, scannerId)
+				.subscribe( response => {
+					this.scannerId = null;
+					this.addingScanner = false;
+					this.getAllEquipments();
+					this.toastr.success('Scanner Updated successfully', '');
+					this.modalService.dismissAll();
+				},
+				error => {
+					console.log(error);
+				});
+		}
 	}
 
 	// save tranducer 
-	onSubmitTranducer() {
+	onSubmitTranducer(transducerId: any) {
+		this.addingTransducer =true;
+		this.transducerSpinner = true;
 		let data = this.transducerFormGroup.value;
-		let obj = {
-			"transducer": {
-				"make": data.make,
-				"model": data.model,
-				"serial_number": data.serial_number,
-				"type": data.type,
-				"scanner_id": data.scanner,
-				"analysis_parameters": {
-					"x_0": 7,
-					"y_0": 6,
-					"x_1": 5,
-					"y_1": 4,
-					"theta": 3,
-					"inner_radius": 2,
-					"outter_radius": 1
-				}
 
-			}
-		};
+		let transducerModel = this.utilitiesService.prepareTransducerModel(data);
 
-		this.equipmentService.addTranducer(obj)
-			.subscribe(
-				response => {
-					this.getAllScanner();
+			if (transducerId == null) {
+				this.addingTransducer =false;
+				this.equipmentService.addTranducer(transducerModel).subscribe( response => {
+					this.transducerSpinner = false;
+					this.getAllEquipments();
 					this.toastr.success('Transducer saved successfully', '');
 					this.modalService.dismissAll();
 				},
 				error => {
 					console.log(error);
 				});
-
+			} else {
+				this.equipmentService.editTranducer(transducerModel, transducerId).subscribe( response => {
+					this.addingTransducer = false;
+					this.transducerId = null;
+					this.transducerSpinner = false;
+					this.getAllEquipments();
+					this.toastr.success('Transducer updated successfully', '');
+					this.modalService.dismissAll();
+				},
+				error => {
+					console.log(error);
+				});
+			}
 	}
 
 	// on scanner click open view modal
 	scannerDetail(scanner: any, view: any) {
 		this.viewData = scanner;
+		this.scannerId = scanner.scanner_id;
 		this.modalService.open(view, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
 	// view transducer modal
 	onTransducerDetail(equipment: any, scanner: any, transducerView: any) {
 		var scannerName: any;
+		this.transducerId = equipment.transducer_id;
+		this.scannerId = scanner.scanner_id;
 		if (scanner == 'scanner') {
 			scannerName = '';
 		} else {
@@ -468,6 +492,7 @@ export class EquipmentComponent implements OnInit {
 			serial_number: equipment.serial_number,
 			barcode: equipment.barcode,
 			scanner: scannerName,
+			scanner_id: scanner.scanner_id,
 			type: equipment.type,
 			transducer_id :equipment.transducer_id
 		};
@@ -479,6 +504,8 @@ export class EquipmentComponent implements OnInit {
 			this.modalService.dismissAll();
 			this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 				this.closeResult = `Closed with: ${result}`;
+			}, (reason)=>{ 
+ 
 			});
 		}
 		
@@ -503,6 +530,8 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
@@ -518,50 +547,51 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
-	isDelete(viewData: any, deleteScanner: any) {
+	confirmScannerDelete(viewData: any, deleteScanner: any) {
 		this.modalService.open(deleteScanner, { ariaLabelledBy: 'modal-basic-title', size: 'sm' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
-	TransducerDelete(viewTransducer: any, deleteScanner: any) {
+	confirmTransducerDelete(viewTransducer: any, deleteScanner: any) {
 		this.modalService.open(deleteScanner, { ariaLabelledBy: 'modal-basic-title', size: 'sm' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
 	// delete scanner  scanner_id
-	deleteValue(id: any, deleteScanner: any) {
+	removeScanner(id: any, deleteScanner: any) {
 		let data = id.scanner_id;
-		this.equipmentService.deleteScanner(data)
-			.subscribe(
-				response => {
-					this.toastr.success('Scanner delete successfully', '');
-					this.getAllScanner();
-					this.modalService.dismissAll();
-				},
-				error => {
-					console.log(error);
-				});
+		this.equipmentService.deleteScanner(data).subscribe(response => {
+			this.getAllEquipments();
+			this.toastr.success('Scanner delete successfully', '');
+			this.modalService.dismissAll(); 
+		},
+		error => {
+			console.log(error);
+		});
 	}
 
 	// delete deleteTransducer
-	deleteTransducerValue(id: any) {
-		this.equipmentService.deleteTranducer(id.transducer_id)
-			.subscribe(
-				response => {
-					this.getAllScanner();
-					this.toastr.success('Transducer delete successfully', '');
-					this.modalService.dismissAll();
-				},
-				error => {
-					console.log(error);
-				});
+	removeTransducer(id: any) {
+		this.equipmentService.deleteTranducer(id.transducer_id).subscribe(response => {
+			this.getAllEquipments();
+			this.toastr.success('Transducer delete successfully', '');
+			this.modalService.dismissAll();
+		},
+		error => {
+			console.log(error);
+		});
 	}
-
 
 	// on change make for transducer
 	onChangeMakeTransducer(makeTransducer: any) {
@@ -576,6 +606,8 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.modalService.open(viewPrint, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
@@ -614,39 +646,36 @@ export class EquipmentComponent implements OnInit {
 		})
 	}
 
-
 	// transducer edit modal
 	onTransducerEdit(viewTransducer: any, transducerModal: any, image_analysis: any, uniformity_analysis: any) {
+
+		// debugger;
 		this.transducerModalTitle = 'Edit Transducer';
 		this.transducerFormGroup.controls['model'].enable();
 
+		this.prepareScannerListForAutoComplete();
 		this.setMakeTransducer(viewTransducer.make);
 		this.setModelTransducer(viewTransducer.model);
 		this.setSNTransducer(viewTransducer.serial_number);
-		this.setScannerTransducer(viewTransducer.scanner);
+		this.setScannerTransducer(viewTransducer.scanner_id);
 		this.setTypeTransducer(viewTransducer.type);
 
 		this.isModel = true;
 		this.modalService.dismissAll();
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
 	// add transducer modal
 	onTransducer(transducerModal: any) {
+
 		this.transducerModalTitle = 'New Transducer';
 		this.scannerLists = [];
 
-		// scanner list 
-		this.scannersObject.forEach((res: any) => {
-			let scannerNameList: any[] = [];
-			scannerNameList.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
-			let result = scannerNameList.filter((val: any, index: any) => scannerNameList.indexOf(val) == index);
-			let obj = { scanner_id: res.scanner_id, scannerName: result };
-			this.scannerLists.push(obj);
-		});
-
+		this.prepareScannerListForAutoComplete();
 		this.setMakeTransducer('');
 		this.setModelTransducer('');
 		this.setSNTransducer('');
@@ -655,7 +684,15 @@ export class EquipmentComponent implements OnInit {
 		this.isModel = false;
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
+	}
+
+	// scanner id
+	getScannerId(scanner_id: any) {	
+		if (scanner_id == '' ) return;
+		return this.scannerLists.find((scanner: any) => scanner.scanner_id == scanner_id).scannerName;		
 	}
 
 	// Reports Cancel 
@@ -663,6 +700,19 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
+		});
+	}
+
+	prepareScannerListForAutoComplete() {
+		// scanner list 
+		this.scannersObject.forEach((res: any) => {
+			let scannerNameList: any[] = [];
+			scannerNameList.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
+			let result = scannerNameList.filter((val: any, index: any) => scannerNameList.indexOf(val) == index);
+			let obj = { scanner_id: res.scanner_id, scannerName: result };
+			this.scannerLists.push(obj);
 		});
 	}
 
@@ -671,6 +721,8 @@ export class EquipmentComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.modalService.open(reportsError, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 	// scanner print

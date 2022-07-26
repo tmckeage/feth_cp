@@ -1,12 +1,15 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
-            <button type="button" class="btn btn-primary btn-sm me-2" disabled><i class="fa fa-file"
-                    aria-hidden="true"></i> Import</button>
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)"><i
-                    class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Scanner</button>
-            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)"><i
-                    class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Transducer</button>
+            <button type="button" class="btn btn-primary btn-sm me-2" disabled>
+                <i class="fa fa-file" aria-hidden="true"></i> Import
+                </button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onScanner(content)">
+                <i class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Scanner
+                </button>
+            <button type="button" class="btn btn-primary btn-sm me-2" (click)="onTransducer(transducerModal)">
+                <i class="fa fa-plus-circle fs-5" aria-hidden="true"></i> Transducer
+            </button>
         </div>
     </div>
     <div class="card mt-2 p-4 col-md-8">
@@ -37,8 +40,7 @@
                 <mat-form-field appearance="fill" class="btn-sm mat-form-field-infix-new size" >
                     <mat-label>Enter a due date range</mat-label>
                     <mat-date-range-input [formGroup]="dueDate" [rangePicker]="picker">
-                        <input matStartDate formControlName="start" placeholder="Start date"
-                            (dateChange)="equipmentFilter()">
+                        <input matStartDate formControlName="start" placeholder="Start date" (dateChange)="equipmentFilter()">
                         <input matEndDate formControlName="end" placeholder="End date" (dateChange)="equipmentFilter()">
                     </mat-date-range-input>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -49,28 +51,37 @@
         <!-- scanner list -->
         <div *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
             <div class="row">
-                <div class="col-md-4 cursorPointer" (click)="scannerDetail(scanner,view)">{{scanner.make}}
-                    {{scanner.model}} : {{scanner.serial_number}}</div>
+                <div class="col-md-4 cursorPointer" (click)="scannerDetail(scanner, view)">
+                    {{scanner.make}} {{scanner.model}} : {{scanner.serial_number}}
+                </div>
                 <div class="col-md-2">{{scanner.facility}}</div>
                 <div class="col-md-2">{{scanner.room}}</div>
-                <div class="col-md-2">{{scanner.next_Study_Due.type}}</div>
-                <div class="col-md-2">{{scanner.next_Study_Due.date | date: 'M/d/yyyy'}}</div>
+                <div *ngIf="scanner.next_study_due && scanner.next_study_due.length > 0" class="col-md-2">
+                    {{scanner.next_study_due.type}}
+                </div>
+                <div *ngIf="scanner.next_study_due && scanner.next_study_due.length > 0" class="col-md-2">
+                    {{scanner.next_study_due.date | date: 'M/d/yyyy'}}
+                </div>
             </div>
             <div class="row d-inline">
                 <ul class="ms-5 col-md-10 col-sm-10 col-lg-10">
-                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducers"><a src="#"
-                            (click)="onTransducerDetail(transducer,scanner,transducerView)">{{transducer.make}}
-                            {{transducer.model}} : {{transducer.serial_number}}</a></li>
+                    <li class="cursorPointer" *ngFor="let transducer of scanner.transducers">
+                        <a src="#" (click)="onTransducerDetail(transducer, scanner, transducerView)"> 
+                            {{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="h-4" *ngIf="!loading">
-            <div class="col-md-4 cursorPointer">Unassigned Transducers</div>
+            <div class="bg-secondary text-white p-1 col-md-12 cursorPointer">Unassigned Transducers</div>
             <div class="row d-inline mt-4">
                 <ul class="ms-5">
-                    <li class="cursorPointer" *ngFor="let transducer of unassignedTransducers"><a src="#"
-                            (click)="onTransducerDetail(transducer,'scanner',transducerView)">{{transducer.make}}
-                            {{transducer.model}} : {{transducer.serial_number}}</a></li>
+                    <li class="cursorPointer" *ngFor="let transducer of unassignedTransducers">
+                        <a src="#" (click)="onTransducerDetail(transducer,'scanner',transducerView)">
+                            {{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -80,8 +91,14 @@
     </div>
     <!-- Barcode print code -->
     <div id="scannerPrint" #scannerPrint class="scanner-print">
-        <ngx-barcode6 [bc-format]="'MSI'" [bc-font-size]="50" [bc-width]="4" [bc-height]="100" [bc-value]="barcodeValue"
-            [bc-fontSize]="20" [bc-display-value]="true">
+        <ngx-barcode6 
+        [bc-format]="'MSI'" 
+        [bc-font-size]="50" 
+        [bc-width]="4" 
+        [bc-height]="100" 
+        [bc-value]="barcodeValue"
+        [bc-fontSize]="20" 
+        [bc-display-value]="true">
         </ngx-barcode6>
     </div>
 
@@ -89,7 +106,7 @@
     <ng-template #content let-modal>
         <div class="modal-header">
             <h5 class="modal-title" id="modal-basic-title">{{addModalTitle}}</h5>
-            <span class="close close-btn" (click)="modal.dismissAll('Cross click')">&times;</span>
+            <span class="close close-btn" (click)="modalService.dismissAll('Cross click')">&times;</span>
         </div>
         <div class="modal-body">
             <form class="example-form" [formGroup]="scannerFormGroup">
@@ -161,12 +178,17 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" [disabled]="!scannerFormGroup.valid"
-                (click)="onSubmitScanner()">Save</button>
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm" 
+                [disabled]="!scannerFormGroup.valid || addingScanner" 
+                (click)="onSubmitScanner(scannerId)">
+                <span *ngIf="addingScanner" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> 
+                Save
+            </button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
-
     <!-- Add/ Edit transducer modal -->
     <ng-template #transducerModal let-modal>
         <div class="modal-header">
@@ -341,11 +363,15 @@
             </form>
         </div>
         <div class="modal-footer">
+            <button 
+                type="button" 
+                class="btn btn-secondary btn-sm" 
+                [disabled]="!transducerFormGroup.valid || addingTransducer" 
+                (click)="onSubmitTranducer(transducerId)">
+                <span *ngIf="addingTransducer" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> 
+                Save
+            </button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
-            <button type="button" class="btn btn-secondary btn-sm" (click)="onReportsError(reportsError)"
-                *ngIf="isModel">Reports Analysis Window Errors </button>
-            <button type="button" class="btn btn-secondary btn-sm" [disabled]="!transducerFormGroup.valid"
-                (click)="onSubmitTranducer()">Save</button>
         </div>
     </ng-template>
 
@@ -399,7 +425,7 @@
                 (click)="onScannerEdit(viewData,content)">Edit</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
             <button type="button" class="btn btn-danger btn-sm"
-                (click)="isDelete(viewData,deleteScanner)">Delete</button>
+                (click)="confirmScannerDelete(viewData, deleteScanner)">Delete</button>
         </div>
     </ng-template>
 
@@ -562,10 +588,10 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm"
-                (click)="onTransducerEdit(viewTransducer,transducerModal, image_analysis, uniformity_analysis)">Edit
+                (click)="onTransducerEdit(viewTransducer, transducerModal, image_analysis, uniformity_analysis)">Edit
             </button>
             <button type="button" class="btn btn-danger btn-sm"
-                (click)="TransducerDelete(viewTransducer,deleteTranducer)">Delete</button>
+                (click)="confirmTransducerDelete(viewTransducer, deleteTranducer)">Delete</button>
             <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
         </div>
     </ng-template>
@@ -593,8 +619,7 @@
             <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this?</h5>
         </div>
         <div class="text-center p-2">
-            <button type="button" class="btn btn-secondary btn-sm p-1 me-2"
-                (click)="deleteValue(viewData,deleteScanner)">Ok</button>
+            <button type="button" class="btn btn-secondary btn-sm p-1 me-2">Ok</button>
             <button type="button" class="btn btn-primary btn-sm p-1"
                 (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
@@ -603,11 +628,10 @@
     <!-- delete transducer msg alerts -->
     <ng-template #deleteTranducer let-modal>
         <div class="modal-body">
-            <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this?</h5>
+            <h5 class="modal-title text-center" id="modal-basic-title" (click)="removeScanner(viewData, deleteScanner)"> Are you sure want to delete this?</h5>
         </div>
         <div class="text-center p-2">
-            <button type="button" class="btn btn-secondary btn-md p-1 me-2"
-                (click)="deleteTransducerValue(viewTransducer)">Ok</button>
+            <button type="button" class="btn btn-secondary btn-md p-1 me-2" (click)="removeTransducer(viewTransducer)">Ok</button>
             <button type="button" class="btn btn-primary btn-sm p-1"
                 (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
