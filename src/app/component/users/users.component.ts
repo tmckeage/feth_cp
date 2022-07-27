@@ -114,7 +114,7 @@ export class UsersComponent implements OnInit {
 		this.setFacility(1);
 		this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
-		});
+		}, error => {});
 	}
 
 	setFirstName(inputVal: any) {this.userForms.controls.first_name.setValue(inputVal)}

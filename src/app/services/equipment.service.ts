@@ -1618,7 +1618,7 @@ export class EquipmentService {
   }
 
   getAllTransducer(): Observable<any> {
-    return this.http.get(environment.api_url + '/api/v1/transducer');
+    return this.http.get(environment.api_url + '/api/v1/transducers');
   }
 
   addTranducer(data: any): Observable<any> {

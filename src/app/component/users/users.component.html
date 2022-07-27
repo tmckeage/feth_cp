@@ -48,7 +48,7 @@
 				<div class="col-md-6 mb-3">
 					<mat-form-field>
 						<mat-label>User Type:</mat-label>
-						<mat-select [(ngModel)]="selectedItem">
+						<mat-select [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}">
 						<mat-option *ngFor="let userType of userTypes" [value]="userType.name">
 							{{userType.name}}
 						</mat-option>
@@ -58,7 +58,7 @@
 				<div class="col-md-6 mb-3">
 					<mat-form-field>
 						<mat-label>Facility:</mat-label>
-						<mat-select [(ngModel)]="selectedItem">
+						<mat-select [(ngModel)]="selectedItem"  [ngModelOptions]="{standalone: true}">
 						<mat-option *ngFor="let facility of facilityOptions" [value]="facility.name">
 							{{facility.name}}
 						</mat-option>
