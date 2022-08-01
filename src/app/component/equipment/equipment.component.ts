@@ -301,6 +301,7 @@ export class EquipmentComponent implements OnInit {
 			this.startDate = this.dueDate.value.start;
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
 			scannerList = scannerList.filter((item: any) => {
+				if(item.next_study_due === undefined) return;
 				let start: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
 				return start >= this.startDate;
 			});
@@ -691,7 +692,7 @@ export class EquipmentComponent implements OnInit {
 
 	// scanner id
 	getScannerId(scanner_id: any) {	
-		if (scanner_id == '' ) return;
+		if (scanner_id == '' || scanner_id == undefined) return;
 		return this.scannerLists.find((scanner: any) => scanner.scanner_id == scanner_id).scannerName;		
 	}
 

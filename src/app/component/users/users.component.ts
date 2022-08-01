@@ -60,12 +60,10 @@ export class UsersComponent implements OnInit {
 		this.nav.show();
 
 		// This is temp JSON, once API's gets integrate then this will be get remove
-
-		// cellStyle: {textAlign: 'center'}, cellClass: "grid-cell-centered"
 		this.columnDefs = [
-			{ field: 'name', sortable: true, filter: true, width: '300%' },
-			{ field: 'jobType', sortable: true, filter: true , width: '300%' },
-			{ field: 'facility', sortable: true, filter: true , width: '280%' }
+			{ field: 'name', sortable: true, filter: true, width: '300%', cellStyle: {textAlign: 'left'}, cellClass: "grid-cell-centered"},
+			{ field: 'jobType', sortable: true, filter: true , width: '300%', cellStyle: {textAlign: 'left'}, cellClass: "grid-cell-centered"},
+			{ field: 'facility', sortable: true, filter: true , width: '380%', cellStyle: {textAlign: 'left'}, cellClass: "grid-cell-centered"}
 		];
 
 		// get row data from service
