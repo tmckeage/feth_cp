@@ -32,17 +32,15 @@ export class LoginComponent implements OnInit {
 		if (this.usernameValue && this.passwordValue) {
 			this.showLoading = true;
 			Auth.signIn(this.usernameValue, this.passwordValue).then(user => {
-				console.log(user);
 				this.showLoading = false;
 				sessionStorage.setItem('fathomUserDetails', JSON.stringify(user));
-				this.router.navigate(['/users']);
-
 				// Set token
 				Auth.currentSession().then(res=> {
 					let accessToken = res.getAccessToken();
 					let jwtToken = accessToken.getJwtToken();
 					this.auth.setJWTToken(jwtToken);
 					this.auth.setAccessToken(JSON.stringify(accessToken));
+					this.router.navigate(['/users']);
 				});
 			})  
 			.catch(err => {
