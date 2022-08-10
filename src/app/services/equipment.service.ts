@@ -1644,5 +1644,5 @@ export class EquipmentService {
   deleteTranducer(transducerId: any): Observable<any> {
     return this.http.delete(environment.api_url + '/api/v1/transducer/' + transducerId);
   }
- 
+
 }
