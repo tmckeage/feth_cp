@@ -107,7 +107,8 @@ export class EquipmentComponent implements OnInit {
 			"make": new FormControl('', [Validators.required]),
 			"model": new FormControl('', [Validators.required]),
 			"room": new FormControl('', []),
-			"serial_number": new FormControl('', [Validators.required])
+			"serial_number": new FormControl('', [Validators.required]),
+			"barcode_number": new FormControl('', [])
 		});
 
 		// due date calendar form
@@ -118,6 +119,7 @@ export class EquipmentComponent implements OnInit {
 
 		// Transducer form 
 		this.transducerFormGroup = new FormGroup({
+			"barcode_number": new FormControl('', []),
 			"make": new FormControl('', [Validators.required]),
 			"model": new FormControl('', [Validators.required]),
 			"scanner": new FormControl('', []),
@@ -248,6 +250,7 @@ export class EquipmentComponent implements OnInit {
 			this.modelNameList = [];
 		}
 	}
+
 
 	// modelNameList filter on make
 	modelTranducerFilter(make: any) {
@@ -389,6 +392,8 @@ export class EquipmentComponent implements OnInit {
 		this.setFacility('');
 		this.setRoom('');
 		this.setSN('');
+		this.setBarcode('');
+		this.scannerId = null;
 		let make = '';
 		this.modelFilter(make);
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -540,11 +545,13 @@ export class EquipmentComponent implements OnInit {
 	onScannerEdit(viewData: any, content: any) {
 		this.addModalTitle = 'Edit Scanner';
 		this.scannerFormGroup.controls['model'].enable();
+		this.selectedMake = viewData.make;
 		this.setMake(viewData.make);
 		this.setModel(viewData.model);
 		this.setFacility(viewData.facility);
 		this.setRoom(viewData.room);
 		this.setSN(viewData.serial_number);
+		this.setBarcode(viewData.barcode);
 		this.modalService.dismissAll();
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -660,6 +667,7 @@ export class EquipmentComponent implements OnInit {
 		this.setSNTransducer(viewTransducer.serial_number);
 		this.setScannerTransducer(viewTransducer.scanner_id);
 		this.setTypeTransducer(viewTransducer.type);
+		this.setBarcodeTransducer(viewTransducer.barcode);
 
 		this.isModel = true;
 		this.modalService.dismissAll();
@@ -682,6 +690,8 @@ export class EquipmentComponent implements OnInit {
 		this.setSNTransducer('');
 		this.setScannerTransducer('');
 		this.setTypeTransducer('');
+		this.setBarcodeTransducer('');
+		this.transducerId = null;
 		this.isModel = false;
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -742,9 +752,6 @@ export class EquipmentComponent implements OnInit {
 				this.modelNameList.push(item.model);
 				this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
 			});
-		} else {
-			this.scannerFormGroup.controls['model'].disable();
-			this.modelNameList = [];
 		}
 	}
 
@@ -783,12 +790,14 @@ export class EquipmentComponent implements OnInit {
 	setSN(inputVal: any) { this.scannerFormGroup.controls.serial_number.setValue(inputVal) }
 	setRoom(inputVal: any) { this.scannerFormGroup.controls.room.setValue(inputVal) }
 	setFacility(inputVal: any) { this.scannerFormGroup.controls.facility.setValue(inputVal) }
+	setBarcode(inputVal: any) { this.scannerFormGroup.controls.barcode_number.setValue(inputVal) }
 	setMakeTransducer(inputVal: any) { this.transducerFormGroup.controls.make.setValue(inputVal) }
 	setModelTransducer(inputVal: any) { this.transducerFormGroup.controls.model.setValue(inputVal) }
 	setSNTransducer(inputVal: any) { this.transducerFormGroup.controls.serial_number.setValue(inputVal) }
 	setScannerTransducer(inputVal: any) { this.transducerFormGroup.controls.scanner.setValue(inputVal) }
 	setTypeTransducer(inputVal: any) { this.transducerFormGroup.controls.type.setValue(inputVal) }
 	setImageTransducer(inputVal: any) { this.transducerFormGroup.controls.image.setValue(inputVal) }
+	setBarcodeTransducer(inputVal: any) { this.transducerFormGroup.controls.barcode_number.setValue(inputVal) }
 	get scannerForm() { return this.scannerFormGroup.controls; }
 	get transducerForm() { return this.transducerFormGroup.controls; }
 }
