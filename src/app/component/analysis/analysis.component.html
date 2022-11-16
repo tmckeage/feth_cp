@@ -1,5 +1,22 @@
-<div class="middle">
-    <h1>COMING SOON</h1>
-    <hr>
-    <p>Analysis works!</p>
+<div class="row justify-content-center mt-5" >
+    <div class="col-md-8  mt-3 text-center" >Analysis Report</div>
+	<div class="card mt-2 p-4 col-md-8" style="height: 700px;">
+        <mat-form-field appearance="fill" width="30%">
+            <mat-label>Select Graph</mat-label>
+            <mat-select [(ngModel)]="selectedValue" name="graph" (selectionChange)="selectedReport($event)">
+            <mat-option *ngFor="let graph of graphs" [value]="graph.value">
+                {{graph.viewValue}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br><br>
+        <div *ngIf="selectedValue == 'dop-plot'" width="50%">
+            <h6>Depth of Penetration:Philips C6-2 Transducer 453561652583</h6>
+            <canvasjs-chart [options]="chartOptions" ></canvasjs-chart>
+        </div>
+        <div *ngIf="selectedValue == 'vertical-distance-plot'" width="50%">
+            <h6>Vertical Distance: Philips C6-2 Transducer 453561652583</h6>
+            <canvasjs-chart [options]="chartOptions_vertical" ></canvasjs-chart>
+        </div>
+    </div>
 </div>
