@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary float-end btn-sm" [disabled]="!loginForm.valid" >Login</button>
+                        <button type="submit" class="btn btn-primary float-end btn-sm" [disabled]="!loginForm.valid || showLoading == true">Login</button>
                     </div>
                     <div class="text-center" *ngIf="showLoading">
                         <div class="spinner-border" role="status">

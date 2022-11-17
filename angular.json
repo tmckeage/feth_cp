@@ -95,8 +95,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Fathom:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "browserTarget": "Fathom:build"
           }
         },
         "test": {
