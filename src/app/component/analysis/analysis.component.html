@@ -123,6 +123,60 @@
                     <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="horizontal_distance_accuracy"></canvasjs-chart>
                 </div>
             </div>
-        </div>        
+
+            <!--Analysis plot 5 : Axial Resolution -->
+            <div *ngIf="selectedGraphValue == 'axial-resolution'" width="50%">
+                <h6>Analysis Plot 5 : Axial Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectAxialPlot" name="axialPoint" (selectionChange)="selectAxialWire($event)">
+                    <mat-option *ngFor="let point of axial_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'axial-resolution' && selectAxialPlot">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="axial_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 6 : Lateral Resolution -->
+            <div *ngIf="selectedGraphValue == 'lateral-resolution'" width="50%">
+                <h6>Analysis Plot 6 : Lateral Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectLateralPlot" name="lateralPoint" (selectionChange)="selectLateralWire($event)">
+                    <mat-option *ngFor="let point of lateral_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'lateral-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="lateral_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 7 : Elevational Resolution -->
+            <div *ngIf="selectedGraphValue == 'elevational-resolution'" width="50%">
+                <h6>Analysis Plot 7 : Elevational Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectElevationalPlot" name="elevationalPoint" (selectionChange)="selectElevationalWire($event)">
+                    <mat-option *ngFor="let point of elevational_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'elevational-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="elevational_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -25,6 +25,10 @@ export class AnalysisComponent implements OnInit {
   horizontalPoint: any;
   wireOptions:any;
   selectedWireType: any;
+  selectAxialPlot:any;
+  selectLateralPlot:any;
+  selectElevationalPlot:any;
+  axialPosition:any
   dataPoints: any = [];
   dataPlots: any = [];
   depthPenetrationPlot: any = [];
@@ -40,6 +44,28 @@ export class AnalysisComponent implements OnInit {
   horizontalSelectedPlots: any = [];
   depth_of_penetration: any = [];
   horizontal_distance_accuracy: any = [];
+  axialPlots: any = [];
+  axial_dropdown: any = [];
+  axialGraphPlots: any = [];
+  axialPoints: any = [];
+  axialSelectedPlots: any = [];
+  axial_resolution_plot: any = [];
+  lateralPlots: any = [];
+  lateralComaSaperated: any = [];
+  lateral_dropdown:any = [];
+  elevational_dropdown:any = [];
+  lateralPoints: any = [];
+  lateralSelectedPlots: any = [];
+  lateral_resolution_plot: any = [];
+  elevationalPoints: any = [];
+  elevationalSelectedPlots:any = [];
+  elevational_resolution_plot: any = [];
+  lateralGraphPlots: any = [];
+  elevationalGraphPlots: any = [];
+  elevationalPlots: any = [];
+  elevationalComaSaperated: any = [];
+  lateralPosition:any;
+  elevationalPosition:any;
 
   constructor(private router: Router, private analysisService:AnalysisService) {}
 
@@ -48,7 +74,10 @@ export class AnalysisComponent implements OnInit {
 		{value: 'depth-of-penetration', viewValue: 'Analysis Plot 1: Depth of Penetration Trending'},
 		{value: 'depth-of-penetration-review-plot', viewValue: 'Analysis Plot 2: Depth of Penetration Detail Plot'},
 		{value: 'vertical-distance-accuracy', viewValue: 'Analysis Plot 3: Vertical Distance Accuracy'},
-		{value: 'horizontal-distance-plot', viewValue: 'Analysis Plot 4: Horizontal Distance Accuracy'}
+		{value: 'horizontal-distance-plot', viewValue: 'Analysis Plot 4: Horizontal Distance Accuracy'},
+		{value: 'axial-resolution', viewValue: 'Analysis Plot 5: Axial Resolution'},
+		{value: 'lateral-resolution', viewValue: 'Analysis Plot 6: Lateral Resolution'},
+		{value: 'elevational-resolution', viewValue: 'Analysis Plot 7: Elevational Resolution'}
 	];
 
 	// Single default transducer
@@ -63,7 +92,6 @@ export class AnalysisComponent implements OnInit {
 	];
 
 	ngOnInit(): void { }
-
 
 	//Select Graph Report Selection
 	selectPlot(event: any) {
@@ -210,7 +238,119 @@ export class AnalysisComponent implements OnInit {
 					}]
 				}
 			break;
-		
+
+			case 'axial-resolution':
+				this.axialPlots = this.analysisService.analysis_plots.axial_resolution;
+				this.axial_dropdown = this.axialPlots[0].value.split(',');
+				this.axial_dropdown = this.axial_dropdown.map(Number);
+			break;
+
+			case 'lateral-resolution':
+				this.lateralPlots = this.analysisService.analysis_plots.lateral_resolution;
+				this.lateralComaSaperated = this.lateralPlots[0].value.split(',');
+				this.lateralComaSaperated = this.lateralComaSaperated.map(Number);
+				console.log(this.lateralComaSaperated);
+				for(let i =0; i < this.lateralComaSaperated.length; i++) {
+					if (i % 2 == 0) {
+						this.lateral_dropdown.push(this.lateralComaSaperated[i]);
+					}
+				}
+				//initial graph points
+				this.lateral_resolution_plot = {
+					animationEnabled: true,
+					exportEnabled: true,
+					toolTip:{
+						enabled: true,
+						content:"x: {x}, y: {y}"
+					},
+					axisY: {
+						gridThickness: 0,
+						stripLines: [
+							{
+								value: 2,
+								showOnTop: true,
+								color: "blue",
+								thickness: 2,
+								lineDashType: "dash"
+							}
+						],
+						title: "Depth of Penetration (cm)",
+						minimum : 0,
+						maximum: 3,
+						interval: 0.5
+					},
+					axisX: {
+					title: "Measurement Number",
+					minimum : 0,
+					maximum: 10,
+					interval: 1,
+					lineDashType: "dash",
+					lineColor: "red",
+					ticks:{
+						beginAtZero: true,
+					}
+					},
+					data: [{
+						type: "line",
+						xValueFormatString: "#,###.##",
+						yValueFormatString: "#,###.##",
+						dataPoints: this.lateralGraphPlots
+					}]
+				}
+			break;
+
+			case 'elevational-resolution':
+				this.elevationalPlots = this.analysisService.analysis_plots.elevational_resolution;
+				this.elevationalComaSaperated = this.elevationalPlots[0].value.split(',');
+				this.elevationalComaSaperated = this.elevationalComaSaperated.map(Number);
+				for(let i =0; i < this.elevationalComaSaperated.length; i++) {
+					if (i % 2 !== 0) {
+						this.elevational_dropdown.push(this.elevationalComaSaperated[i]);
+					}
+				}
+				//initial graph points
+				this.elevational_resolution_plot = {
+					animationEnabled: true,
+					exportEnabled: true,
+					toolTip:{
+						enabled: true,
+						content:"x: {x}, y: {y}"
+					},
+					axisY: {
+						gridThickness: 0,
+						stripLines: [
+							{
+								value: 2,
+								showOnTop: true,
+								color: "blue",
+								thickness: 2,
+								lineDashType: "dash"
+							}
+						],
+						title: "Depth of Penetration (cm)",
+						minimum : 0,
+						maximum: 3,
+						interval: 0.5
+					},
+					axisX: {
+					title: "Measurement Number",
+					minimum : 0,
+					maximum: 10,
+					interval: 1,
+					lineDashType: "dash",
+					lineColor: "red",
+					ticks:{
+						beginAtZero: true,
+					}
+					},
+					data: [{
+						type: "line",
+						xValueFormatString: "#,###.##",
+						yValueFormatString: "#,###.##",
+						dataPoints: this.elevationalGraphPlots
+					}]
+				}
+			break;	
 			default:
 			break;
 		}
@@ -222,7 +362,7 @@ export class AnalysisComponent implements OnInit {
 		this.selectedPlot = null;
 		this.selectHorizontalWire1 = null;
 		this.selectHorizontalWire2 = null;
-	}	
+	}
 	
 	//Select Transducer Section
 	selectTransducer(event: any) {
@@ -247,8 +387,7 @@ export class AnalysisComponent implements OnInit {
 			}
 		}	
 	}
-	
-	
+
 	//Vertical accuracy selected points plot
 	selectWires(event:any) {
 		this.uniqueArr = [];
@@ -333,8 +472,129 @@ export class AnalysisComponent implements OnInit {
 		}	
 	}
 
-	getChartInstance(chart: object) {
-		this.chart = chart;		
+	//axial resolution
+	selectAxialWire(event:any) {
+		this.axialPoints = [];
+		this.axialSelectedPlots = [];
+		this.selectAxialPlot = event.value;
+		//initial graph object
+		this.axial_resolution_plot = {
+			animationEnabled: true,
+			exportEnabled: true,
+			toolTip:{
+				enabled: true,
+				content:"x: {x}, y: {y}"
+			},
+			axisY: {
+				gridThickness: 0,
+				stripLines: [
+					{
+						value: 2,
+						showOnTop: true,
+						color: "blue",
+						thickness: 2,
+						lineDashType: "dash"
+					}
+				],
+				title: "Depth of Penetration (cm)",
+				minimum : 0,
+				maximum: 3,
+				interval: 0.5
+			},
+			axisX: {
+			title: "Measurement Number",
+			minimum : 0,
+			maximum: 10,
+			interval: 1,
+			lineDashType: "dash",
+			lineColor: "red",
+			ticks:{
+				beginAtZero: true,
+			}
+			},
+			data: [{
+				type: "line",
+				xValueFormatString: "#,###.##",
+				yValueFormatString: "#,###.##",
+				dataPoints: this.axialSelectedPlots
+			}]
+		}
+
+		for(let i= 0; i< this.axial_dropdown.length; i++) {
+			if(this.axial_dropdown[i] == this.selectAxialPlot) {
+				this.axialPosition = i;
+			}
+		}
+
+		for(let k= 0; k < this.axialPlots.length; k++) {
+			this.axialGraphPlots = this.axialPlots[k].value.split(',');
+			this.axialGraphPlots = this.axialGraphPlots.map(Number);
+			this.axialPoints.push(this.axialGraphPlots[this.axialPosition]);
+		}
+
+		for(let j= 0; j < this.axialPoints.length; j++) {
+			this.axialSelectedPlots.push({
+				x: j,
+				y: this.axialPoints[j]
+			});
+		}
+		this.refreshData(this.axialSelectedPlots);
+	}
+
+	//lateral resolution
+	selectLateralWire(event:any) {
+		this.selectLateralPlot = event.value;
+		this.lateralPoints = [];
+		this.lateralSelectedPlots = [];
+		for(let i= 0; i < this.lateralComaSaperated.length; i++) {
+			if(this.selectLateralPlot == this.lateralComaSaperated[i]) {
+				this.lateralPosition = i;
+			}
+		}
+
+		for(let j= 0; j < this.lateralPlots.length; j++) {
+			this.lateralGraphPlots = this.lateralPlots[j].value.split(',');
+			this.lateralGraphPlots = this.lateralGraphPlots.map(Number);
+			this.lateralPoints.push(this.lateralGraphPlots[this.lateralPosition]);
+		}
+
+		for(let j= 0; j < this.lateralPoints.length; j++) {
+			this.lateralSelectedPlots.push({
+				x: j,
+				y: this.lateralPoints[j]
+			});
+		}
+		this.refreshData(this.lateralSelectedPlots);
+	}
+
+	selectElevationalWire(event:any) {
+		this.selectElevationalPlot = event.value;
+		this.elevationalPoints = [];
+		this.elevationalSelectedPlots = [];
+		for(let i= 0; i < this.elevationalComaSaperated.length; i++) {
+			if(this.selectElevationalPlot == this.elevationalComaSaperated[i]) {
+				this.elevationalPosition = i;
+			}
+		}
+
+		for(let j= 0; j < this.elevationalPlots.length; j++) {
+			this.elevationalGraphPlots = this.elevationalPlots[j].value.split(',');
+			this.elevationalGraphPlots = this.elevationalGraphPlots.map(Number);
+			this.elevationalPoints.push(this.elevationalGraphPlots[this.elevationalPosition]);
+		}
+
+		for(let j= 0; j < this.elevationalPoints.length; j++) {
+			this.elevationalSelectedPlots.push({
+				x: j,
+				y: this.elevationalPoints[j]
+			});
+		}
+		console.log(this.elevationalSelectedPlots);
+		this.refreshData(this.elevationalSelectedPlots);
+	}
+
+	getChartInstance(Chart: object) {
+		this.chart = Chart;
 	}
 
 	refreshData(dataPlots = [], type = 'line', threshold = '') {
@@ -425,6 +685,21 @@ export class AnalysisComponent implements OnInit {
 			break;
 
 			case 'horizontal-distance-plot':
+				this.chart.options.data[0].dataPoints = dataPlots;
+				this.chart.render();
+			break;
+
+			case 'axial-resolution':
+				this.chart.options.data[0].dataPoints = dataPlots;
+				this.chart.render();
+			break;
+
+			case 'lateral-resolution':
+				this.chart.options.data[0].dataPoints = dataPlots;
+				this.chart.render();
+			break;
+
+			case 'elevational-resolution':
 				this.chart.options.data[0].dataPoints = dataPlots;
 				this.chart.render();
 			break;
