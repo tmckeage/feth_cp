@@ -78,7 +78,7 @@ export class ReviewComponent implements OnInit {
 						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
 						this.roomList = Object.values(room);
 						// type list
-						this.typeList.push(res.next_study_Due.type);
+						this.typeList.push(res.next_study_due.type);
 						let type = this.typeList.filter((val: any, index: any) => this.typeList.indexOf(val) == index);
 						this.typeList = Object.values(type);
 					});

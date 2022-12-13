@@ -1,22 +1,182 @@
 <div class="row justify-content-center mt-5" >
     <div class="col-md-8  mt-3 text-center" >Analysis Report</div>
-	<div class="card mt-2 p-4 col-md-8" style="height: 700px;">
+	<div class="card mt-2 p-4 col-md-8" style="height: 1000px;">
         <mat-form-field appearance="fill" width="30%">
             <mat-label>Select Graph</mat-label>
-            <mat-select [(ngModel)]="selectedValue" name="graph" (selectionChange)="selectedReport($event)">
+            <mat-select [(ngModel)]="selectedGraphValue" name="graph" (selectionChange)="selectPlot($event)">
             <mat-option *ngFor="let graph of graphs" [value]="graph.value">
                 {{graph.viewValue}}
             </mat-option>
             </mat-select>
         </mat-form-field>
         <br><br>
-        <div *ngIf="selectedValue == 'dop-plot'" width="50%">
-            <h6>Depth of Penetration:Philips C6-2 Transducer 453561652583</h6>
-            <canvasjs-chart [options]="chartOptions" ></canvasjs-chart>
-        </div>
-        <div *ngIf="selectedValue == 'vertical-distance-plot'" width="50%">
-            <h6>Vertical Distance: Philips C6-2 Transducer 453561652583</h6>
-            <canvasjs-chart [options]="chartOptions_vertical" ></canvasjs-chart>
+        <mat-form-field appearance="fill" width="30%">
+            <mat-label>Select Transducer</mat-label>
+            <mat-select [(ngModel)]="selectedTransducer" [disabled]="!selectedGraphValue" name="transducers" (selectionChange)="selectTransducer($event)">
+            <mat-option *ngFor="let transducer of transducers" [value]="transducer.value">
+                {{transducer.viewValue}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div *ngIf="selectedTransducer">
+            <div class="details-section" style="float:right;">
+                <span style="color:red;">--</span> Defect Level <br>
+                <span style="color:blue;">--</span> Action Level
+            </div><br><br>
+            <!--Analysis plot 1 : Depth of penetration -->
+            <div *ngIf="selectedGraphValue == 'depth-of-penetration'" width="50%">
+                <br><br>
+                <h6>Depth of Penetration:{{selectedTransducer}}</h6>
+                <canvasjs-chart [options]="depth_of_penetration" ></canvasjs-chart>
+            </div>
+
+            <!--Analysis plot 2 : Depth of penetration  Review Plot -->
+            <div *ngIf="selectedGraphValue == 'depth-of-penetration-review-plot'" width="50%">
+                <h6>Depth of Penetration Review Plot:{{selectedTransducer}}</h6>
+
+                <!-- File Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select File</mat-label>
+                    <mat-select [(ngModel)]="selectedPlot" name="plots" (selectionChange)="selectCsvFile($event)">
+                    <mat-option *ngFor="let plots of depthPenetrationPlot" [value]="plots.value">
+                        {{plots.value}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="selectedGraphValue == 'depth-of-penetration-review-plot' && selectedPlot">
+                    <canvasjs-chart [options]="depth_of_penetration_review_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!-- Analysis plot 3 : Vertical Distance Accuracy -->
+            <div *ngIf="selectedGraphValue == 'vertical-distance-accuracy'" width="50%">
+                <h6>Analysis Plot 3: Vertical Distance Accuracy: {{selectedTransducer}}</h6>
+                <!-- Wire Selection 1 -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire 1</mat-label>
+                    <mat-select [(ngModel)]="selectWire1" name="wire1" (selectionChange)="selectWires($event)">
+                    <mat-option *ngFor="let point1 of unique" [value]="point1">
+                        {{point1}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+
+                <!-- Wire Selection 2 -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire 2</mat-label>
+                    <mat-select [(ngModel)]="selectWire2" name="wire2" (selectionChange)="selectWires($event)">
+                    <mat-option *ngFor="let point2 of unique" [value]="point2" [disabled] = "!uniqueArr.includes(point2)">
+                        {{point2}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br><br>
+                <div *ngIf="selectedGraphValue == 'vertical-distance-accuracy'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="vertical_distance_accuracy"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!-- Analysis Plot 4 : Horizontal Distance Accuracy -->
+            <div *ngIf="selectedGraphValue == 'horizontal-distance-plot'" width="50%">
+                <h6>Analysis Plot 4:Horizontal Distance Accuracy: {{selectedTransducer}}</h6>
+                <!-- File Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select File</mat-label>
+                    <mat-select [(ngModel)]="selectHorizontalPlot" name="horizontalPoint" (selectionChange)="selectHorizontalCsvFile($event)">
+                    <mat-option *ngFor="let horizontalPoint of horizontalPoints" [value]="horizontalPoint.fileName">
+                        {{horizontalPoint.fileName}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+
+                <!-- Wire Type Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire Option</mat-label>
+                    <mat-select [(ngModel)]="wireOptions" name="wireSelector" (selectionChange)="selectWireType($event)">
+                    <mat-option *ngFor="let wire of wires" [value]="wire.value">
+                        {{wire.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+
+                <!-- Select Wire 1 -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire 1</mat-label>
+                    <mat-select [(ngModel)]="selectHorizontalWire1" name="HorizontalWire1" (selectionChange)="selectWires($event)">
+                    <mat-option *ngFor="let plot1 of firstWireValues" [value]="plot1">
+                        {{plot1}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+
+                <!-- Select Wire 2 -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire 2</mat-label>
+                    <mat-select [(ngModel)]="selectHorizontalWire2" name="HorizontalWire2" (selectionChange)="selectHorizontalWires($event)">
+                    <mat-option *ngFor="let plot2 of firstWireValues" [value]="plot2">
+                        {{plot2}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <br><br>
+                <div *ngIf="selectedGraphValue == 'horizontal-distance-plot' && selectHorizontalPlot && selectHorizontalWire1">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="horizontal_distance_accuracy"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 5 : Axial Resolution -->
+            <div *ngIf="selectedGraphValue == 'axial-resolution'" width="50%">
+                <h6>Analysis Plot 5 : Axial Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectAxialPlot" name="axialPoint" (selectionChange)="selectAxialWire($event)">
+                    <mat-option *ngFor="let point of axial_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'axial-resolution' && selectAxialPlot">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="axial_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 6 : Lateral Resolution -->
+            <div *ngIf="selectedGraphValue == 'lateral-resolution'" width="50%">
+                <h6>Analysis Plot 6 : Lateral Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectLateralPlot" name="lateralPoint" (selectionChange)="selectLateralWire($event)">
+                    <mat-option *ngFor="let point of lateral_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'lateral-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="lateral_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 7 : Elevational Resolution -->
+            <div *ngIf="selectedGraphValue == 'elevational-resolution'" width="50%">
+                <h6>Analysis Plot 7 : Elevational Resolution: {{selectedTransducer}}</h6>
+                <!-- Wire Values Selection -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wires</mat-label>
+                    <mat-select [(ngModel)]="selectElevationalPlot" name="elevationalPoint" (selectionChange)="selectElevationalWire($event)">
+                    <mat-option *ngFor="let point of elevational_dropdown" [value]="point">
+                        {{point}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="selectedGraphValue == 'elevational-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="elevational_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
         </div>
     </div>
 </div>
