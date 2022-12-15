@@ -44,7 +44,7 @@
                     </mat-select>
                 </mat-form-field>
                 <div *ngIf="selectedGraphValue == 'depth-of-penetration-review-plot' && selectedPlot">
-                    <canvasjs-chart [options]="depth_of_penetration_review_plot"></canvasjs-chart>
+                    <canvasjs-chart  [options]="depth_of_penetration_review_plot"></canvasjs-chart>
                 </div>
             </div>
 
@@ -175,6 +175,31 @@
 
                 <div *ngIf="selectedGraphValue == 'elevational-resolution'">
                     <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="elevational_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 8 : Contrast Resolution -->
+            <div *ngIf="selectedGraphValue == 'contrast-resolution'" width="50%">
+                <!-- Contrast Target Size -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Target Size</mat-label>
+                    <mat-select [(ngModel)]="selectedTargetSize" name="contrastTargetSize" (selectionChange)="selectTargetSize($event)">
+                        <mat-option *ngFor="let point of contrastTargetSize" [value]="point.value">
+                            {{point.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+                <!-- Select Wire -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire</mat-label>
+                    <mat-select [(ngModel)]="selectedContrastPosition" name="contrastPosition" (selectionChange)="selectContrastPosition($event)">
+                        <mat-option *ngFor="let point of contrast_dropdown" [value]="point">
+                            {{point}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="selectedGraphValue == 'contrast-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="contrast_resolution_plot"></canvasjs-chart>
                 </div>
             </div>
         </div>
