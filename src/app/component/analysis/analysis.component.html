@@ -44,7 +44,7 @@
                     </mat-select>
                 </mat-form-field>
                 <div *ngIf="selectedGraphValue == 'depth-of-penetration-review-plot' && selectedPlot">
-                    <canvasjs-chart [options]="depth_of_penetration_review_plot"></canvasjs-chart>
+                    <canvasjs-chart  [options]="depth_of_penetration_review_plot"></canvasjs-chart>
                 </div>
             </div>
 
@@ -55,8 +55,8 @@
                 <mat-form-field appearance="fill" width="30%">
                     <mat-label>Select Wire 1</mat-label>
                     <mat-select [(ngModel)]="selectWire1" name="wire1" (selectionChange)="selectWires($event)">
-                    <mat-option *ngFor="let point1 of unique" [value]="point1">
-                        {{point1}}
+                    <mat-option *ngFor="let point1 of verticalDropdown" [value]="point1.value">
+                        {{point1.viewValue}}
                     </mat-option>
                     </mat-select>
                 </mat-form-field>&nbsp;&nbsp;
@@ -65,8 +65,8 @@
                 <mat-form-field appearance="fill" width="30%">
                     <mat-label>Select Wire 2</mat-label>
                     <mat-select [(ngModel)]="selectWire2" name="wire2" (selectionChange)="selectWires($event)">
-                    <mat-option *ngFor="let point2 of unique" [value]="point2" [disabled] = "!uniqueArr.includes(point2)">
-                        {{point2}}
+                    <mat-option *ngFor="let point2 of verticalDropdown" [value]="point2.value" [disabled] = "!uniqueArr.includes(point2.value)">
+                        {{point2.viewValue}}
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -79,16 +79,6 @@
             <!-- Analysis Plot 4 : Horizontal Distance Accuracy -->
             <div *ngIf="selectedGraphValue == 'horizontal-distance-plot'" width="50%">
                 <h6>Analysis Plot 4:Horizontal Distance Accuracy: {{selectedTransducer}}</h6>
-                <!-- File Selection -->
-                <mat-form-field appearance="fill" width="30%">
-                    <mat-label>Select File</mat-label>
-                    <mat-select [(ngModel)]="selectHorizontalPlot" name="horizontalPoint" (selectionChange)="selectHorizontalCsvFile($event)">
-                    <mat-option *ngFor="let horizontalPoint of horizontalPoints" [value]="horizontalPoint.fileName">
-                        {{horizontalPoint.fileName}}
-                    </mat-option>
-                    </mat-select>
-                </mat-form-field>&nbsp;&nbsp;
-
                 <!-- Wire Type Selection -->
                 <mat-form-field appearance="fill" width="30%">
                     <mat-label>Select Wire Option</mat-label>
@@ -102,9 +92,9 @@
                 <!-- Select Wire 1 -->
                 <mat-form-field appearance="fill" width="30%">
                     <mat-label>Select Wire 1</mat-label>
-                    <mat-select [(ngModel)]="selectHorizontalWire1" name="HorizontalWire1" (selectionChange)="selectWires($event)">
-                    <mat-option *ngFor="let plot1 of firstWireValues" [value]="plot1">
-                        {{plot1}}
+                    <mat-select [(ngModel)]="selectHorizontalWire1" name="HorizontalWire1" (selectionChange)="selectHorizontalWires($event)">
+                    <mat-option *ngFor="let plot1 of shallowHorizontalDropdown" [value]="plot1.value">
+                        {{plot1.viewValue}}
                     </mat-option>
                     </mat-select>
                 </mat-form-field>&nbsp;&nbsp;
@@ -113,13 +103,13 @@
                 <mat-form-field appearance="fill" width="30%">
                     <mat-label>Select Wire 2</mat-label>
                     <mat-select [(ngModel)]="selectHorizontalWire2" name="HorizontalWire2" (selectionChange)="selectHorizontalWires($event)">
-                    <mat-option *ngFor="let plot2 of firstWireValues" [value]="plot2">
-                        {{plot2}}
+                    <mat-option *ngFor="let plot2 of shallowHorizontalDropdown" [value]="plot2.value" [disabled] = "selectHorizontalWire1 == plot2.value">
+                        {{plot2.viewValue}}
                     </mat-option>
                     </mat-select>
                 </mat-form-field>
                 <br><br>
-                <div *ngIf="selectedGraphValue == 'horizontal-distance-plot' && selectHorizontalPlot && selectHorizontalWire1">
+                <div *ngIf="selectedGraphValue == 'horizontal-distance-plot'">
                     <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="horizontal_distance_accuracy"></canvasjs-chart>
                 </div>
             </div>
@@ -175,6 +165,31 @@
 
                 <div *ngIf="selectedGraphValue == 'elevational-resolution'">
                     <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="elevational_resolution_plot"></canvasjs-chart>
+                </div>
+            </div>
+
+            <!--Analysis plot 8 : Contrast Resolution -->
+            <div *ngIf="selectedGraphValue == 'contrast-resolution'" width="50%">
+                <!-- Contrast Target Size -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Target Size</mat-label>
+                    <mat-select [(ngModel)]="selectedTargetSize" name="contrastTargetSize" (selectionChange)="selectTargetSize($event)">
+                        <mat-option *ngFor="let point of contrastTargetSize" [value]="point.value">
+                            {{point.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+                <!-- Select Wire -->
+                <mat-form-field appearance="fill" width="30%">
+                    <mat-label>Select Wire</mat-label>
+                    <mat-select [(ngModel)]="selectedContrastPosition" name="contrastPosition" (selectionChange)="selectContrastPosition($event)">
+                        <mat-option *ngFor="let point of contrast_dropdown" [value]="point">
+                            {{point}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="selectedGraphValue == 'contrast-resolution'">
+                    <canvasjs-chart (chartInstance)="getChartInstance($event)" [options]="contrast_resolution_plot"></canvasjs-chart>
                 </div>
             </div>
         </div>
