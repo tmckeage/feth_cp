@@ -19,7 +19,6 @@ export class AnalysisComponent implements OnInit {
   selectWire2:any;
   selectedTransducer: any;
   verticalDistanceAccuracy: any;
-  selectHorizontalPlot: any;
   selectHorizontalWire1: any;
   selectHorizontalWire2: any;
   horizontalPoint: any;
@@ -84,6 +83,24 @@ export class AnalysisComponent implements OnInit {
   defectLevelElevational: any;
   actionLevelAxial: any;
   defectLevelAxial: any;
+  verticalDropdown:any = [];
+  firstLineVerticalValues:any = [];
+  firstLineHorizontalValues:any = [];
+  firstVerticalWirePosition:any;
+  secondVerticalWirePosition:any;
+  verticalDefectLevel: any;
+  verticalActionLevel: any;
+  horizontalDefectLevel: any;
+  horizontalActionLevel: any;
+  shallowValues:any = [];
+  deepValues:any = [];
+  shallowHorizontalDropdown:any = [];
+  horizontalPosition1:any;
+  horizontalPosition2:any;
+  shallowPlotValue: any = [];
+  shallowArr: any = [];
+  deepPlotValue: any = [];
+  horizontalSequence: any = [];
 
   constructor(private router: Router, private analysisService:AnalysisService) {}
 
@@ -144,20 +161,15 @@ export class AnalysisComponent implements OnInit {
 
 			case 'vertical-distance-accuracy':				
 				this.verticalDistanceAccuracy = this.analysisService.analysis_plots.vertical_distance_accuracy;
-				for(let i = 0; i < this.verticalDistanceAccuracy.length; i++) {
-					this.dataAccuracy = [];
-					this.plotValue = this.verticalDistanceAccuracy[i].value.split(',');
-					this.plotValue = this.plotValue.map(Number);
-					this.plotValue = this.plotValue.sort();
-					this.unique = this.plotValue.filter(function(elem: any, index: any, self: string | any[]) {
-						return index === self.indexOf(elem);
-					});
-					for(let j = 0; j < this.unique.length; j++) {
-						this.dataAccuracy.push({
-							x: j,
-							y: this.unique[j]
-						});
-					}
+				this.firstLineVerticalValues = this.analysisService.analysis_plots.vertical_distance_accuracy[0].value;
+				this.firstLineVerticalValues = this.firstLineVerticalValues.split(',').map(Number);
+				this.firstLineVerticalValues = this.firstLineVerticalValues.filter(function(elem: any, index: any, self: string | any[]) {
+					return index === self.indexOf(elem);
+				});
+
+				//vertical plot dropdown values
+				for(let i=1; i < this.firstLineVerticalValues.length; i++) {
+					this.verticalDropdown.push({viewValue:'Element'+i, value: this.firstLineVerticalValues[i]});
 				}
 
 				this.vertical_distance_accuracy = {
@@ -171,25 +183,18 @@ export class AnalysisComponent implements OnInit {
 						gridThickness: 0,
 						stripLines: [
 							{
-								value: 5,
+								value: this.verticalActionLevel,
+								showOnTop: true,
+								color: "blue",
+								thickness: 2,
+								lineDashType: "dash"
+							},
+							{
+								value: this.verticalDefectLevel,
 								showOnTop: true,
 								color: "red",
-								lineDashType: "dash",
 								thickness: 2,
-							},
-							{
-								value: 1,
-								showOnTop: true,
-								color: "blue",
-								lineDashType: "dash",
-								thickness: 2,
-							},
-							{
-								value: 3,
-								showOnTop: true,
-								color: "blue",
-								lineDashType: "dash",
-								thickness: 2,
+								lineDashType: "dash"
 							}
 						],
 						title: "Depth of Penetration (cm)",
@@ -226,16 +231,19 @@ export class AnalysisComponent implements OnInit {
 					},
 					axisY: {
 						gridThickness: 0,
+						viewportMinimum: -5,
+						viewportMaximum: 3,
+						interval: 1,
 						stripLines: [
 							{
-								value: 1,
+								value: this.horizontalActionLevel,
 								showOnTop: true,
 								color: "blue",
 								lineDashType: "dash",
 								thickness: 2,
 							},
 							{
-								value: 3,
+								value: this.horizontalDefectLevel,
 								showOnTop: true,
 								color: "red",
 								lineDashType: "dash",
@@ -244,16 +252,13 @@ export class AnalysisComponent implements OnInit {
 						],
 						title: "Depth of Penetration (cm)",
 						beginAtZero: false,
-						minimum : 0,
-						maximum: 5,
-						interval: 0.5
 					},
 					axisX: {
 					title: "Measurement Number",
 					lineDashType: "dash",
 					lineColor: "red",
 					minimum : 0,
-					maximum: 5,
+					maximum: 10,
 					interval: 1
 					},
 					data: [{
@@ -280,7 +285,7 @@ export class AnalysisComponent implements OnInit {
 						this.lateral_dropdown.push(this.lateralComaSaperated[i]);
 					}
 				}
-				
+
 				//initial graph points
 				this.lateral_resolution_plot = {
 					animationEnabled: true,
@@ -391,6 +396,7 @@ export class AnalysisComponent implements OnInit {
 					}]
 				}
 			break;
+
 			case 'contrast-resolution':
 				this.contrastPlots = this.analysisService.analysis_plots.contrast_resolution;
 				this.contrast_resolution_plot = {
@@ -441,13 +447,15 @@ export class AnalysisComponent implements OnInit {
 						dataPoints: []
 					}]
 				}
-			break;		
+			break;
+
 			default:
 			break;
 		}
 
 		//unset all deopdown selectors
 		this.selectedTransducer = null;
+		this.selectedWireType = null;
 		this.selectWire1 = null;
 		this.selectWire2 = null;
 		this.selectedPlot = null;
@@ -478,91 +486,116 @@ export class AnalysisComponent implements OnInit {
 				}
 				this.refreshData(this.filePlots, 'spline', this.filePlot[p].noiseLevelOfTheImage);				
 			}
-		}	
+		}
 	}
 
 	//Vertical accuracy selected points plot
 	selectWires(event:any) {
 		this.uniqueArr = [];
+		this.plotValue = [];
+		this.dataAccuracy = [];
 		this.verticalSelectedPlots = [];
 		// Disable select box value which is less than selected value
-		for(let i = 0; i < this.unique.length; i++) {
-			if(this.unique[i] > this.selectWire1) {
-				this.uniqueArr.push(this.unique[i]);
+		for(let i = 1; i < this.verticalDropdown.length; i++) {
+			if(this.verticalDropdown[i].value > this.selectWire1) {
+				this.uniqueArr.push(this.verticalDropdown[i].value);
+			}
+			if(this.verticalDropdown[i].value == this.selectWire1) {
+				this.firstVerticalWirePosition = i;
+			}
+			if(this.verticalDropdown[i].value == this.selectWire2) {
+				this.secondVerticalWirePosition = i;
 			}
 		}
-
 		//if both points are selected then only plot graph
 		if(this.selectWire1 && this.selectWire2) {
-			for(let i = 0; i < this.unique.length; i++) {
-				if((this.unique[i] >= this.selectWire1) && (this.unique[i] <= this.selectWire2)) {
-					this.verticalSelectedPlots.push({
-						x: i,
-						y: this.unique[i]
-					});
-				}
+			for(let i = 0; i < this.verticalDistanceAccuracy.length; i++) {
+				this.plotValue = this.verticalDistanceAccuracy[i].value.split(',');
+				this.plotValue = this.plotValue.map(Number);
+				//remove duplicate values
+				this.unique = this.plotValue.filter(function(elem: any, index: any, self: string | any[]) {
+					return index === self.indexOf(elem);
+				});
+				//plot value = element2-element1
+				this.dataAccuracy.push(this.unique[this.secondVerticalWirePosition + 1] - this.unique[this.firstVerticalWirePosition + 1]);
 			}
-			this.refreshData(this.verticalSelectedPlots);
+			//calculate actionlevel and defectlevel
+			this.verticalActionLevel = this.dataAccuracy[0] + 0.1;
+			this.verticalDefectLevel = this.dataAccuracy[0] + 0.2;
+			for(let j = 0; j < this.dataAccuracy.length; j++) {
+				this.verticalSelectedPlots.push({
+					x: j,
+					y: this.dataAccuracy[j]
+				});
+			}
+			this.refreshData(this.verticalSelectedPlots, 'line', this.verticalActionLevel, this.verticalDefectLevel);
 		}
-	}
-
-	//horizontal accuracy graph
-	selectHorizontalCsvFile(event:any) {
-		this.selectHorizontalPlot = event.value;
-		//when change in csv file unset wire1 and wire2 selectbox
-		this.wireOptions = null;
-		this.selectHorizontalWire1 = null;
-		this.selectHorizontalWire2 = null;
-		this.firstWireValues = [];
 	}
 
 	//shallow deep wire type selection
 	selectWireType(event:any) {
 		this.selectedWireType = event.value;
+		this.shallowValues = [];
+		this.shallowHorizontalDropdown = [];
 		//when change in wire type unset wire1 and wire2 selectbox
 		this.selectHorizontalWire1 = null;
 		this.selectHorizontalWire2 = null;
-		for(let i = 0; i < this.horizontalPoints.length; i++) {
-			if(this.selectHorizontalPlot == this.horizontalPoints[i].fileName) {
-				if (this.selectedWireType == 'shallow_wires') {
-					for(let j = 0; j < this.horizontalPoints[i].first_value.length; j++){
-						this.horizontalPoint = this.horizontalPoints[i].first_value.split(',');
-						this.firstWireValues = this.horizontalPoint.map(Number);
-					}
-				} else {
-					for(let k = 0; k < this.horizontalPoints[i].second_value.length; k++){
-						this.horizontalPoint = this.horizontalPoints[i].second_value.split(',');
-						this.firstWireValues = this.horizontalPoint.map(Number); 
-					}
-				}
+		if (this.selectedWireType == 'shallow_wires') {
+			this.firstLineHorizontalValues = this.analysisService.analysis_plots.horizontal_distance_accuracy[0].first_value;
+			this.firstLineHorizontalValues = this.firstLineHorizontalValues.split(',').map(Number);
+			//shallow dropdown values
+			for(let i=0; i < this.firstLineHorizontalValues.length; i++) {
+				let j = i+1;
+				this.shallowHorizontalDropdown.push({viewValue:'Element'+ j, value: this.firstLineHorizontalValues[i]});
+			}
+		} else {
+			this.firstLineHorizontalValues = this.analysisService.analysis_plots.horizontal_distance_accuracy[0].second_value;
+			this.firstLineHorizontalValues = this.firstLineHorizontalValues.split(',').map(Number);
+			//deep dropdown values
+			for(let i=0; i < this.firstLineHorizontalValues.length; i++) {
+				let j = i+1;
+				this.shallowHorizontalDropdown.push({viewValue:'Element'+ j, value: this.firstLineHorizontalValues[i]});
 			}
 		}
 	}
 
 	//horizontal accuracy selected points plot
 	selectHorizontalWires(event:any) {
+		this.horizontalSequence = [];
+		for(let i= 0; i < this.shallowHorizontalDropdown.length; i++) {
+			if(this.selectHorizontalWire1 == this.shallowHorizontalDropdown[i].value) {
+				this.horizontalPosition1 = i;
+			}
+			if(this.selectHorizontalWire2 == this.shallowHorizontalDropdown[i].value) {
+				this.horizontalPosition2 = i;
+			}
+		}
+
 		//if both points are selected then only plot graph
 		if(this.selectHorizontalWire1 || this.selectHorizontalWire2) {
 			this.horizontalSelectedPlots = [];
-			for(let i = 0; i < this.firstWireValues.length; i++) {
-				if((this.selectHorizontalWire1 < this.selectHorizontalWire2) && 
-					(this.firstWireValues[i] >= this.selectHorizontalWire1) 
-					&& (this.firstWireValues[i] <= this.selectHorizontalWire2)) {
-					this.horizontalSelectedPlots.push({
-						x: i,
-						y: this.firstWireValues[i]
-					});
-				} else if((this.selectHorizontalWire1 > this.selectHorizontalWire2) && 
-				(this.firstWireValues[i] <= this.selectHorizontalWire1) && 
-				(this.firstWireValues[i] >= this.selectHorizontalWire2)) {
-					this.horizontalSelectedPlots.push({
-						x: i,
-						y: this.firstWireValues[i]
-					});
+			if (this.selectedWireType == 'shallow_wires') {
+				for(let i = 0; i < this.horizontalPoints.length; i++) {
+					this.shallowPlotValue = this.horizontalPoints[i].first_value.split(',').map(Number);
+					this.horizontalSequence.push(this.shallowPlotValue[this.horizontalPosition2] - this.shallowPlotValue[this.horizontalPosition1]);
+				}
+			} else {
+				for(let i = 0; i < this.horizontalPoints.length; i++) {
+					this.deepPlotValue = this.horizontalPoints[i].second_value.split(',').map(Number);
+					this.horizontalSequence.push(this.deepPlotValue[this.horizontalPosition2] - this.deepPlotValue[this.horizontalPosition1]);
 				}
 			}
-			this.refreshData(this.horizontalSelectedPlots);
 		}
+		//calculate actionlevel and defectlevel
+		this.horizontalActionLevel = this.horizontalSequence[0] + 0.2;
+		this.horizontalDefectLevel = this.horizontalSequence[0] + 0.3;
+		for(let j = 0; j < this.horizontalSequence.length; j++) {
+			this.horizontalSelectedPlots.push({
+				x: j,
+				y: this.horizontalSequence[j]
+			});
+		}
+		this.refreshData(this.horizontalSelectedPlots, 'line', this.horizontalActionLevel, this.horizontalDefectLevel);
 	}
 
 	//axial resolution
@@ -870,11 +903,15 @@ export class AnalysisComponent implements OnInit {
 			break;
 
 			case 'vertical-distance-accuracy':
+				this.chart.options.axisY.stripLines[0].value = actionThreshold;
+				this.chart.options.axisY.stripLines[1].value = defectThreshold;
 				this.chart.options.data[0].dataPoints = dataPlots;
 				this.chart.render();
 			break;
 
 			case 'horizontal-distance-plot':
+				this.chart.options.axisY.stripLines[0].value = actionThreshold;
+				this.chart.options.axisY.stripLines[1].value = defectThreshold;
 				this.chart.options.data[0].dataPoints = dataPlots;
 				this.chart.render();
 			break;
