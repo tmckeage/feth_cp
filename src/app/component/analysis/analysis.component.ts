@@ -200,8 +200,8 @@ export class AnalysisComponent implements OnInit {
 						title: "Depth of Penetration (cm)",
 						beginAtZero: false,
 						minimum : 0,
-						maximum: 5,
-						interval: 0.5
+						maximum: 13,
+						interval: 1
 					},
 					axisX: {
 					title: "Measurement Number",
