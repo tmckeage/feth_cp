@@ -31,7 +31,7 @@ export class UtilitiesService {
 				"theta": "70"
 			  }
 			},
-			"barcode": "98962046050",
+			"barcode":  data.barcode_number != "" ? data.barcode_number : null,
 			"make": data.make != "" ? data.make : null,
 			"model":  data.model != "" ? data.model : null,
 			"next_study_due": {
@@ -46,7 +46,7 @@ export class UtilitiesService {
 
     prepareScannerModel(data: any) {
         return {
-            "barcode": "",
+            "barcode": data.barcode_number != "" ? data.barcode_number : null,
             "facility": data.facility != "" ? data.facility : null,
             "make": data.make != "" ? data.make : null,
             "model":  data.model != "" ? data.model : null,
