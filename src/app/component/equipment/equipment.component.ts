@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '@aws-amplify/auth';
+import { thresholdSturges } from 'd3-array';
 
 
 
@@ -43,7 +44,6 @@ export class EquipmentComponent implements OnInit {
 	filteredFacility: Observable<any[]>;
 	filteredModel: Observable<any[]>;
 	filteredRoom: Observable<any[]>;
-	// filteredScanner: Observable<any[]>;
 	filteredMakeTransducer: Observable<any[]>;
 	filteredModelTransducer: Observable<any[]>;
 	filteredImageTransducer: Observable<any[]>;
@@ -84,6 +84,8 @@ export class EquipmentComponent implements OnInit {
 	transducerSpinner: any;
 	scannerId: any = null;
 	transducerId: any = null;
+	sortDir = 1; //1= 'ASC' -1= DSC
+	sortCount = 0;
 
 	constructor(
 		private toastr: ToastrService,
@@ -179,12 +181,9 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-
 		// scanner model is select make show model 
 		this.scannerFormGroup.controls['model'].disable();
 		this.transducerFormGroup.controls['model'].disable();
-
-
 		this.getAllEquipments();  // scanner API 
 	}
 
@@ -233,6 +232,35 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
+	onSortClick(event:any, param:any) {
+		let target = event.currentTarget,
+		classList = target.classList;
+		if (classList.contains('fa-chevron-up')) {
+		  classList.remove('fa-chevron-up');
+		  classList.add('fa-chevron-down');
+		  this.sortDir=-1;
+		} else {
+		  classList.add('fa-chevron-up');
+		  classList.remove('fa-chevron-down');
+		  this.sortDir=1;
+		}
+		this.sortArr(param);
+	}
+	
+	sortArr(colName:any){
+		this.sortCount++;
+		if(this.sortCount < 3) {
+			this.scannersObject.sort((a:any, b:any) => {
+				a= a[colName].toLowerCase();
+				b= b[colName].toLowerCase();
+				return a.localeCompare(b) * this.sortDir;
+			});
+		} else {
+			this.sortCount = 0;
+			this.getAllEquipments();
+		}
+	}
+
 	// modelNameList filter on make 
 	modelFilter(make: any) {
 		this.modelNameList = [];
@@ -250,7 +278,6 @@ export class EquipmentComponent implements OnInit {
 			this.modelNameList = [];
 		}
 	}
-
 
 	// modelNameList filter on make
 	modelTranducerFilter(make: any) {
@@ -319,6 +346,7 @@ export class EquipmentComponent implements OnInit {
 		}
 		this.scannersObject = scannerList;
 	}
+
 	// selected facility then show particular room list
 	onRoomList() {
 		this.roomList = [];
@@ -337,11 +365,13 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = value.toLowerCase();
 		return this.makeOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
+
 	// scanner model autocomplete
 	private model_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
 		return this.modelOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
+
 	//scanner room autocomplete
 	private room_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
@@ -604,7 +634,7 @@ export class EquipmentComponent implements OnInit {
 	// on change make for transducer
 	onChangeMakeTransducer(makeTransducer: any) {
 		let changeMakeValue = makeTransducer;
-		if (changeMakeValue) {
+ 		if (changeMakeValue) {
 			this.isMake = true;
 		}
 	}
