@@ -15,20 +15,20 @@
     <div class="card mt-2 p-4 col-md-8">
         <!-- scanner list -->
         <table class="scanner-holder mt-4">
-            <th>Equipement <i>f0dc</i></th>
+            <th>Equipement </th>
             <th>Facility <i (click)="onSortClick($event, 'facility')" class="my-icon fa fa-chevron-up"></i></th>
             <th>Room <i (click)="onSortClick($event, 'room')" class="my-icon fa fa-chevron-up"></i></th>
-            <th>Test Date <i (click)="onSortClick($event, 'room')" class="my-icon fa fa-chevron-up"></i></th>
+            <th>Test Date <i (click)="onSortClick($event, 'Test Date')" class="my-icon fa fa-chevron-up"></i></th>
             <tbody *ngFor="let scanner of scannersObject">
               <td class="scanner-holder mt-4" style="display: block;">
                 <div class="col-md-4 cursorPointer" (click)="scannerDetail(scanner, view)" style="display: contents;">
-                    {{scanner.make}} {{scanner.model}} : {{scanner.serial_number}}
+                    {{scanner.manufacturer}} {{scanner.model}} : {{scanner.serial_number}} 
                 </div>
                 <div class="row d-inline"  style="display: contents;">
                     <ul class="ms-5 col-md-10 col-sm-10 col-lg-10">
                         <li class="cursorPointer" *ngFor="let transducer of scanner.transducers">
                             <div (click)="onTransducerDetail(transducer, scanner, transducerView)"> 
-                                {{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}
+                                {{transducer.manufacturer}} {{transducer.model}} : {{transducer.serial_number}}
                             </div>
                         </li>
                     </ul>
@@ -37,23 +37,25 @@
               <td class="col-md-2">{{scanner.facility}}</td>
               <td class="col-md-2">
                 {{scanner.room}}
-                <div *ngIf="scanner.next_study_due && scanner.next_study_due.length > 0" class="col-md-2">
+                <!-- <div *ngIf="scanner.next_study_due && scanner.next_study_due.length > 0" class="col-md-2">
                     {{scanner.next_study_due.type}}
                 </div>
                 <div *ngIf="scanner.next_study_due && scanner.next_study_due.length > 0" class="col-md-2">
                     {{scanner.next_study_due.date | date: 'M/d/yyyy'}}
-                </div>
+                </div> -->
               </td>
               <td class="col-md-2">
-                <span *ngIf="scanner.last_study == null">Onboarding Needed</span>
-                <span *ngIf="scanner.last_study!== null && scanner.last_study.finalized == false" style="color: blue;">
-                    Onboarding Needed
+                <span *ngIf="scanner.last_evaluation == null">Onboarding Needed</span>
+                <span class="non-finalized-blk" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment == null">{{scanner.last_evaluation.date_performed}}</span>
+                <span class="finalized-blk" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed < oldDate" >
+                    {{scanner.last_evaluation.date_performed}}
                 </span>
-                <span *ngIf="scanner.last_study!== null && scanner.last_study.finalized == true" style="color: red;">
-                    Onboarding Needed
+                <span *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null 
+                && scanner.last_evaluation.date_performed > oldDate">
+                    {{scanner.last_evaluation.date_performed}}
                 </span>
-            </td>
-           </tbody> 
+              </td>
+           </tbody>
         </table>
         <!-- transducers list -->
         <div class="h-4" *ngIf="!loading">
@@ -62,7 +64,7 @@
                 <ul class="ms-5">
                     <li class="cursorPointer" *ngFor="let transducer of unassignedTransducers">
                         <a src="#" (click)="onTransducerDetail(transducer,'scanner',transducerView)">
-                            {{transducer.make}} {{transducer.model}} : {{transducer.serial_number}}
+                            {{transducer.manufacturer}} {{transducer.model}} : {{transducer.serial_number}}
                         </a>
                     </li>
                 </ul>
@@ -96,15 +98,15 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill">
-                            <mat-label>Make :</mat-label>
-                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make">
-                            <mat-autocomplete #make="matAutocomplete"(optionSelected)='modelFilter($event.option.value)'>
-                                <mat-option *ngFor="let make of filteredMake | async" [value]="make">
-                                    {{make}}
+                            <mat-label>Manufacturer :</mat-label>
+                            <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer">
+                            <mat-autocomplete #manufacturer="matAutocomplete"(optionSelected)='modelFilter($event.option.value)'>
+                                <mat-option *ngFor="let manufacturer of filteredMake | async" [value]="manufacturer">
+                                    {{manufacturer}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="scannerFormGroup.controls.make.errors?.required">
-                                Make is required
+                            <mat-error *ngIf="scannerFormGroup.controls.manufacturer.errors?.required">
+                                Manufacturer is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -197,17 +199,17 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <mat-form-field appearance="fill" class="matInput">
-                            <mat-label>Make :</mat-label>
-                            <input type="text" matInput formControlName="make" required [matAutocomplete]="make"
-                                (keyup)="onKey($event,make);modelTranducerFilter(make)">
-                            <mat-autocomplete #make="matAutocomplete"
+                            <mat-label>Manufacturer :</mat-label>
+                            <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer"
+                                (keyup)="onKey($event,manufacturer);modelTranducerFilter(manufacturer)">
+                            <mat-autocomplete #manufacturer="matAutocomplete"
                                 (optionSelected)='modelTranducerFilter($event.option.value)'>
-                                <mat-option *ngFor="let make of filteredMakeTransducer | async" value="{{make}}">
-                                    {{make}}
+                                <mat-option *ngFor="let manufacturer of filteredMakeTransducer | async" value="{{manufacturer}}">
+                                    {{manufacturer}}
                                 </mat-option>
                             </mat-autocomplete>
-                            <mat-error *ngIf="transducerFormGroup.controls.make.errors?.required">
-                                Make is required
+                            <mat-error *ngIf="transducerFormGroup.controls.manufacturer.errors?.required">
+                                Manufacturer is required
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -392,8 +394,8 @@
         <div class="modal-body">
             <div class="row mb-2">
                 <div class="col-5 form-group input-group-sm">
-                    <label class="col-form-label-sm fw-bold">Make: </label>&nbsp;
-                    <label class="col-form-label-sm me-2">{{viewData.make}}</label>
+                    <label class="col-form-label-sm fw-bold">Manufacturer: </label>&nbsp;
+                    <label class="col-form-label-sm me-2">{{viewData.manufacturer}}</label>
                 </div>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Facility: </label>&nbsp;
@@ -410,11 +412,17 @@
                     <label class="col-form-label-sm text-center">{{viewData.room}}</label>
                 </div>
             </div>
-            <div class="row mb-2"><br><br>
+            <div class="row mb-2">
                 <div class="col-5 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
                     <label class="col-form-label-sm me-2">{{viewData.serial_number}}</label>
                 </div>
+                <div class="col-5 form-group input-group-sm">
+                    <label class="col-form-label-sm fw-bold">Asset Number: </label>&nbsp;
+                    <label class="col-form-label-sm me-2">{{viewData.asset_number}}</label>
+                </div>
+            </div>
+            <div class="row mb-2"><br><br>
                 <div class="col-7 form-group input-group-sm">
                     <label class="col-form-label-sm fw-bold">Barcode: </label>&nbsp;
                     <div class="scanner-print">
@@ -468,8 +476,8 @@
             <form class="form" id="form" [formGroup]="transducerFormGroup">
                 <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
-                        <label class="col-form-label-sm fw-bold">Make:</label>&nbsp;
-                        <label class="col-form-label-sm me-2">{{viewTransducer.make}}</label>
+                        <label class="col-form-label-sm fw-bold">Manufacturer:</label>&nbsp;
+                        <label class="col-form-label-sm me-2">{{viewTransducer.manufacturer}}</label>
                     </div>
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Scanner:</label>&nbsp;
@@ -492,21 +500,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="row tranducer">
+                <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">S/N: </label>&nbsp;
                         <label class="col-form-label-sm me-2 center ">{{viewTransducer.serial_number}}</label>
                     </div>
-                </div>
-                <div class="row mb-2">
                     <div class="col-6 form-group input-group-sm">
                         <label class="col-form-label-sm fw-bold">Type: </label>&nbsp;
                         <label class="col-form-label-sm me-2 center ">{{viewTransducer.type}}</label>
                     </div>
                 </div>
-                <div class="row g-2" id="tab">
+                <div class="row mb-2">
+                    <div class="col-6 form-group input-group-sm">
+                        <label class="col-form-label-sm fw-bold">Asset Number: </label>&nbsp;
+                        <label class="col-form-label-sm me-2 center ">{{viewTransducer.asset_number}}</label>
+                    </div>
+                </div>
+                <div class="row g-2" id="tab" *ngIf="image_analysis">
                     <mat-tab-group animationDuration="0ms">
-                        <mat-tab label="Uniformity Window">
+                        <mat-tab label="Uniformity Window" *ngIf="uniformity_analysis">
                             <div class="row g-2 pt-2">
                                 <div class="col-4">
                                     <div class="row">
@@ -548,7 +560,8 @@
                                 </div>
                             </div>
                         </mat-tab>
-                        <mat-tab label="Image Quality Window">
+
+                        <mat-tab label="Image Quality Window" *ngIf="image_analysis">
                             <div class="row g-2 pt-2">
                                 <div class="col-4">
                                     <div class="row">
