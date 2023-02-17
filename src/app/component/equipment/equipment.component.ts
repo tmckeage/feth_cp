@@ -296,6 +296,7 @@ export class EquipmentComponent implements OnInit {
 		}
 	}
 
+
 	// modelNameList filter on make
 	modelTranducerFilter(make: any) {
 		this.selectedTransducerModel = make;
