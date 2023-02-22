@@ -1645,4 +1645,9 @@ export class EquipmentService {
     return this.http.delete(environment.api_url + '/api/v1/transducer/' + transducerId);
   }
 
+  studieScanner(scannerId: any): Observable<any> {
+    return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
+ }
+}
+
 }
