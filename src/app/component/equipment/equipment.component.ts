@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '@aws-amplify/auth';
+import { thresholdSturges } from 'd3-array';
 
 
 
@@ -43,7 +44,6 @@ export class EquipmentComponent implements OnInit {
 	filteredFacility: Observable<any[]>;
 	filteredModel: Observable<any[]>;
 	filteredRoom: Observable<any[]>;
-	// filteredScanner: Observable<any[]>;
 	filteredMakeTransducer: Observable<any[]>;
 	filteredModelTransducer: Observable<any[]>;
 	filteredImageTransducer: Observable<any[]>;
@@ -84,7 +84,9 @@ export class EquipmentComponent implements OnInit {
 	transducerSpinner: any;
 	scannerId: any = null;
 	transducerId: any = null;
-
+	sortDir = 1; //1= 'ASC' -1= DSC
+	sortCount = 0;
+	oldDate:any;
 	constructor(
 		private toastr: ToastrService,
 		public modalService: NgbModal,
@@ -99,14 +101,16 @@ export class EquipmentComponent implements OnInit {
 			{ name: 'Endocavity', value: 'endocavity' },
 			{ name: 'Phased Array', value: 'phased_array' },
 			{ name: 'Abdominal', value: 'abdominal' },
+			{ name: 'Curved', value: 'curved' },
 		];
 
 		// scanner form 
 		this.scannerFormGroup = new FormGroup({
 			"facility": new FormControl('', []),
-			"make": new FormControl('', [Validators.required]),
+			"manufacturer": new FormControl('', [Validators.required]),
 			"model": new FormControl('', [Validators.required]),
 			"room": new FormControl('', []),
+			"asset_number": new FormControl('', []),
 			"serial_number": new FormControl('', [Validators.required]),
 			"barcode_number": new FormControl('', [])
 		});
@@ -120,7 +124,7 @@ export class EquipmentComponent implements OnInit {
 		// Transducer form 
 		this.transducerFormGroup = new FormGroup({
 			"barcode_number": new FormControl('', []),
-			"make": new FormControl('', [Validators.required]),
+			"manufacturer": new FormControl('', [Validators.required]),
 			"model": new FormControl('', [Validators.required]),
 			"scanner": new FormControl('', []),
 			"serial_number": new FormControl('', [Validators.required]),
@@ -132,11 +136,12 @@ export class EquipmentComponent implements OnInit {
 			"p1_y": new FormControl('', []),
 			"radius_one": new FormControl('', []),
 			"radius_two": new FormControl('', []),
-			"theta": new FormControl('', [])
+			"theta": new FormControl('', []),
+			"asset_number": new FormControl('', [])
 		});
 
 		// filter values in autocomplete
-		this.filteredMake = this.scannerFormGroup.controls['make'].valueChanges.pipe(
+		this.filteredMake = this.scannerFormGroup.controls['manufacturer'].valueChanges.pipe(
 			startWith(''),
 			map(value => this.make_filter(value))
 		);
@@ -156,7 +161,7 @@ export class EquipmentComponent implements OnInit {
 			map(value => this.room_filter(value))
 		);
 
-		this.filteredMakeTransducer = this.transducerFormGroup.controls['make'].valueChanges.pipe(
+		this.filteredMakeTransducer = this.transducerFormGroup.controls['manufacturer'].valueChanges.pipe(
 			startWith(''),
 			map(value => this.makeTransducer_filter(value))
 		);
@@ -179,12 +184,13 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-
+		//get 11 months back date
+		var d = new Date();
+		d.setMonth(d.getMonth() - 11);
+		this.oldDate = d.toISOString().split('T')[0];
 		// scanner model is select make show model 
 		this.scannerFormGroup.controls['model'].disable();
 		this.transducerFormGroup.controls['model'].disable();
-
-
 		this.getAllEquipments();  // scanner API 
 	}
 
@@ -210,10 +216,9 @@ export class EquipmentComponent implements OnInit {
 						// room list
 						this.roomList.push(res.room);
 						let room = this.roomList.filter((val: any, index: any) => val !== null && this.roomList.indexOf(val) == index);
-						this.roomOptions = Object.values(room);
 
 						//make list
-						this.makeNameList.push(res.make);
+						this.makeNameList.push(res.manufacturer);
 						let make = this.makeNameList.filter((val: any, index: any) => val !== null && this.makeNameList.indexOf(val) == index);
 						this.makeOptions = Object.values(make);
 
@@ -221,7 +226,7 @@ export class EquipmentComponent implements OnInit {
 						let tranducerObj = res.transducers;
 						tranducerObj.forEach((response: any) => {
 							//make list
-							this.makeTranducerNameList.push(response.make);
+							this.makeTranducerNameList.push(response.manufacturer);
 							let make = this.makeTranducerNameList.filter((val: any, index: any) => this.makeTranducerNameList.indexOf(val) == index);
 							this.makeTransducerOption = Object.values(make);
 						});
@@ -231,6 +236,46 @@ export class EquipmentComponent implements OnInit {
 				error => {
 					console.log(error);
 		});
+	}
+
+	onSortClick(event:any, param:any) {
+		let target = event.currentTarget,
+		classList = target.classList;
+		if (classList.contains('fa-chevron-up')) {
+		  classList.remove('fa-chevron-up');
+		  classList.add('fa-chevron-down');
+		  this.sortDir=-1;
+		} else {
+		  classList.add('fa-chevron-up');
+		  classList.remove('fa-chevron-down');
+		  this.sortDir=1;
+		}
+		this.sortArr(param);
+	}
+
+	sortArr(colName:any){
+		this.sortCount++;
+		if(this.sortCount < 3) {
+			if(colName == 'Test Date') {
+				this.scannersObject.sort((a:any, b:any) => {
+					if(a.last_evaluation != null && b.last_evaluation !== null) {
+						a= a.last_evaluation['date_performed'].toLowerCase();
+						b= b.last_evaluation['date_performed'].toLowerCase();
+						return a.localeCompare(b) * this.sortDir;
+					}
+					return true;
+				});
+			} else {
+				this.scannersObject.sort((a:any, b:any) => {
+					a= a[colName].toLowerCase();
+					b= b[colName].toLowerCase();
+					return a.localeCompare(b) * this.sortDir;
+				});
+			}
+		} else {
+			this.sortCount = 0;
+			this.getAllEquipments();
+		}
 	}
 
 	// modelNameList filter on make 
@@ -270,7 +315,7 @@ export class EquipmentComponent implements OnInit {
 				this.unassignedTransducers.forEach((elements: any) => {
 					transducerList.push(elements);
 				});
-				let modelName = res.filter((item: any) => { return item.make == this.selectedTransducerModel });
+				let modelName = res.filter((item: any) => { return item.manufacturer == this.selectedTransducerModel });
 				modelName.forEach((item: any) => {
 					this.modelTranducerNameList.push(item.model);
 					this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
@@ -303,22 +348,23 @@ export class EquipmentComponent implements OnInit {
 		if (this.dueDate.value.start != null) {
 			this.startDate = this.dueDate.value.start;
 			this.startDate = this.datePipe.transform(this.startDate, 'MM/dd/yy');
-			scannerList = scannerList.filter((item: any) => {
-				if(item.next_study_due === undefined) return;
-				let start: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
-				return start >= this.startDate;
-			});
+			// scannerList = scannerList.filter((item: any) => {
+			// 	if(item.next_study_due === undefined) return;
+			// 	let start: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
+			// 	return start >= this.startDate;
+			// });
 		}
 		if (this.dueDate.value.end != null) {
 			this.endDate = this.dueDate.value.end;
 			this.endDate = this.datePipe.transform(this.endDate, 'MM/dd/yy');
-			scannerList = scannerList.filter((item: any) => {
-				let due: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
-				return due <= this.endDate;
-			});
+			// scannerList = scannerList.filter((item: any) => {
+			// 	let due: any = this.datePipe.transform(item.next_study_due.date, 'MM/dd/yy');
+			// 	return due <= this.endDate;
+			// });
 		}
 		this.scannersObject = scannerList;
 	}
+
 	// selected facility then show particular room list
 	onRoomList() {
 		this.roomList = [];
@@ -337,11 +383,13 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = value.toLowerCase();
 		return this.makeOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
+
 	// scanner model autocomplete
 	private model_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
 		return this.modelOptions.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
+
 	//scanner room autocomplete
 	private room_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
@@ -365,7 +413,7 @@ export class EquipmentComponent implements OnInit {
 		const filterValue = value.toLowerCase();
 		return this.modelTransducerOption.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
 	}
- 
+
 	// Transducer make autocomplete
 	private makeTransducer_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
@@ -393,6 +441,7 @@ export class EquipmentComponent implements OnInit {
 		this.setRoom('');
 		this.setSN('');
 		this.setBarcode('');
+		this.setAssetNumber('');
 		this.scannerId = null;
 		let make = '';
 		this.modelFilter(make);
@@ -441,9 +490,7 @@ export class EquipmentComponent implements OnInit {
 		this.addingTransducer =true;
 		this.transducerSpinner = true;
 		let data = this.transducerFormGroup.value;
-
 		let transducerModel = this.utilitiesService.prepareTransducerModel(data);
-
 			if (transducerId == null) {
 				this.addingTransducer =false;
 				this.equipmentService.addTranducer(transducerModel).subscribe( response => {
@@ -489,13 +536,14 @@ export class EquipmentComponent implements OnInit {
 		if (scanner == 'scanner') {
 			scannerName = '';
 		} else {
-			scannerName = scanner.make + " " + scanner.model + "" + ' : ' + "" + scanner.serial_number;
+			scannerName = scanner.manufacturer + " " + scanner.model + "" + ' : ' + "" + scanner.serial_number;
 		}
 
 		this.viewTransducer = {
-			make: equipment.make,
+			manufacturer: equipment.manufacturer,
 			model: equipment.model,
 			serial_number: equipment.serial_number,
+			asset_number:equipment.asset_number,
 			barcode: equipment.barcode,
 			scanner: scannerName,
 			scanner_id: scanner.scanner_id,
@@ -503,8 +551,8 @@ export class EquipmentComponent implements OnInit {
 			transducer_id :equipment.transducer_id
 		};
 
-		let imageAnalysis = equipment.analysis_parameters.image_quality_analysis;
-		let uniformityAnalysis = equipment.analysis_parameters.uniformity_analysis;
+		let imageAnalysis = equipment.settings.image_quality;
+		let uniformityAnalysis = equipment.settings.uniformity;
 
 		if (imageAnalysis == undefined || uniformityAnalysis == undefined) {
 			this.modalService.dismissAll();
@@ -515,23 +563,23 @@ export class EquipmentComponent implements OnInit {
 			});
 		}
 		
-		this.image_analysis = {
-			p0: imageAnalysis.p0,
-			p1: imageAnalysis.p1,
-			radius_one: imageAnalysis.radius_one,
-			radius_two: imageAnalysis.radius_two,
-			theta: imageAnalysis.theta,
-			img: imageAnalysis.img
-		}
+		// this.image_analysis = {
+		// 	p0: imageAnalysis.p0,
+		// 	p1: imageAnalysis.p1,
+		// 	radius_one: imageAnalysis.radius_one,
+		// 	radius_two: imageAnalysis.radius_two,
+		// 	theta: imageAnalysis.theta,
+		// 	img: imageAnalysis.img
+		// }
 
-		this.uniformity_analysis = {
-			p0: uniformityAnalysis.p0,
-			p1: uniformityAnalysis.p1,
-			radius_one: uniformityAnalysis.radius_one,
-			radius_two: uniformityAnalysis.radius_two,
-			theta: uniformityAnalysis.theta,
-			img: uniformityAnalysis.img
-		}
+		// this.uniformity_analysis = {
+		// 	p0: uniformityAnalysis.p0,
+		// 	p1: uniformityAnalysis.p1,
+		// 	radius_one: uniformityAnalysis.radius_one,
+		// 	radius_two: uniformityAnalysis.radius_two,
+		// 	theta: uniformityAnalysis.theta,
+		// 	img: uniformityAnalysis.img
+		// }
 
 		this.modalService.dismissAll();
 		this.modalService.open(transducerView, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
@@ -546,12 +594,13 @@ export class EquipmentComponent implements OnInit {
 		this.addModalTitle = 'Edit Scanner';
 		this.scannerFormGroup.controls['model'].enable();
 		this.selectedMake = viewData.make;
-		this.setMake(viewData.make);
+		this.setMake(viewData.manufacturer);
 		this.setModel(viewData.model);
 		this.setFacility(viewData.facility);
 		this.setRoom(viewData.room);
 		this.setSN(viewData.serial_number);
 		this.setBarcode(viewData.barcode);
+		this.setAssetNumber(viewData.asset_number);
 		this.modalService.dismissAll();
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -604,7 +653,7 @@ export class EquipmentComponent implements OnInit {
 	// on change make for transducer
 	onChangeMakeTransducer(makeTransducer: any) {
 		let changeMakeValue = makeTransducer;
-		if (changeMakeValue) {
+ 		if (changeMakeValue) {
 			this.isMake = true;
 		}
 	}
@@ -662,9 +711,10 @@ export class EquipmentComponent implements OnInit {
 		this.transducerFormGroup.controls['model'].enable();
 
 		this.prepareScannerListForAutoComplete();
-		this.setMakeTransducer(viewTransducer.make);
+		this.setMakeTransducer(viewTransducer.manufacturer);
 		this.setModelTransducer(viewTransducer.model);
 		this.setSNTransducer(viewTransducer.serial_number);
+		this.setAssetNumberTransducer(viewTransducer.asset_number);
 		this.setScannerTransducer(viewTransducer.scanner_id);
 		this.setTypeTransducer(viewTransducer.type);
 		this.setBarcodeTransducer(viewTransducer.barcode);
@@ -691,6 +741,7 @@ export class EquipmentComponent implements OnInit {
 		this.setScannerTransducer('');
 		this.setTypeTransducer('');
 		this.setBarcodeTransducer('');
+		this.setAssetNumberTransducer('');
 		this.transducerId = null;
 		this.isModel = false;
 		this.modalService.open(transducerModal, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
@@ -772,7 +823,7 @@ export class EquipmentComponent implements OnInit {
 				this.unassignedTransducers.forEach((elements: any) => {
 					transducerList.push(elements);
 				});
-				let modelName = res.filter((item: any) => { return item.make == this.selectedTransducerModel });
+				let modelName = res.filter((item: any) => { return item.manufacturer == this.selectedTransducerModel });
 				modelName.forEach((item: any) => {
 					this.modelTranducerNameList.push(item.model);
 					this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
@@ -785,19 +836,21 @@ export class EquipmentComponent implements OnInit {
 	}
 
 
-	setMake(inputVal: any) { this.scannerFormGroup.controls.make.setValue(inputVal) }
+	setMake(inputVal: any) { this.scannerFormGroup.controls.manufacturer.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }
 	setSN(inputVal: any) { this.scannerFormGroup.controls.serial_number.setValue(inputVal) }
 	setRoom(inputVal: any) { this.scannerFormGroup.controls.room.setValue(inputVal) }
 	setFacility(inputVal: any) { this.scannerFormGroup.controls.facility.setValue(inputVal) }
 	setBarcode(inputVal: any) { this.scannerFormGroup.controls.barcode_number.setValue(inputVal) }
-	setMakeTransducer(inputVal: any) { this.transducerFormGroup.controls.make.setValue(inputVal) }
+	setAssetNumber(inputVal: any) { this.scannerFormGroup.controls.asset_number.setValue(inputVal) }
+	setMakeTransducer(inputVal: any) { this.transducerFormGroup.controls.manufacturer.setValue(inputVal) }
 	setModelTransducer(inputVal: any) { this.transducerFormGroup.controls.model.setValue(inputVal) }
 	setSNTransducer(inputVal: any) { this.transducerFormGroup.controls.serial_number.setValue(inputVal) }
 	setScannerTransducer(inputVal: any) { this.transducerFormGroup.controls.scanner.setValue(inputVal) }
 	setTypeTransducer(inputVal: any) { this.transducerFormGroup.controls.type.setValue(inputVal) }
 	setImageTransducer(inputVal: any) { this.transducerFormGroup.controls.image.setValue(inputVal) }
 	setBarcodeTransducer(inputVal: any) { this.transducerFormGroup.controls.barcode_number.setValue(inputVal) }
+	setAssetNumberTransducer(inputVal: any) { this.transducerFormGroup.controls.asset_number.setValue(inputVal) }
 	get scannerForm() { return this.scannerFormGroup.controls; }
 	get transducerForm() { return this.transducerFormGroup.controls; }
 }

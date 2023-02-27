@@ -32,7 +32,7 @@ export class UtilitiesService {
 			  }
 			},
 			"barcode":  data.barcode_number != "" ? data.barcode_number : null,
-			"make": data.make != "" ? data.make : null,
+			"manufacturer": data.manufacturer != "" ? data.manufacturer : null,
 			"model":  data.model != "" ? data.model : null,
 			"next_study_due": {
 			  "date": "2022-07-15T14:22:13.321032",
@@ -40,6 +40,7 @@ export class UtilitiesService {
 			},
 			"scanner_id": data.scanner != "" ? data.scanner : null,
 			"serial_number": data.serial_number != "" ? data.serial_number : null,
+			"asset_number":  data.asset_number != "" ? data.asset_number : null,
 			"type": data.type != "" ? data.type : null,
 		};
     }
@@ -48,10 +49,11 @@ export class UtilitiesService {
         return {
             "barcode": data.barcode_number != "" ? data.barcode_number : null,
             "facility": data.facility != "" ? data.facility : null,
-            "make": data.make != "" ? data.make : null,
+            "manufacturer": data.manufacturer != "" ? data.manufacturer : null,
             "model":  data.model != "" ? data.model : null,
             "room":  data.room != "" ? data.room : null,
             "serial_number": data.serial_number != "" ? data.serial_number : null,
+			"asset_number":  data.asset_number != "" ? data.asset_number : null,
 		};
     }
 }
