@@ -48,10 +48,10 @@
                 <div class="col-md-5 cursorPointer" (click)="scannerDetail(scanner,scannerView)">{{scanner.make}} {{scanner.model}} : {{scanner.serial_number}}</div>
                 <div class="col-md-2">{{scanner.facility}}</div>
                 <div class="col-md-2">{{scanner.room}}</div>
-                <div class="col-md-2">{{scanner.next_Study_Due.type}}</div>
-                <!-- <div class="col-md-2"><span *ngIf="scanner.last_study.finalized == true">Complete
-                        (</span>{{scanner.next_Study_Due.type}}<span
-                        *ngIf="scanner.last_study.finalized == true">)</span>
+                <!-- <div class="col-md-2">{{scanner.next_study_due.type}}</div> -->
+                <!-- <div class="col-md-2"><span *ngIf="scanner.last_study!== null && scanner.last_study.finalized == true">Complete
+                        (</span>{{scanner.next_study_due.type}}<span
+                        *ngIf="scanner.last_study!== null && scanner.last_study.finalized == true">)</span>
                 </div> -->
             </div> 
             <div class="row d-inline">

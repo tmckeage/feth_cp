@@ -13,7 +13,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
     constructor(private auth: AuthService) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         request = request.clone({
-            setHeaders: { Authorization: `Bearer ${this.auth.getJWTToken()}` }
+            setHeaders: { Authorization: `Bearer ${this.auth.getJWTToken()}`, 'Content-Type': 'application/json' }
         });
         
         //return next.handle(request);
@@ -24,7 +24,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
                 // do stuff with response if you want
                 }
             }, (err: any) => {
-                console.log(err);
                 if (err instanceof HttpErrorResponse) {
                     if (err.status === 401) {
                         this.router.navigate(['/login']);

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AgGridModule } from 'ag-grid-angular';
@@ -7,7 +8,6 @@ import { AppComponent } from './app.component';
 import { EquipmentComponent } from './component/equipment/equipment.component';
 import { ReviewComponent } from './modules/review/review/review.component';
 import { ReportsComponent } from './component/reports/reports.component';
-import { AnalysisComponent } from './component/analysis/analysis.component';
 import { UsersComponent } from './component/users/users.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -50,19 +50,25 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 
 // Review module
 import { ReviewModule } from './modules/review/review.module';
+import { AnalysisComponent } from './component/analysis/analysis.component';
+
+import * as CanvasJSAngularChart from '../assets/canvasjs.angular.component';
+var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
   declarations: [
     AppComponent,
+    CanvasJSChart,
     EquipmentComponent,
     ReportsComponent,
-    AnalysisComponent,
     UsersComponent,
     RequestReceivedComponent,
-    NavbarComponent
+    NavbarComponent,
+    AnalysisComponent
   ],
   imports: [
     AuthenticationModule,
+    CommonModule,
     ReviewModule,
     BrowserModule,
     AppRoutingModule,

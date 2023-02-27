@@ -62,7 +62,7 @@ export class ReviewComponent implements OnInit {
 
 	// get scannerList  
 	getAllScanner() {
-		this.equipmentService.getAllScanner()
+		this.equipmentService.getAllEquipments()
 			.subscribe(
 				response => {
 					this.loading = false;
@@ -78,7 +78,7 @@ export class ReviewComponent implements OnInit {
 						let room = this.roomList.filter((val: any, index: any) => this.roomList.indexOf(val) == index);
 						this.roomList = Object.values(room);
 						// type list
-						this.typeList.push(res.next_Study_Due.type);
+						// this.typeList.push(res.next_study_due.type);
 						let type = this.typeList.filter((val: any, index: any) => this.typeList.indexOf(val) == index);
 						this.typeList = Object.values(type);
 					});
@@ -141,7 +141,7 @@ export class ReviewComponent implements OnInit {
 	scannerDetail(scanner: any, scannerView: any) {
 		this.titleName = 'Scanner Acceptance Study';
 		this.viewData = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
-		this.date = scanner.next_Study_Due.date;
+		// this.date = scanner.next_study_due.date;
 		this.isFinalized = false;
 
 		// if (scanner.last_study.finalized === true) {
@@ -195,11 +195,9 @@ export class ReviewComponent implements OnInit {
 	onTransducerDetail(transducer: any, scanner: any) {
 		this.reviewData = transducer.last_study;
 		let currentScannerName = scanner.make +""+ " : " +""+ scanner.model +""+ scanner.serial_number;
-		let currentScannerDate = scanner.next_Study_Due.date;
+		// let currentScannerDate = scanner.next_study_Due.date;
 		sessionStorage.setItem('currentScanner', currentScannerName);
-		sessionStorage.setItem('currentScannerDate', currentScannerDate);
+		// sessionStorage.setItem('currentScannerDate', currentScannerDate);
 		this.router.navigate(['/review/transducer']);
 	}
 }
-
-

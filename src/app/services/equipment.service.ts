@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +11,7 @@ export class EquipmentService {
   facilityTransducer: any[] = [];
   roomTransducer: any[] = [];
   typeTransducer: any[] = [];
-    stadies: any[]  = [];
+  stadies: any[]  = [];
 
 
 
@@ -18,7 +19,6 @@ export class EquipmentService {
     this.facilityTransducer = ['CIRS', 'Fathom'];
     this.roomTransducer = ['RM1', 'RM2', 'RM3'];
     this.typeTransducer = ['Monthly', 'Quarterly', 'Annual', 'Acceptance']
-   
   }
 
  
@@ -57,10 +57,7 @@ export class EquipmentService {
   }
 
 
-  getStudy() 
-  {
-
-    
+  getStudy() {
 
   }
   
@@ -1599,32 +1596,8 @@ export class EquipmentService {
     return scanner1;
   }
 
-  addScanner(data: any): Observable<any> {
-    return this.http.post(environment.api_url + 'scanner', data);
-  }
-
   getScanners(): Observable<any> {
     return this.http.get(environment.api_url + 'scanner');
-  }
-
-  deleteScanner(scannerId: any): Observable<any> {
-     return this.http.delete(environment.api_url + 'scanner/' + scannerId);
-  }
-
-  getAllTransducer(): Observable<any> {
-    return this.http.get(environment.api_url + 'transducer');
-  }
-
-  addTranducer(data: any): Observable<any> {
-    return this.http.post(environment.api_url + 'transducer', data);
-  }
- 
-  deleteTranducer(id: any): Observable<any> {
-    return this.http.delete(environment.api_url + 'transducer/' + id);
-  } 
-
-  getAllScanner(): Observable<any> { 
-    return this.http.get(environment.api_url + 'equipment'); 
   }
 
   getStudyList(): Observable<any> {
@@ -1637,6 +1610,44 @@ export class EquipmentService {
 
   studieScanner(scannerId: any): Observable<any> {
     return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
+  }
+
+  // New API's
+  getAllEquipments(): Observable<any> { 
+    return this.http.get(environment.api_url + '/api/v1/equipment'); 
+  }
+
+  getAllTransducer(): Observable<any> {
+    return this.http.get(environment.api_url + '/api/v1/transducers');
+  }
+
+  addTranducer(data: any): Observable<any> {
+    return this.http.post(environment.api_url + '/api/v1/transducer', data);
+  }
+
+  editTranducer(data: any, transducerId: any): Observable<any> {
+    return this.http.put(environment.api_url + '/api/v1/transducer/' + transducerId, data);
+  }
+
+  addScanner(data: any): Observable<any> {
+    return this.http.post(environment.api_url + '/api/v1/scanner', data);
+  }
+
+  editScanner(data: any, scannerId: any): Observable<any> {
+    return this.http.put(environment.api_url + '/api/v1/scanner/' + scannerId, data);
+  }
+
+  deleteScanner(scannerId: any): Observable<any> {
+    return this.http.delete(environment.api_url + '/api/v1/scanner/' + scannerId);
+  }
+
+  deleteTranducer(transducerId: any): Observable<any> {
+    return this.http.delete(environment.api_url + '/api/v1/transducer/' + transducerId);
+  }
+
+  studieScanner(scannerId: any): Observable<any> {
+    return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
  }
 }
 
+}
