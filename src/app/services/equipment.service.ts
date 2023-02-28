@@ -1608,10 +1608,6 @@ export class EquipmentService {
     return this.http.get('assets/weather-data.json');
   }
 
-  studieScanner(scannerId: any): Observable<any> {
-    return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
-  }
-
   // New API's
   getAllEquipments(): Observable<any> { 
     return this.http.get(environment.api_url + '/api/v1/equipment'); 
@@ -1647,7 +1643,5 @@ export class EquipmentService {
 
   studieScanner(scannerId: any): Observable<any> {
     return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
- }
-}
-
+  }
 }
