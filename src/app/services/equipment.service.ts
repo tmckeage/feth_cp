@@ -1609,7 +1609,7 @@ export class EquipmentService {
   }
 
   studieScanner(scannerId: any): Observable<any> {
-    return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
+      return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
   }
 
   // New API's
