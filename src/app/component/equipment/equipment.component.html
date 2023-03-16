@@ -1,6 +1,10 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-8  mt-3 text-center">
         <div class="col-sm-12 col-md-12 col-lg-12 text-end">
+            <button type="button" class="btn btn-primary btn-sm me-2" style="float:left"
+            (click)="equipementDetails(equipementList)">
+                Print Barcodes
+            </button>
             <button type="button" class="btn btn-primary btn-sm me-2" disabled>
                 <i class="fa fa-file" aria-hidden="true"></i> Import
                 </button>
@@ -654,7 +658,6 @@
 
     <!-- delete transducer msg alerts -->
     <ng-template #deleteTranducer let-modal>
-
         <div class="modal-body">
             <h5 class="modal-title text-center" id="modal-basic-title"> Are you sure want to delete this?</h5>
         </div>
@@ -664,3 +667,52 @@
                 (click)="modal.dismiss('Cross click')">Cancel</button>
         </div>
     </ng-template>
+
+    <!-- equipement list  -->
+    <ng-template #equipementList let-modal class="non-printable" >
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal-basic-title">Select equipement to print barcodes </h5>
+            <button type="button" class="btn btn-primary" (click)="selectAll()">Select All</button>
+            <span class="close close-btn" (click)="modal.dismiss('Cross click')">&times;</span>
+        </div>
+        <div class="col-12 modal-body" style="display: flex;">
+            <div class="col-6">
+                <h6 style="text-decoration: underline;">Scanners </h6>
+                <ul *ngFor="let scanner of scannersObject" class="scanner-holder mt-4">
+                    <mat-checkbox (change)="selectScannerForPrintBarcode(scanner)" [(ngModel)]="scanner.scanner_checkbox"></mat-checkbox>&nbsp;&nbsp; 
+                    {{scanner.manufacturer}} : {{scanner.serial_number}} 
+                </ul>
+            </div>
+            <div class="transducer-section col-6">
+                <h6 style="text-decoration: underline;">Transducers </h6>
+                <div *ngFor="let scanner of scannersObject">
+                    <ul *ngFor="let transducer of scanner.transducers">
+                        <mat-checkbox (change)="selectTransducerForPrintBarcode(transducer)" [(ngModel)]="transducer.transducer_checkbox"></mat-checkbox>&nbsp;&nbsp; 
+                        {{transducer.manufacturer}} {{transducer.model}} : {{transducer.serial_number}} 
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button printSectionId="print-section" ngxPrint [useExistingCss]="true">
+            Print</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+        </div>
+    </ng-template>
+
+    <!-- Print Preview Section -->
+    <div id="print-section">
+        <li class="list-type" *ngFor="let scanner of scannerToPrint">
+            <ul class="list-type" style="margin-bottom: 1000px;">
+                <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint>
+                    <ngx-barcode6  [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
+                        (click)="printScanner(scanner.barcode)" [bc-value]="scanner.barcode"
+                        [bc-display-value]="true"></ngx-barcode6>
+                </button>
+                <p style="font-size: small;">
+                    {{scanner.manufacturer}} {{scanner.model}} : {{scanner.serial_number}}
+                </p>
+            </ul>
+        </li>
+    </div>
+</div>

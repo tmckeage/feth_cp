@@ -11,8 +11,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Auth } from '@aws-amplify/auth';
 import { thresholdSturges } from 'd3-array';
 
-
-
 @Component({
 	selector: 'app-equipment',
 	templateUrl: './equipment.component.html',
@@ -87,6 +85,12 @@ export class EquipmentComponent implements OnInit {
 	sortDir = 1; //1= 'ASC' -1= DSC
 	sortCount = 0;
 	oldDate:any;
+	transducerData: any[] = [];
+	transducerToPrint:any[] = [];
+	scannerToPrint:any[] = [];
+	transducer_checkbox:boolean = true;
+	scanner_checkbox:boolean = true;
+
 	constructor(
 		private toastr: ToastrService,
 		public modalService: NgbModal,
@@ -191,7 +195,7 @@ export class EquipmentComponent implements OnInit {
 		// scanner model is select make show model 
 		this.scannerFormGroup.controls['model'].disable();
 		this.transducerFormGroup.controls['model'].disable();
-		this.getAllEquipments();  // scanner API 
+		this.getAllEquipments();  // scanner API
 	}
 
 	// type list finding
@@ -212,6 +216,7 @@ export class EquipmentComponent implements OnInit {
 						this.facilityList.push(res.facility);
 						let result = this.facilityList.filter((val: any, index: any) => val !== null && this.facilityList.indexOf(val) == index);
 						this.facilityOptions = Object.values(result);
+						res.scanner_checkbox = true;
 
 						// room list
 						this.roomList.push(res.room);
@@ -223,8 +228,10 @@ export class EquipmentComponent implements OnInit {
 						this.makeOptions = Object.values(make);
 
 						// transducer make list
+						this.transducerData = res.tranducers;
 						let tranducerObj = res.transducers;
 						tranducerObj.forEach((response: any) => {
+							response.transducer_checkbox = true;
 							//make list
 							this.makeTranducerNameList.push(response.manufacturer);
 							let make = this.makeTranducerNameList.filter((val: any, index: any) => this.makeTranducerNameList.indexOf(val) == index);
@@ -235,6 +242,16 @@ export class EquipmentComponent implements OnInit {
 				},
 				error => {
 					console.log(error);
+		});
+	}
+
+	//view equipement model
+	equipementDetails(equipementList:any) {
+		this.printBarcode();
+		this.modalService.open(equipementList, { ariaLabelledBy: 'modal-basic-title', size: 'lg' }).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
 		});
 	}
 
@@ -295,7 +312,6 @@ export class EquipmentComponent implements OnInit {
 			this.modelNameList = [];
 		}
 	}
-
 
 	// modelNameList filter on make
 	modelTranducerFilter(make: any) {
@@ -377,6 +393,7 @@ export class EquipmentComponent implements OnInit {
 			this.roomList = Object.values(room);
 		});
 	}
+
 
 	//scanner make autocomplete
 	private make_filter(value: string): string[] {
@@ -787,6 +804,7 @@ export class EquipmentComponent implements OnInit {
  
 		});
 	}
+
 	// scanner print
 	printScanner(barcode: any) {
 		this.barcodeValue = barcode;
@@ -833,6 +851,43 @@ export class EquipmentComponent implements OnInit {
 		} else {
 			this.transducerFormGroup.controls['model'].disable();
 		}
+	}
+
+	selectScannerForPrintBarcode(scanner:any) {
+		scanner.scanner_checkbox = !!scanner.scanner_checkbox;
+		this.printBarcode();
+	}
+
+	selectTransducerForPrintBarcode(transducer: any) {
+		transducer.transducer_checkbox = !!transducer.transducer_checkbox;
+		this.printBarcode();
+	}
+
+	selectAll() {
+		this.scannersObject.forEach((scanner: any) => {
+			if(scanner.scanner_checkbox == false) {
+				scanner.scanner_checkbox = true;
+			}
+			scanner.transducers.forEach((transducer:any) => {
+				if(transducer.transducer_checkbox == false) {
+					transducer.transducer_checkbox = true;
+				}
+			})
+		});
+	}
+
+	printBarcode() {
+		this.scannerToPrint= [];
+		this.scannersObject.forEach((scanner: any) => {
+			if(scanner.scanner_checkbox == true) {
+				this.scannerToPrint.push(scanner);
+			}
+			scanner.transducers.forEach((transducer:any) => {
+				if(transducer.transducer_checkbox == true) {
+					this.scannerToPrint.push(transducer);
+				}
+			})
+		});
 	}
 
 
