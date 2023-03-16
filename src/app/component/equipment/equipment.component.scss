@@ -84,3 +84,11 @@ width: 110%;
 .list-type {
     list-style-type: none;
 }
+
+
+#printable { display: none; }
+
+@media print
+{
+    #printable { display: block; }
+}

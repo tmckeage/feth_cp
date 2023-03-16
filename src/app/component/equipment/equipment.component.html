@@ -701,9 +701,9 @@
     </ng-template>
 
     <!-- Print Preview Section -->
-    <div id="print-section">
+    <div id="print-section" style="display: none;">
         <li class="list-type" *ngFor="let scanner of scannerToPrint">
-            <ul class="list-type" style="margin-bottom: 1000px;">
+            <ul class="list-type"style="margin-bottom: 1000px;">
                 <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint>
                     <ngx-barcode6  [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
                         (click)="printScanner(scanner.barcode)" [bc-value]="scanner.barcode"
