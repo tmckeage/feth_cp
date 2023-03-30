@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { filter, map, startWith } from 'rxjs/operators';
 import { EquipmentService } from 'src/app/services/equipment.service';
 import { UtilitiesService } from 'src/app/services/utilities.services';
-import { DatePipe } from '@angular/common';
+import { DatePipe, KeyValue } from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Auth } from '@aws-amplify/auth';
@@ -90,6 +90,7 @@ export class EquipmentComponent implements OnInit {
 	scannerToPrint:any[] = [];
 	transducer_checkbox:boolean = true;
 	scanner_checkbox:boolean = true;
+	evaluationData: any[] = [];
 
 	constructor(
 		private toastr: ToastrService,
@@ -543,6 +544,55 @@ export class EquipmentComponent implements OnInit {
 		}, (reason)=>{ 
  
 		});
+	}
+
+	// on scanner click open view modal, Display Basic Equipment Evaluation
+	displayEquipmentEvaluation(scanner: any, equipmentEvaluation: any) {
+		this.scannerId = scanner.scanner_id;
+		let brightness = scanner?.last_evaluation?.display_performance?.brightness;
+
+		Object.keys(brightness).forEach( (brightnessList:any) => {
+			if(brightnessList !== 'note'){
+				let getFirstFourElement = brightness[brightnessList].slice(0,3).concat(brightness[brightnessList].slice(-1));
+				brightness[brightnessList] = getFirstFourElement;
+				brightness[brightnessList].splice(3, 0, "...");
+			}
+		});
+		
+		this.evaluationData = [{
+			title: scanner?.manufacturer + ' ' + scanner?.model,
+			serial_number: scanner?.serial_number,
+			date: scanner?.last_evaluation?.date_performed,
+			physical_condition : { 
+				controls: scanner?.last_evaluation?.physical_condition?.controls?.assessment,
+				housing: scanner?.last_evaluation?.physical_condition?.housing?.assessment,
+				ports: scanner?.last_evaluation?.physical_condition?.ports?.assessment,
+				power_cord: scanner?.last_evaluation?.physical_condition?.power_cord?.assessment,
+				wheels: scanner?.last_evaluation?.physical_condition?.wheels?.assessment
+			},
+			display_performance: {
+				brightness: brightness,
+				distortion: scanner?.last_evaluation?.display_performance?.distortion?.assessment,
+				greyscale: scanner?.last_evaluation?.display_performance?.greyscale?.assessment,
+				hc_line_patterns: scanner?.last_evaluation?.display_performance?.hc_line_patterns?.assessment,
+				lc_line_patterns: scanner?.last_evaluation?.display_performance?.lc_line_patterns?.assessment,
+				pixels: scanner?.last_evaluation?.display_performance?.pixels?.assessment,
+				resolution: scanner?.last_evaluation?.display_performance?.resolution?.assessment,
+				luminance: scanner?.last_evaluation?.display_performance?.luminance,
+				test_pattern:scanner?.last_evaluation?.display_performance?.test_pattern,
+				port_imaging:scanner?.last_evaluation?.display_performance?.port_imaging?.assessment,
+			},
+			transducers: scanner?.transducers,
+		}];
+	
+		this.modalService.open(equipmentEvaluation, { ariaLabelledBy: 'modal-equ-eva', size: 'lg' }).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason)=>{ 
+ 
+		});
+	}
+	ascOrderObject = (a:any, b:any) =>{
+		if(a.key > b.key) return b.key;
 	}
 
 	// view transducer modal

@@ -88,6 +88,16 @@ width: 110%;
 
 #printable { display: none; }
 
+.flex{
+    display:flex;
+}
+.justify-between{
+    justify-content: space-between;
+}
+.font-small{
+    font-size: .95rem;
+}
+
 @media print
 {
     #printable { display: block; }
