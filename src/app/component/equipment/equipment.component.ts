@@ -91,6 +91,9 @@ export class EquipmentComponent implements OnInit {
 	transducer_checkbox:boolean = true;
 	scanner_checkbox:boolean = true;
 	evaluationData: any[] = [];
+	equipmentNewDetailsDesignFirst: any[] = [];
+	equipmentNewDetailsDesignSecond: any[] = [];
+	evaluationDataEditNote: string = '';
 
 	constructor(
 		private toastr: ToastrService,
@@ -546,54 +549,135 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-	// on scanner click open view modal, Display Basic Equipment Evaluation
+	// on scanner click open view modal, Display Basic Equipment Evaluation Details
 	displayEquipmentEvaluation(scanner: any, equipmentEvaluation: any) {
-		this.scannerId = scanner.scanner_id;
-		let brightness = scanner?.last_evaluation?.display_performance?.brightness;
+		this.evaluationData = [scanner];
 
-		Object.keys(brightness).forEach( (brightnessList:any) => {
-			if(brightnessList !== 'note'){
-				let getFirstFourElement = brightness[brightnessList].slice(0,3).concat(brightness[brightnessList].slice(-1));
-				brightness[brightnessList] = getFirstFourElement;
-				brightness[brightnessList].splice(3, 0, "...");
+		this.equipmentNewDetailsDesignFirst = [
+			{
+				title:'Housing',
+				parentCategory: 'physical_condition',
+				category: 'housing',
+				data: scanner?.last_evaluation?.physical_condition?.housing 
+			},
+			{
+				title: 'Power Cord',
+				parentCategory: 'physical_condition',
+				category: 'power_cord',
+				data: scanner?.last_evaluation?.physical_condition?.power_cord 
+			},
+			{
+				title: 'Wheels',
+				parentCategory: 'physical_condition',
+				category: 'wheels',
+				data: scanner?.last_evaluation?.physical_condition?.wheels 
+			},
+			{
+				title: 'Controls',
+				parentCategory: 'physical_condition',
+				category: 'controls',
+				data: scanner?.last_evaluation?.physical_condition?.controls 
 			}
-		});
-		
-		this.evaluationData = [{
-			title: scanner?.manufacturer + ' ' + scanner?.model,
-			serial_number: scanner?.serial_number,
-			date: scanner?.last_evaluation?.date_performed,
-			physical_condition : { 
-				controls: scanner?.last_evaluation?.physical_condition?.controls?.assessment,
-				housing: scanner?.last_evaluation?.physical_condition?.housing?.assessment,
-				ports: scanner?.last_evaluation?.physical_condition?.ports?.assessment,
-				power_cord: scanner?.last_evaluation?.physical_condition?.power_cord?.assessment,
-				wheels: scanner?.last_evaluation?.physical_condition?.wheels?.assessment
+		]
+		this.equipmentNewDetailsDesignSecond = [
+			{
+				title: 'Ports',
+				parentCategory: 'physical_condition',
+				category: 'ports',
+				data: scanner?.last_evaluation?.physical_condition?.ports 
 			},
-			display_performance: {
-				brightness: brightness,
-				distortion: scanner?.last_evaluation?.display_performance?.distortion?.assessment,
-				greyscale: scanner?.last_evaluation?.display_performance?.greyscale?.assessment,
-				hc_line_patterns: scanner?.last_evaluation?.display_performance?.hc_line_patterns?.assessment,
-				lc_line_patterns: scanner?.last_evaluation?.display_performance?.lc_line_patterns?.assessment,
-				pixels: scanner?.last_evaluation?.display_performance?.pixels?.assessment,
-				resolution: scanner?.last_evaluation?.display_performance?.resolution?.assessment,
-				luminance: scanner?.last_evaluation?.display_performance?.luminance,
-				test_pattern:scanner?.last_evaluation?.display_performance?.test_pattern,
-				port_imaging:scanner?.last_evaluation?.display_performance?.port_imaging?.assessment,
+			{
+				title: 'Greyscale',
+				parentCategory: 'display_performance',
+				category: 'greyscale',
+				data: scanner?.last_evaluation?.display_performance?.greyscale 
 			},
-			transducers: scanner?.transducers,
-		}];
-	
+			{
+				title: 'Geometric Distortion',
+				parentCategory: 'display_performance',
+				category: 'distortion',
+				data: scanner?.last_evaluation?.display_performance?.distortion 
+			},
+			{
+				title: 'High Constrast Line Pattern',
+				parentCategory: 'display_performance',
+				category: 'hc_line_patterns',
+				data: scanner?.last_evaluation?.display_performance?.hc_line_patterns 
+			},
+			{
+				title: 'Low Constrast Line Pattern',
+				parentCategory: 'display_performance',
+				category: 'lc_line_patterns',
+				data: scanner?.last_evaluation?.display_performance?.lc_line_patterns 
+			},
+			{
+				title: 'Display Resolution',
+				parentCategory: 'display_performance',
+				category: 'resolution',
+				data: scanner?.last_evaluation?.display_performance?.resolution 
+			},
+			{
+				title: 'Missing Pixels',
+				parentCategory: 'display_performance',
+				category: 'pixels',
+				data: scanner?.last_evaluation?.display_performance?.pixels 
+			},
+			{
+				title: 'Brightness',
+				parentCategory: 'display_performance',
+				category: 'brightness',
+				data: scanner?.last_evaluation?.display_performance?.brightness 
+			},
+			{
+				title: 'Luminance',
+				parentCategory: 'display_performance',
+				category: 'luminance',
+				data: scanner?.last_evaluation?.display_performance?.luminance 
+			}
+		]	
 		this.modalService.open(equipmentEvaluation, { ariaLabelledBy: 'modal-equ-eva', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		}, (reason)=>{ 
  
 		});
 	}
+	// Sort array in ascending order
 	ascOrderObject = (a:any, b:any) =>{
 		if(a.key > b.key) return b.key;
 	}
+
+	evDetailsEditNote(scannerId: any, equDetails:any) {
+		let data = {
+			note: equDetails?.value?.data?.note,
+		}
+		if(this.evaluationDataEditNote !== equDetails.value.title){
+			this.evaluationDataEditNote = equDetails.value.title; 
+		} else {
+			this.evaluationDataEditNote = ''; 
+			this.equipmentService.updateAssesmentNote(scannerId, equDetails.value.category, data).subscribe( result => { }, error => { });
+		}		
+	} 
+	evDetailsPass(scannerId: any, equDetails:any) {
+		let data = { assessment: 'pass' }
+		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, equDetails.value.category, data).subscribe( value => {
+			this.scannersObject.map( (scanerData: any) => {
+				if(scanerData.scanner_id === value.scanner_id){
+					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = 'pass';
+				}
+			});
+		});
+	}
+	evDetailsFail(scannerId: any, equDetails:any) {
+		let data = { assessment: 'fail' }
+		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, equDetails.value.category, data).subscribe( value => {
+			this.scannersObject.map( (scanerData: any) => {
+				if(scanerData.scanner_id === value.scanner_id){
+					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = 'fail';
+				}
+			});
+		});
+	}
+
 
 	// view transducer modal
 	onTransducerDetail(equipment: any, scanner: any, transducerView: any) {
@@ -939,7 +1023,6 @@ export class EquipmentComponent implements OnInit {
 			})
 		});
 	}
-
 
 	setMake(inputVal: any) { this.scannerFormGroup.controls.manufacturer.setValue(inputVal) }
 	setModel(inputVal: any) { this.scannerFormGroup.controls.model.setValue(inputVal) }

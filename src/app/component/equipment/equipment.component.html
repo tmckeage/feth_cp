@@ -50,14 +50,13 @@
             </td>
             <td class="col-md-2 tes-date">
                 <span *ngIf="scanner.last_evaluation == null" class="cursorPointer" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">Onboarding Needed</span>
+
                 <span class="non-finalized-blk cursorPointer" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment == null" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">{{scanner.last_evaluation.date_performed}}</span>
-                <span class="finalized-blk cursorPointer" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed < oldDate" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">
-                    {{scanner.last_evaluation.date_performed}}
-                </span>
-                <span *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null 
-                && scanner.last_evaluation.date_performed > oldDate" class="cursorPointer" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">
-                {{scanner.last_evaluation.date_performed}}
-            </span>
+
+                <span class="finalized-blk cursorPointer" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed < oldDate" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">{{scanner.last_evaluation.date_performed}}</span>
+
+                <span *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed > oldDate" class="cursorPointer" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">
+                {{scanner.last_evaluation.date_performed}}</span>
         </td>
     </tbody>
 </table>
@@ -462,180 +461,125 @@
         <span class="close close-btn fw-bolder" (click)="modal.dismiss('Cross click')">&times;</span>
     </div>
     <div class="modal-body py-4 ps-4 pe-5">
-        <div *ngFor="let evaluation of evaluationData">
+        <div class="evalutionData" *ngFor="let evaluation of evaluationData; let evdIndex = index">
             <div class="scanner-data mb-4">
-                <h3 class="mb-2 fw-bolder">Scanner Evaluation Details</h3>
-                <div class="d-flex justify-content-between mb-2">
-                    <h5 class="modal-title fw-normal">{{evaluation.title}} : {{evaluation.serial_number}}</h5>
-                    <h5 class="modal-title fw-normal">{{evaluation.date}}</h5>
-                </div>
-                <div class="ps-5">
-                    <li *ngIf="!!evaluation?.physical_condition" class="list-type font-small mb-3">
-                        <h6 class="fw-bold font-small">Physical Condition:</h6>
-                        <div class="ps-5">
-                            <table class="table w-auto table-borderless">
-                                <tr *ngIf="evaluation.physical_condition?.housing">
-                                    <td class="pe-3">Housing: </td>
-                                    <td>{{evaluation.physical_condition?.housing}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.physical_condition?.power_cord">
-                                    <td class="pe-3">Power Cord: </td>
-                                    <td>{{evaluation.physical_condition?.power_cord}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.physical_condition?.wheels">
-                                    <td class="pe-3">Wheels: </td>
-                                    <td>{{evaluation.physical_condition?.wheels}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.physical_condition?.controls">
-                                    <td class="pe-3">Controls: </td>
-                                    <td>{{evaluation.physical_condition?.controls}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.physical_condition?.ports">
-                                    <td class="pe-3">Ports: </td>
-                                    <td>{{evaluation.physical_condition?.ports}}</td>
-                                </tr>
-                            </table>
+                <div class="accordion accordion-flush" id="scannerEvaluationData">
+                    <div class="accordion-item border-0">
+                        <div class="accordion-header" id="scannerTitle">
+                            <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#scannerEvlCategories" aria-controls="scannerEvlCategories">
+                                <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                                <div class="acc-title ms-3 d-flex w-100 justify-content-between border-bottom-3">
+                                    <h5 class="modal-title fw-normal">{{evaluation?.manufacturer}} {{evaluation?.model}} : {{evaluation?.serial_number}}</h5>
+                                    <h5 *ngIf="evaluation?.last_evaluation?.date_performed" class="modal-title fw-normal">{{evaluation?.last_evaluation?.date_performed}}</h5>
+                                </div>
+                            </button>                            
                         </div>
-                    </li>
-                    <li *ngIf="!!evaluation?.display_performance" class="list-type font-small mb-0">
-                        <h6 class="fw-bold font-small">Display:</h6>
-                        <div class="ps-5">
-                            <table class="table w-auto table-borderless">
-                                <tr *ngIf="evaluation.display_performance?.greyscale">
-                                    <td class="pe-3">Greyscale: </td>
-                                    <td>{{evaluation.display_performance?.greyscale}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.display_performance?.distortion">
-                                    <td class="pe-3">Distortion: </td>
-                                    <td>{{evaluation.display_performance?.distortion}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.display_performance?.hc_line_patterns">
-                                    <td class="pe-3">HC Line Patterns: </td>
-                                    <td>{{evaluation.display_performance?.hc_line_patterns}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.display_performance?.lc_line_patterns">
-                                    <td class="pe-3">LC Line Patterns: </td>
-                                    <td>{{evaluation.display_performance?.lc_line_patterns}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.display_performance?.resolution">
-                                    <td class="pe-3">Resolution: </td>
-                                    <td>{{evaluation.display_performance?.resolution}}</td>
-                                </tr>
-                                <tr *ngIf="evaluation.display_performance?.pixels">
-                                    <td class="pe-3">Pixels: </td>
-                                    <td>{{evaluation.display_performance?.pixels}}</td>
-                                </tr>
-                            </table>
-                            <table class="table w-auto table-borderless">
-                                <tr *ngIf="evaluation.display_performance?.brightness">
-                                    <td class="pe-3">
-                                        <p class="p-0 m-0">Brightness:</p>
-                                        <li class="list-type p-0">
-                                            <div class="ps-5">
-                                                <table class="table w-auto table-borderless mb-0">
-                                                    <tr *ngFor="let brightness of evaluation.display_performance?.brightness | keyvalue">
-                                                        <td *ngIf="brightness.key !== 'note'" class="pe-2 text-capitalize">{{brightness.key}}: </td>
-                                                        <td *ngIf="brightness.key !== 'note'">{{brightness.value}}</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </li>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table w-auto table-borderless">
-                                <tr *ngIf="evaluation.display_performance?.luminance">
-                                    <td class="pe-3">
-                                        <p class="p-0 m-0">Luminance:</p>
-                                        <li class="list-type p-0">
-                                            <div class="ps-5">
-                                                <table style=" max-width: 250px; flex-wrap: wrap;" class="table w-auto table-borderless mb-0">
-                                                    <tr style="flex: 1 0 33%" *ngIf="evaluation.display_performance.luminance?.ambient">
-                                                        <td class="pe-3">Ambient: </td>
-                                                        <td>{{evaluation.display_performance.luminance.ambient}}</td>
-                                                    </tr>
-                                                </table>
-                                                <table style="display:flex; max-width: 250px; flex-wrap: wrap;" class="table w-auto table-borderless mb-0">
-                                                    <tr style="flex: 1 0 33%" *ngFor="let luminance of evaluation.display_performance.luminance | keyvalue:ascOrderObject">
-                                                        <td *ngIf="luminance.key !== 'ambient'" class="pe-3">{{luminance.key}}: </td>
-                                                        <td *ngIf="luminance.key !== 'ambient'" >{{luminance.value}}</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </li>
-                                    </td>
-                                </tr>
-                            </table>
-                            <table class="table w-auto table-borderless">
-                                <tr *ngIf="evaluation.display_performance?.test_pattern">
-                                    <td class="pe-3">
-                                        <p class="p-0 m-0">Test Pattern:</p>
-                                        <li class="list-type p-0">
-                                            <div class="ps-5">
-                                                <table class="table w-auto table-borderless mb-0">
-                                                    <tr *ngIf="!!evaluation.display_performance.test_pattern?.upper_left">
-                                                        <td class="pe-3">Upper Left: </td>
-                                                        <td>{{evaluation.display_performance.test_pattern.upper_left}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="!!evaluation.display_performance.test_pattern?.lower_left">
-                                                        <td class="pe-3">Lower Left: </td>
-                                                        <td>{{evaluation.display_performance.test_pattern.lower_left}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="!!evaluation.display_performance.test_pattern?.center">
-                                                        <td class="pe-3">Center: </td>
-                                                        <td>{{evaluation.display_performance.test_pattern.center}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="!!evaluation.display_performance.test_pattern?.upper_right">
-                                                        <td class="pe-3">Upper Right: </td>
-                                                        <td>{{evaluation.display_performance.test_pattern.upper_right}}</td>
-                                                    </tr>
-                                                    <tr *ngIf="!!evaluation.display_performance.test_pattern?.lower_right">
-                                                        <td class="pe-3">Lower Right: </td>
-                                                        <td>{{evaluation.display_performance.test_pattern.lower_right}}</td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </li>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </li>
-                    <li *ngIf="!!evaluation?.display_performance?.port_imaging" class="d-flex list-type font-small mb-3">
-                        <h6 class="fw-bold font-small pe-3">Port Imaging: </h6>
-                        <span>{{evaluation.display_performance?.port_imaging}}</span>
-                    </li>
-                </div>
-            </div>
-            <hr/>
-            <div class="transducer-data">
-                <h3 class="mb-2 fw-bolder">Transducers Evaluation Details</h3>
-                <div *ngFor="let transducerData of evaluation?.transducers">
-                    <div class="d-flex justify-content-between mb-2">
-                        <h5 class="modal-title fw-normal">{{transducerData?.manufacturer}} {{transducerData?.model}}: {{transducerData?.serial_number}} </h5>
-                        <h5 class="modal-title fw-normal">{{transducerData?.last_evaluation?.date_performed}}</h5>
-                    </div>
-                    <div class="ps-5">
-                        <li *ngIf="!!transducerData?.last_evaluation?.physical_condition" class="list-type font-small mb-3">
-                            <h6 class="fw-bold font-small">Physical Condition:</h6>
+                        <div id="scannerEvlCategories" class="accordion-collapse collapse mb-3" aria-labelledby="scannerTitle" data-bs-parent="#scannerEvaluationData">
                             <div class="ps-5">
-                                <table class="table w-auto table-borderless">
-                                    <tr>
-                                        <td class="pe-3">Cables: </td>
-                                        <td>{{transducerData?.last_evaluation?.physical_condition?.cables?.assessment}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-3">Housing: </td>
-                                        <td>{{transducerData?.last_evaluation?.physical_condition?.housing?.assessment}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pe-3">Connectors: </td>
-                                        <td>{{transducerData?.last_evaluation?.physical_condition?.connectors?.assessment}}</td>
-                                    </tr>
-                                </table>
+                                <div class="accordion accordion-flush mb-2" id="scannerEvData" >
+                                
+                                    <!-- Data With Image -->
+                                    <div class="accordion-item border-0" *ngFor="let equDetails of equipmentNewDetailsDesignFirst | keyvalue:ascOrderObject; let categoryIndex = index">
+                                        <div class="accordion-header" [attr.id]="'scannerDataTitleFirst'+categoryIndex">
+                                            <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#scannerDataTitleFirstButton'+categoryIndex" [attr.aria-controls]="'scannerDataTitleFirstButton'+categoryIndex">
+                                                <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                                                <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
+                                                    <h5 *ngIf="equDetails?.value?.title" class="modal-title font-small">{{equDetails.value.title}}</h5> 
+                                                    <h5 *ngIf="equDetails?.value?.data?.assessment" class="modal-title font-small text-uppercase">{{equDetails.value.data.assessment}}</h5>
+                                                </div>
+                                            </button>  
+                                        </div>
+                                        <div [attr.id]="'scannerDataTitleFirstButton'+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'scannerDataTitleFirst'+categoryIndex" data-bs-parent="#scannerEvData">
+                                            <h6 class="mb-3">Evaluation Notes</h6>
+                                            <div class="row">
+                                                <div *ngIf="equDetails?.value?.data" class="col d-flex flex-column justify-content-between">
+                                                    <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-4">
+                                                        <textarea 
+                                                            [(ngModel)]="equDetails.value.data.note"
+                                                            [readonly]="evaluationDataEditNote === equDetails?.value?.title ? false : true"  
+                                                            [ngClass]="evaluationDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
+                                                            class="textarea">{{equDetails?.value?.data?.note}}</textarea>
+                                                    </div>
+                                                    <div *ngIf="equDetails?.value?.data?.note !== undefined" class="evalution-data-buttons">
+                                                        <button class="btn m-1" (click)="evDetailsEditNote(evaluation.scanner_id, equDetails)"> {{evaluationDataEditNote === equDetails?.value?.title ? ' Update Notes ': ' Edit Notes '}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-column align-items-end justify-content-between ">
+                                                    <div class="mb-2 evaluation-image">
+                                                        <div *ngIf="equDetails?.value?.data?.img; else imgNotFound">
+                                                            <img src="{{equDetails.value.data.img}}" alt="">
+                                                        </div>
+                                                        <ng-template #imgNotFound> 
+                                                            <img src="../../../assets/NoImageFound.png" alt=""> 
+                                                        </ng-template>
+                                                    </div>
+                                                    <div *ngIf="equDetails?.value?.data?.assessment" class="evalution-data-buttons text-end">
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsPass(evaluation.scanner_id, equDetails)"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsFail(evaluation.scanner_id, equDetails)"> Fail </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Data Without Image -->
+                                    <div class="accordion-item border-0" *ngFor="let equDetails of equipmentNewDetailsDesignSecond | keyvalue:ascOrderObject; let categoryIndex = index">
+                                        <div class="accordion-header" [attr.id]="'scannerDataTitleSecond'+categoryIndex">
+                                            <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#scannerDataTitleSecondButton'+categoryIndex" [attr.aria-controls]="'scannerDataTitleSecondButton'+categoryIndex">
+                                                <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                                                <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
+                                                    <h5 *ngIf="equDetails?.value?.title !== undefined" class="modal-title font-small">{{equDetails.value.title}}</h5> 
+                                                    <h5 *ngIf="equDetails?.value?.data?.assessment !== undefined" class="modal-title font-small text-uppercase">{{equDetails.value.data.assessment}}</h5>
+                                                </div>
+                                            </button>  
+                                        </div>
+                                        <div [attr.id]="'scannerDataTitleSecondButton'+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'scannerDataTitleSecond'+categoryIndex" data-bs-parent="#scannerEvData">
+                                            <h6 class="mb-3">Evaluation Notes</h6>
+                                            <div class="d-flex flex-column justify-content-between">
+                                                <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-5">
+                                                    <textarea 
+                                                    [(ngModel)]="equDetails.value.data.note"
+                                                    [readonly]="evaluationDataEditNote === equDetails?.value?.title ? false : true"
+                                                    [ngClass]="evaluationDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" class="textarea"> {{equDetails.value.data.note}} </textarea>
+                                                </div>
+                                                <div *ngIf="equDetails?.value?.data?.note !== undefined || equDetails?.value?.data?.assessment !== undefined" class="evalution-data-buttons d-flex justify-content-between">
+                                                    <div *ngIf="equDetails?.value?.data?.note !== undefined">
+                                                        <button (click)="evDetailsEditNote(evaluation.scanner_id, equDetails)" class="btn m-1"> {{evaluationDataEditNote === equDetails.value.title ? ' Update Notes ': ' Edit Notes '}} </button>
+                                                    </div>
+                                                    <div *ngIf="equDetails?.value?.data?.assessment !== undefined">
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" (click)="evDetailsPass(evaluation.scanner_id, equDetails)" class="btn text-uppercase m-1"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" (click)="evDetailsFail(evaluation.scanner_id, equDetails)" class="btn text-uppercase m-1"> Fail </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="mb-2"> Overall Assessment: </p>
+                                    <button class="btn btn-outline-dark m-1"> Submit </button>
+                                </div>
                             </div>
-                        </li>
+                        </div>
                     </div>
+
+                    <div class="accordion-item border-0" *ngFor="let transducersData of evaluation.transducers; let transdIndex = index">
+                        <div class="accordion-header" [attr.id]="'transdTitle'+transdIndex">
+                            <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#transData'+transdIndex" [attr.aria-controls]="'transData'+transdIndex">
+                                <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                                <div class="acc-title ms-3 d-flex w-100 justify-content-between border-bottom-3">
+                                    <h5 class="modal-title fw-normal">{{transducersData.manufacturer}} {{transducersData.model}} : {{transducersData.serial_number}}</h5>
+                                    <h5 class="modal-title fw-normal">{{transducersData.last_evaluation.date_performed}}</h5>
+                                </div>
+                            </button>                            
+                        </div>
+                        <div [attr.id]="'transData'+transdIndex" class="accordion-collapse collapse ms-3" [attr.aria-labelledby]="'transdTitle'+transdIndex" data-bs-parent="#scannerEvaluationData">
+                            <p> Transducer data</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
