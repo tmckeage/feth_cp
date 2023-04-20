@@ -49,17 +49,11 @@
                 </div> -->
             </td>
             <td class="col-md-2 tes-date">
-                <span *ngIf="scanner.last_evaluation == null" class="cursorPointer" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">Onboarding Needed</span>
-
-                <span class="non-finalized-blk cursorPointer" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment == null" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">{{scanner.last_evaluation.date_performed}}</span>
-
-                <span class="finalized-blk cursorPointer" *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed < oldDate" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">{{scanner.last_evaluation.date_performed}}</span>
-
-                <span *ngIf="scanner.last_evaluation !== null && scanner.last_evaluation.finalized_assessment !== null && scanner.last_evaluation.date_performed > oldDate" class="cursorPointer" (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)">
-                {{scanner.last_evaluation.date_performed}}</span>
-        </td>
-    </tbody>
-</table>
+                <span (click)="displayEquipmentEvaluation(scanner, equipmentEvaluation)"
+                [ngClass]="scanner?.last_evaluation && scanner?.last_evaluation?.finalized_assessment ? (scanner?.last_evaluation && scanner?.last_evaluation?.finalized_assessment && scanner?.last_evaluation?.date_performed <= oldDate ? 'finalized-blk' : 'cursorPointer') : 'non-finalized-blk cursorPointer'" > {{scanner?.last_evaluation ? scanner?.last_evaluation?.date_performed : 'Onboarding Needed'}} </span>
+            </td>
+        </tbody>
+    </table>
 <!-- transducers list -->
 <div class="h-4" *ngIf="!loading">
     <div class="bg-secondary text-white p-1 col-md-12 cursorPointer">Unassigned Transducers</div>
@@ -475,7 +469,7 @@
                             </button>                            
                         </div>
                         <div id="scannerEvlCategories" class="accordion-collapse collapse mb-3" aria-labelledby="scannerTitle" data-bs-parent="#scannerEvaluationData">
-                            <div class="ps-5">
+                            <div *ngIf="evaluation?.last_evaluation && evaluation?.transducers" class="ps-5">
                                 <div class="accordion accordion-flush mb-2" id="scannerEvData" >
                                 
                                     <!-- Data With Image -->
@@ -514,8 +508,8 @@
                                                         </ng-template>
                                                     </div>
                                                     <div *ngIf="equDetails?.value?.data?.assessment" class="evalution-data-buttons text-end">
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsPass(evaluation.scanner_id, equDetails)"> Pass </button>
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsFail(evaluation.scanner_id, equDetails)"> Fail </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass')"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail')"> Fail </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -547,8 +541,8 @@
                                                         <button (click)="evDetailsEditNote(evaluation.scanner_id, equDetails)" class="btn m-1"> {{evaluationDataEditNote === equDetails.value.title ? ' Update Notes ': ' Edit Notes '}} </button>
                                                     </div>
                                                     <div *ngIf="equDetails?.value?.data?.assessment !== undefined">
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" (click)="evDetailsPass(evaluation.scanner_id, equDetails)" class="btn text-uppercase m-1"> Pass </button>
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" (click)="evDetailsFail(evaluation.scanner_id, equDetails)" class="btn text-uppercase m-1"> Fail </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass')" class="btn text-uppercase m-1"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail')" class="btn text-uppercase m-1"> Fail </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -558,7 +552,9 @@
                                 </div>
 
                                 <div class="text-center">
-                                    <p class="mb-2"> Overall Assessment: </p>
+                                    <p class="mb-2"> Overall Assessment: 
+                                        <span class="text-uppercase">{{evaluation.overallAssessmen}}</span>
+                                    </p>
                                     <button class="btn btn-outline-dark m-1"> Submit </button>
                                 </div>
                             </div>

@@ -242,7 +242,7 @@ export class EquipmentComponent implements OnInit {
 							this.makeTransducerOption = Object.values(make);
 						});
 					});
-					this.scannersObject = Object.values(response.scanners);
+					this.scannersObject = Object.values(response.scanners);					
 				},
 				error => {
 					console.log(error);
@@ -551,8 +551,10 @@ export class EquipmentComponent implements OnInit {
 
 	// on scanner click open view modal, Display Basic Equipment Evaluation Details
 	displayEquipmentEvaluation(scanner: any, equipmentEvaluation: any) {
-		this.evaluationData = [scanner];
 
+		this.evaluationData = [scanner];
+		this.overallAssessmenFunction(scanner);
+		
 		this.equipmentNewDetailsDesignFirst = [
 			{
 				title:'Housing',
@@ -641,40 +643,52 @@ export class EquipmentComponent implements OnInit {
  
 		});
 	}
+
+	async overallAssessmenFunction(scannerData:any){
+		let overallAssessmen = true;
+		scannerData.newOverallAssessmen = Object.values({ 
+			...scannerData?.last_evaluation?.display_performance, 
+			...scannerData?.last_evaluation?.physical_condition 
+		});
+		await scannerData?.newOverallAssessmen.map( (overAssesment: any) => {
+			if(overAssesment?.assessment === 'fail') overallAssessmen = false;
+		});
+		scannerData.overallAssessmen = overallAssessmen ? 'pass' : 'fail';
+	} 
+
+
 	// Sort array in ascending order
 	ascOrderObject = (a:any, b:any) =>{
 		if(a.key > b.key) return b.key;
 	}
 
 	evDetailsEditNote(scannerId: any, equDetails:any) {
-		let data = {
-			note: equDetails?.value?.data?.note,
-		}
+		let data = { note: equDetails?.value?.data?.note }
 		if(this.evaluationDataEditNote !== equDetails.value.title){
 			this.evaluationDataEditNote = equDetails.value.title; 
 		} else {
 			this.evaluationDataEditNote = ''; 
-			this.equipmentService.updateAssesmentNote(scannerId, equDetails.value.category, data).subscribe( result => { }, error => { });
+			this.equipmentService.updateAssesmentNote(scannerId, equDetails.value.category, data).subscribe( result => { 
+				this.toastr.success('Note Updated successfully', '', { timeOut: 2000});
+			}, error => {
+				this.toastr.success('Please try again', '', { timeOut: 2000});
+			});
 		}		
 	} 
-	evDetailsPass(scannerId: any, equDetails:any) {
-		let data = { assessment: 'pass' }
+	evDetailsAssessmentValue(scannerId: any, equDetails:any, assessmentValue:string) {
+		let data = { assessment: assessmentValue }
 		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, equDetails.value.category, data).subscribe( value => {
 			this.scannersObject.map( (scanerData: any) => {
 				if(scanerData.scanner_id === value.scanner_id){
-					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = 'pass';
+					this.toastr.success('Assessment Updated successfully', '', { timeOut: 2000});
+					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = assessmentValue;
+					setTimeout(() => {
+						this.overallAssessmenFunction(scanerData);						
+					}, 1000);
 				}
 			});
-		});
-	}
-	evDetailsFail(scannerId: any, equDetails:any) {
-		let data = { assessment: 'fail' }
-		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, equDetails.value.category, data).subscribe( value => {
-			this.scannersObject.map( (scanerData: any) => {
-				if(scanerData.scanner_id === value.scanner_id){
-					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = 'fail';
-				}
-			});
+		}, error => {
+			this.toastr.success('Please try again', '', { timeOut: 2000});
 		});
 	}
 
