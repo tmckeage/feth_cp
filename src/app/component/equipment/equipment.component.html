@@ -490,12 +490,12 @@
                                                     <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-4">
                                                         <textarea 
                                                             [(ngModel)]="equDetails.value.data.note"
-                                                            [readonly]="evaluationDataEditNote === equDetails?.value?.title ? false : true"  
-                                                            [ngClass]="evaluationDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
+                                                            [readonly]="scannerDataEditNote === equDetails?.value?.title ? false : true"  
+                                                            [ngClass]="scannerDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
                                                             class="textarea">{{equDetails?.value?.data?.note}}</textarea>
                                                     </div>
                                                     <div *ngIf="equDetails?.value?.data?.note !== undefined" class="evalution-data-buttons">
-                                                        <button class="btn m-1" (click)="evDetailsEditNote(evaluation.scanner_id, equDetails)"> {{evaluationDataEditNote === equDetails?.value?.title ? ' Update Notes ': ' Edit Notes '}} </button>
+                                                        <button class="btn m-1" (click)="evDetailsEditNote(evaluation.scanner_id, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.value?.title ? ' Save Notes ': ' Edit Notes '}} </button>
                                                     </div>
                                                 </div>
                                                 <div class="col d-flex flex-column align-items-end justify-content-between ">
@@ -508,8 +508,8 @@
                                                         </ng-template>
                                                     </div>
                                                     <div *ngIf="equDetails?.value?.data?.assessment" class="evalution-data-buttons text-end">
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass')"> Pass </button>
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail')"> Fail </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass', 'scanners')"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail', 'scanners')"> Fail </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -533,16 +533,16 @@
                                                 <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-5">
                                                     <textarea 
                                                     [(ngModel)]="equDetails.value.data.note"
-                                                    [readonly]="evaluationDataEditNote === equDetails?.value?.title ? false : true"
-                                                    [ngClass]="evaluationDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" class="textarea"> {{equDetails.value.data.note}} </textarea>
+                                                    [readonly]="scannerDataEditNote === equDetails?.value?.title ? false : true"
+                                                    [ngClass]="scannerDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" class="textarea"> {{equDetails.value.data.note}} </textarea>
                                                 </div>
                                                 <div *ngIf="equDetails?.value?.data?.note !== undefined || equDetails?.value?.data?.assessment !== undefined" class="evalution-data-buttons d-flex justify-content-between">
                                                     <div *ngIf="equDetails?.value?.data?.note !== undefined">
-                                                        <button (click)="evDetailsEditNote(evaluation.scanner_id, equDetails)" class="btn m-1"> {{evaluationDataEditNote === equDetails.value.title ? ' Update Notes ': ' Edit Notes '}} </button>
+                                                        <button (click)="evDetailsEditNote(evaluation.scanner_id, equDetails, 'scanners')" class="btn m-1"> {{scannerDataEditNote === equDetails.value.title ? ' Save Notes ': ' Edit Notes '}} </button>
                                                     </div>
                                                     <div *ngIf="equDetails?.value?.data?.assessment !== undefined">
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass')" class="btn text-uppercase m-1"> Pass </button>
-                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail')" class="btn text-uppercase m-1"> Fail </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'pass', 'scanners')" class="btn text-uppercase m-1"> Pass </button>
+                                                        <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" (click)="evDetailsAssessmentValue(evaluation.scanner_id, equDetails, 'fail', 'scanners')" class="btn text-uppercase m-1"> Fail </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -571,8 +571,54 @@
                                 </div>
                             </button>                            
                         </div>
-                        <div [attr.id]="'transData'+transdIndex" class="accordion-collapse collapse ms-3" [attr.aria-labelledby]="'transdTitle'+transdIndex" data-bs-parent="#scannerEvaluationData">
-                            <p> Transducer data</p>
+                        <div [attr.id]="'transData'+transdIndex" class="accordion-collapse collapse" [attr.aria-labelledby]="'transdTitle'+transdIndex" data-bs-parent="#scannerEvaluationData">
+                            <div *ngIf="evaluation?.last_evaluation && evaluation?.transducers" class="ps-5">
+                                <div class="accordion accordion-flush mb-2" [attr.id]="'transducersEvData'+transdIndex" >
+                                <!-- Data With Image -->
+                                    <div class="accordion-item border-0" *ngFor="let tranSubDetails of transducersData.last_evaluation.physical_condition.transducerEvaluationData; let categoryIndex = index">
+                                        <div class="accordion-header" [attr.id]="'transducerDataTitle'+transdIndex+categoryIndex">
+                                            <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#transducerDataTitleButton'+transdIndex+categoryIndex" [attr.aria-controls]="'transducerDataTitleButton'+transdIndex+categoryIndex">
+                                                <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                                                <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
+                                                    <h5 *ngIf="tranSubDetails?.title" class="modal-title font-small text-capitalize">{{tranSubDetails.title}}</h5> 
+                                                    <h5 *ngIf="tranSubDetails?.data?.assessment" class="modal-title font-small text-uppercase">{{tranSubDetails.data.assessment}}</h5>
+                                                </div>
+                                            </button>  
+                                        </div>
+                                        <div [attr.id]="'transducerDataTitleButton'+transdIndex+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'transducerDataTitle'+transdIndex+categoryIndex" [attr.data-bs-parent]="'#transducersEvData'+transdIndex">
+                                            <h6 class="mb-3">Evaluation Notes</h6>
+                                            <div class="row">
+                                                <div *ngIf="tranSubDetails?.data" class="col d-flex flex-column justify-content-between">
+                                                    <div *ngIf="tranSubDetails?.data?.note !== undefined" class="mb-4">
+                                                        <textarea 
+                                                            [(ngModel)]="tranSubDetails?.data.note"
+                                                            [readonly]="transducerDataEditNote === tranSubDetails?.title ? false : true"  
+                                                            [ngClass]="transducerDataEditNote === tranSubDetails?.title ? '' : 'edit-disable'" 
+                                                            class="textarea">{{tranSubDetails?.data?.note}}</textarea>
+                                                    </div>
+                                                    <div *ngIf="tranSubDetails?.data?.note !== undefined" class="evalution-data-buttons">
+                                                        <button class="btn m-1" (click)="evDetailsEditNote(transducersData.transducer_id, tranSubDetails, 'transducers')"> {{transducerDataEditNote === tranSubDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-column align-items-end justify-content-between ">
+                                                    <div class="mb-2 evaluation-image">
+                                                        <div *ngIf="tranSubDetails?.data?.img; else imgNotFound">
+                                                            <img src="{{tranSubDetails.data.img}}" alt="">
+                                                        </div>
+                                                        <ng-template #imgNotFound> 
+                                                            <img src="../../../assets/NoImageFound.png" alt=""> 
+                                                        </ng-template>
+                                                    </div>
+                                                    <div *ngIf="tranSubDetails?.data?.assessment" class="evalution-data-buttons text-end">
+                                                        <button [ngClass]="tranSubDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducersData.transducer_id, tranSubDetails, 'pass', 'transducers')"> Pass </button>
+                                                        <button [ngClass]="tranSubDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducersData.transducer_id, tranSubDetails, 'fail', 'transducers')"> Fail </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

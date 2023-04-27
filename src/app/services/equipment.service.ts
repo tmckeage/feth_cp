@@ -1645,12 +1645,12 @@ export class EquipmentService {
     return this.http.get(environment.api_url + "scanner/"+ scannerId +"/studies");
   }
 
-  changeEvaluationDetailsAssesment(scannerId: any, category: any, data: any): Observable<any>{
-    return this.http.put(`${environment.api_url}/api/v1/scanners/${scannerId}/last_evaluation/${category}/assessment`, data);
+  changeEvaluationDetailsAssesment(scannerId: any, category: any, data: any, scannerType:any): Observable<any>{
+    return this.http.put(`${environment.api_url}/api/v1/${scannerType}/${scannerId}/last_evaluation/${category}/assessment`, data);
   }
 
-  updateAssesmentNote(scannerId: any, category: any, data: any): Observable<any>{
-    return this.http.put(`${environment.api_url}/api/v1/scanners/${scannerId}/last_evaluation/${category}/note`, data);
+  updateAssesmentNote(scannerId: any, category: any, data: any, scannerType:any): Observable<any>{
+    return this.http.put(`${environment.api_url}/api/v1/${scannerType}/${scannerId}/last_evaluation/${category}/note`, data);
   }
 
   // submitAssesment(scannerId: any, category: any, data: any): Observable<any>{

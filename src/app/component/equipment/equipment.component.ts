@@ -93,7 +93,9 @@ export class EquipmentComponent implements OnInit {
 	evaluationData: any[] = [];
 	equipmentNewDetailsDesignFirst: any[] = [];
 	equipmentNewDetailsDesignSecond: any[] = [];
-	evaluationDataEditNote: string = '';
+	transducerEvaluationData: any[] = [];
+	scannerDataEditNote: string = '';
+	transducerDataEditNote: string = '';
 
 	constructor(
 		private toastr: ToastrService,
@@ -554,7 +556,22 @@ export class EquipmentComponent implements OnInit {
 
 		this.evaluationData = [scanner];
 		this.overallAssessmenFunction(scanner);
-		
+
+		scanner.transducers.map( (transData:any) => {
+			this.transducerEvaluationData = [];
+			Object.keys(transData.last_evaluation.physical_condition).map( (keyData:any) => {
+				if(keyData !== 'transducerEvaluationData'){
+					this.transducerEvaluationData.push({
+						title: keyData,
+						parentCategory: 'physical_condition',
+						category: keyData,
+						data: transData.last_evaluation.physical_condition[keyData]
+					});
+				}
+			})
+			transData.last_evaluation.physical_condition.transducerEvaluationData = this.transducerEvaluationData;
+		});
+
 		this.equipmentNewDetailsDesignFirst = [
 			{
 				title:'Housing',
@@ -637,6 +654,7 @@ export class EquipmentComponent implements OnInit {
 				data: scanner?.last_evaluation?.display_performance?.luminance 
 			}
 		]	
+		
 		this.modalService.open(equipmentEvaluation, { ariaLabelledBy: 'modal-equ-eva', size: 'lg' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
 		}, (reason)=>{ 
@@ -662,29 +680,51 @@ export class EquipmentComponent implements OnInit {
 		if(a.key > b.key) return b.key;
 	}
 
-	evDetailsEditNote(scannerId: any, equDetails:any) {
-		let data = { note: equDetails?.value?.data?.note }
-		if(this.evaluationDataEditNote !== equDetails.value.title){
-			this.evaluationDataEditNote = equDetails.value.title; 
+	evDetailsEditNote(scannerId: any, equDetails:any, scannerType:any) {
+		const data = scannerType === 'scanners' ? { note: equDetails?.value?.data?.note } : { note: equDetails?.data?.note };
+		const title = equDetails?.value?.title || equDetails?.title;
+		const category = equDetails?.value?.category || equDetails?.category;
+		
+		if(scannerType === 'scanners') {
+			this.scannerDataEditNote = this.scannerDataEditNote !== title ? title : '';
+			if(!this.scannerDataEditNote) this.editNotesApiCall(scannerId, category, data, scannerType);
 		} else {
-			this.evaluationDataEditNote = ''; 
-			this.equipmentService.updateAssesmentNote(scannerId, equDetails.value.category, data).subscribe( result => { 
-				this.toastr.success('Note Updated successfully', '', { timeOut: 2000});
-			}, error => {
-				this.toastr.success('Please try again', '', { timeOut: 2000});
-			});
-		}		
+			this.transducerDataEditNote = this.transducerDataEditNote !== title ? title : '';
+			if(!this.transducerDataEditNote) this.editNotesApiCall(scannerId, category, data, scannerType);	
+		}	
 	} 
-	evDetailsAssessmentValue(scannerId: any, equDetails:any, assessmentValue:string) {
-		let data = { assessment: assessmentValue }
-		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, equDetails.value.category, data).subscribe( value => {
+
+	editNotesApiCall(scannerId:any, category:any, data:any, scannerType:any){
+		this.equipmentService.updateAssesmentNote(scannerId, category, data, scannerType).subscribe( result => { 
+			this.toastr.success('Note Updated successfully', '', { timeOut: 2000});
+		}, error => {
+			this.toastr.success('Please try again', '', { timeOut: 2000});
+		});
+	}
+
+	evDetailsAssessmentValue(scannerId: any, equDetails:any, assessmentValue:string, scannerType:any) {
+
+		const data = { assessment: assessmentValue };
+		const parentCategory = equDetails?.value?.parentCategory || equDetails?.parentCategory;
+		const category = equDetails?.value?.category || equDetails?.category; 
+
+		this.equipmentService.changeEvaluationDetailsAssesment(scannerId, category, data, scannerType).subscribe( value => {
 			this.scannersObject.map( (scanerData: any) => {
-				if(scanerData.scanner_id === value.scanner_id){
-					this.toastr.success('Assessment Updated successfully', '', { timeOut: 2000});
-					scanerData.last_evaluation[equDetails.value.parentCategory][equDetails.value.category].assessment = assessmentValue;
-					setTimeout(() => {
-						this.overallAssessmenFunction(scanerData);						
-					}, 1000);
+				if(scannerType === 'scanners'){
+					if(scanerData.scanner_id === value.scanner_id){
+						scanerData.last_evaluation[parentCategory][category].assessment = assessmentValue;
+						this.toastr.success('Assessment Updated successfully', '', { timeOut: 1500});
+						setTimeout(() => {
+							this.overallAssessmenFunction(scanerData);						
+						}, 800);
+					}
+				} else {
+					scanerData.transducers.map( (transducerResult: any) => {
+						if(transducerResult.transducer_id === value.transducer_id){
+							transducerResult.last_evaluation[parentCategory][category].assessment = assessmentValue;
+							this.toastr.success('Assessment Updated successfully', '', { timeOut: 1500});
+						}
+					});
 				}
 			});
 		}, error => {
