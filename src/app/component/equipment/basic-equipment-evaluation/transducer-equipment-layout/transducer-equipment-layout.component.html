@@ -1,0 +1,514 @@
+<div class="accordion-header" [attr.id]="'transducerDataTitle'+transdIndex+categoryIndex">
+    <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#transducerDataTitleButton'+transdIndex+categoryIndex" [attr.aria-controls]="'transducerDataTitleButton'+transdIndex+categoryIndex">
+        <span class="font-awesome-font fa-solid fa-caret-right"></span>
+        <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
+            <h5 *ngIf="tranSubDetails?.title" class="modal-title font-small text-capitalize">{{tranSubDetails.title}}</h5> 
+            <h5 *ngIf="tranSubDetails?.data?.assessment" class="modal-title font-small text-uppercase">{{tranSubDetails.data.assessment}}</h5>
+        </div>
+    </button>  
+</div>
+
+<div [attr.id]="'transducerDataTitleButton'+transdIndex+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'transducerDataTitle'+transdIndex+categoryIndex" [attr.data-bs-parent]="'#transducersEvData'+transdIndex">
+    <h6 *ngIf="tranSubDetails?.layout === 'withImg'" class="mb-3">Evaluation Notes</h6>
+    <div class="row mb-4">
+        <div *ngIf="tranSubDetails?.data && tranSubDetails?.layout === 'withImg'" class="col d-flex flex-column justify-content-between">
+            <div *ngIf="tranSubDetails?.data?.note !== undefined" class="mb-4">
+                <textarea 
+                [(ngModel)]="tranSubDetails?.data.note"
+                [readonly]="transducerDataEditNote === tranSubDetails?.title ? false : true"  
+                [ngClass]="transducerDataEditNote === tranSubDetails?.title ? '' : 'edit-disable'" 
+                class="textarea">{{tranSubDetails?.data?.note}}</textarea>
+            </div>
+        </div>
+        <div *ngIf="tranSubDetails?.layout === 'withImg'" class="col d-flex flex-column align-items-end justify-content-between">
+            <div *ngIf="tranSubDetails?.data?.img !== undefined" class="mb-2 evaluation-image">
+                <div *ngIf="tranSubDetails?.data?.img; else imgNotFound">
+                    <img src="{{tranSubDetails.data.img}}" alt="">
+                </div>
+                <ng-template #imgNotFound> 
+                    <img src="../../../assets/images/NoImageFound.png" alt=""> 
+                </ng-template>
+            </div>
+        </div>
+        
+        <!-- Uniformity and Artifacct -->
+        <div *ngIf="tranSubDetails?.layout === 'uniformityArtifact'">
+            <div class="mb-4">
+                <img src="../../../assets/images/uniformity.jpeg" alt=""> 
+            </div>
+            <div>
+                <table class="transducer-table">
+                    <tr>
+                        <th></th>
+                        <th>Start</th>
+                        <th>Width</th>
+                        <th>AUC</th>
+                        <th>Ignore</th>
+                    </tr>
+                    
+                    <tr>
+                        <td>Artifact 1</td>
+                        <td>0</td>
+                        <td>25</td>
+                        <td>50</td>
+                        <td>&#x2611;</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Artifact 2</td>
+                        <td>50</td>
+                        <td>5</td>
+                        <td>5.5</td>
+                        <td>&#x2610;</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Artifact 3</td>
+                        <td>480</td>
+                        <td>40</td>
+                        <td>47</td>
+                        <td>&#x2611;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Depth of penetration -->
+        <div *ngIf="tranSubDetails?.layout === 'depthOfPenetration'">
+            <div class="row mb-4">
+                <div class="col">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col">
+                    <img src="../../../assets/images/dop.jpeg" alt=""> 
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vertical Distance -->
+        <div *ngIf="tranSubDetails?.layout === 'verticalDistance'" class="vertical-distance">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-3">
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th colspan="2">Pin Distance (cm)</th>    
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-1.1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>-0.9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>-0.5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>4</b>
+                            </td>
+                            <td>
+                                <b>0</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1.02</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>2.01</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>3.03</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>8</b>
+                            </td>
+                            <td>
+                                <b>4.10</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>5.05</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>6.03</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>7.10</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Horizontal Distance -->
+        <div *ngIf="tranSubDetails?.layout === 'horizontalDistance'">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-3">
+                    <h6>Pin Distance (cm)</h6>
+                    <table class="transducer-table tabel-border-th tabel-border-right-td mb-3">
+                        <tr>
+                            <th colspan="2">Row 1</th>    
+                        </tr>
+                        <tr>
+                            <td><b>1</b></td>
+                            <td><b>-1.54</b></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td><b>3</b></td>
+                            <td><b>1.49</b></td>
+                        </tr>
+                    </table>
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th colspan="2">Row 2</th>    
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-3.9</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2.0</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>2.1</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>4.1</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Axial Resolution -->
+        <div *ngIf="tranSubDetails?.layout === 'axialResolution'">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-3">
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th colspan="2">Pin Distance (cm)</th>    
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-1.1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>-0.9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>-0.5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>4</b>
+                            </td>
+                            <td>
+                                <b>0</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1.02</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>2.01</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>3.03</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>8</b>
+                            </td>
+                            <td>
+                                <b>4.10</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>5.05</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>6.03</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>7.10</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Leteral Resolution -->
+        <div *ngIf="tranSubDetails?.layout === 'leteralResolution'">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-3">
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th colspan="2">Pin Distance (cm)</th>    
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-1.1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>-0.9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>-0.5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>4</b>
+                            </td>
+                            <td>
+                                <b>0</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1.02</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>2.01</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>3.03</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>8</b>
+                            </td>
+                            <td>
+                                <b>4.10</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>5.05</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>6.03</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>7.10</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Elevation Resolution -->
+        <div *ngIf="tranSubDetails?.layout === 'elevationResolution'">
+            <div class="row mb-4">
+                <div class="col-9">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-3">
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th colspan="2">Pin Distance (cm)</th>    
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-1.1</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>-0.9</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>-0.5</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>4</b>
+                            </td>
+                            <td>
+                                <b>0</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>1.02</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>2.01</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>3.03</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>8</b>
+                            </td>
+                            <td>
+                                <b>4.10</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>5.05</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>6.03</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>7.10</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contrast Resolution -->
+        <div *ngIf="tranSubDetails?.layout === 'contrastResolution'">
+            <div class="row mb-4">
+                <div class="col-8">
+                    <img src="../../../assets/images/review.jpeg" alt=""> 
+                </div>
+                <div class="col-4">
+                    <table class="transducer-table tabel-border-th tabel-border-right-td">
+                        <tr>
+                            <th></th>    
+                            <th>6mm cyst</th>
+                            <th>2mm cyst</th>
+                        </tr>
+                        <tr>
+                            <td>Row 1</td>
+                            <td>2.72</td>
+                            <td>
+                                <b>1.73</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Row 2</td>
+                            <td>1.94</td>
+                            <td>1.90</td>
+                        </tr>
+                        <tr>
+                            <td>Row 3</td>
+                            <td>0.98</td>
+                            <td>0.61</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="tranSubDetails?.data?.note !== undefined || tranSubDetails?.data?.assessment !== undefined" class="d-flex justify-content-between align-items-end">
+        
+        <div>
+            <div *ngIf="tranSubDetails?.data?.note !== undefined" class="evalution-data-buttons">
+                <button class="btn m-1" (click)="evDetailsEditNote(transducerId, tranSubDetails, 'transducers')"> {{transducerDataEditNote === tranSubDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+            </div>
+
+            <!-- Depth of penetration -->
+            <div *ngIf="tranSubDetails?.layout === 'uniformityArtifact'">
+                <p>Clinically Signigicant Artifacts: 1</p>
+            </div>            
+            
+            <!-- Depth of penetration -->
+            <div *ngIf="tranSubDetails?.layout === 'depthOfPenetration'" class="d-flex flex-column align-items-end">
+                <h4>Baseline DOP: 15.7 cm</h4>
+                <h4>Measured DOP: 15.0 cm</h4>
+            </div>
+            
+            <!-- Vertical Distance -->
+            <div *ngIf="tranSubDetails?.layout === 'verticalDistance'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 4.10 cm</h4>
+                <h4>Measured: 4.05 cm</h4>
+            </div>
+            
+            <!-- Horizontal Distance -->
+            <div *ngIf="tranSubDetails?.layout === 'horizontalDistance'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 3.01 cm</h4>
+                <h4>Measured: 3.03 cm</h4>
+            </div>
+            
+            <!-- Axial Resolution -->
+            <div *ngIf="tranSubDetails?.layout === 'axialResolution'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 4.10 cm</h4>
+                <h4>Measured: 4.05 cm</h4>
+            </div>
+            
+            <!-- Leteral Resolution -->
+            <div *ngIf="tranSubDetails?.layout === 'leteralResolution'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 4.10 cm</h4>
+                <h4>Measured: 4.05 cm</h4>
+            </div>
+            
+            <!-- Elevation Resolution -->
+            <div *ngIf="tranSubDetails?.layout === 'elevationResolution'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 4.10 cm</h4>
+                <h4>Measured: 4.05 cm</h4>
+            </div>
+            
+            <!-- Contrast Resolution -->
+            <div *ngIf="tranSubDetails?.layout === 'contrastResolution'" class="d-flex flex-column align-items-end">
+                <h4>Baseline: 1.75 cm</h4>
+                <h4>Measured: 1.73 cm</h4>
+            </div>
+                        
+        </div>     
+        
+        <div>
+            <div *ngIf="tranSubDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
+                <button [ngClass]="tranSubDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducerId, tranSubDetails, 'pass', 'transducers')"> Pass </button>
+                <button [ngClass]="tranSubDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducerId, tranSubDetails, 'fail', 'transducers')"> Fail </button>
+            </div>
+        </div>
+    </div>
+</div> 
