@@ -9,35 +9,66 @@
 </div>
 
 <div [attr.id]="'scannerDataTitleButton'+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'scannerDataTitle'+categoryIndex" data-bs-parent="#scannerEvData">
-    <h6 class="mb-3">Evaluation Notes</h6>
-    <div class="row mb-4">
-        <div *ngIf="equDetails?.value?.data !== undefined" class="col">
-            <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-4">
-                <textarea 
-                [(ngModel)]="equDetails.value.data.note"
-                [readonly]="scannerDataEditNote === equDetails?.value?.title ? false : true"  
-                [ngClass]="scannerDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
-                class="textarea">{{equDetails?.value?.data?.note}}</textarea>
+    <div *ngIf="equDetails?.value?.layout !== 'layoutThree' ">
+        <h6 class="mb-3">Evaluation Notes</h6>
+        <div class="row mb-4">
+            <div *ngIf="equDetails?.value?.data !== undefined" class="col">
+                <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-4">
+                    <textarea 
+                    [(ngModel)]="equDetails.value.data.note"
+                    [readonly]="scannerDataEditNote === equDetails?.value?.title ? false : true"  
+                    [ngClass]="scannerDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
+                    class="textarea">{{equDetails?.value?.data?.note}}</textarea>
+                </div>
+            </div>
+            <div *ngIf="equDetails?.value?.layout === 'withImg'" class="col d-flex align-items-end">
+                <div class="mb-2 evaluation-image">
+                    <div *ngIf="equDetails?.value?.data?.img; else imgNotFound">
+                        <img src="{{equDetails.value.data.img}}" alt="">
+                    </div>
+                    <ng-template #imgNotFound> 
+                        <img src="../../../assets/images/NoImageFound.png" alt=""> 
+                    </ng-template>
+                </div>
             </div>
         </div>
-        <div *ngIf="equDetails?.value?.layout === 'withImg'" class="col d-flex align-items-end">
-            <div class="mb-2 evaluation-image">
-                <div *ngIf="equDetails?.value?.data?.img; else imgNotFound">
-                    <img src="{{equDetails.value.data.img}}" alt="">
-                </div>
-                <ng-template #imgNotFound> 
-                    <img src="../../../assets/images/NoImageFound.png" alt=""> 
-                </ng-template>
+        <div *ngIf="equDetails?.value?.data?.note !== undefined || equDetails?.value?.data?.assessment !== undefined" class="d-flex align-items-end justify-content-between">
+            <div *ngIf="equDetails?.value?.data?.note !== undefined" class="evalution-data-buttons">
+                <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.value?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+            </div>
+            <div *ngIf="equDetails?.value?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
+                <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
+                <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
             </div>
         </div>
     </div>
-    <div *ngIf="equDetails?.value?.data?.note !== undefined || equDetails?.value?.data?.assessment !== undefined" class="d-flex align-items-end justify-content-between">
-        <div *ngIf="equDetails?.value?.data?.note !== undefined" class="evalution-data-buttons">
-            <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.value?.title ? ' Save Notes ': ' Edit Notes '}} </button>
-        </div>
-        <div *ngIf="equDetails?.value?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
-            <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
-            <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
-        </div>
+    <div *ngIf="equDetails?.value?.layout === 'layoutThree'">
+        <table class="scanner-table tabel-border-th tabel-border-td">
+            <tr>
+                <th></th>
+                <th>Calculated Value</th>
+                <th>Suggested Range</th>
+            </tr>
+            <tr>
+                <td>Ambience Ratio</td>
+                <td>{{equDetails.value.data.a}}</td>
+                <td> < 0.25 </td>
+            </tr>
+            <tr>
+                <td>Luminance Ratio</td>
+                <td>{{equDetails.value.data.b}}</td>
+                <td> 250 - 450 </td>
+            </tr>
+            <tr>
+                <td>L'<sub>min</sub></td>
+                <td>{{equDetails.value.data.c}}</td>
+                <td> > 1.0 </td>
+            </tr>
+            <tr>
+                <td>L'<sub>max</sub></td>
+                <td>{{equDetails.value.data.d}}</td>
+                <td> > 300 </td>
+            </tr>
+        </table>
     </div>
 </div>

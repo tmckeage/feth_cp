@@ -18,6 +18,7 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
     transducerDataEditNote: string = '';
     scannerId: any;
     transducerId: any;
+    basicLuminance: any;
     
     @Input() scanner:any;
     
@@ -27,7 +28,7 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
         this.evaluationData = [this.scanner];
         this.overallAssessmenFunction(this.scanner);
         this.scannerId = this.scanner?.scanner_id;
-
+        
         const transducerImageAnalysis = [{
             layout: 'uniformityArtifact',
             title: 'Uniformity and Artifact',
@@ -119,6 +120,19 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
             transData.last_evaluation.physical_condition.transducerEvaluationData = [...this.transducerEvaluationData, ... transducerImageAnalysis];
         });
 
+        if(this.scanner?.last_evaluation?.display_performance?.luminance){
+            let luminance = this.scanner?.last_evaluation?.display_performance?.luminance;
+
+            if(parseFloat(luminance.ambient) > 0 && parseFloat(luminance[1]) > 0 && parseFloat(luminance[18]) > 0){
+                let a = (parseFloat(luminance['ambient']) / parseFloat(luminance[1])).toFixed(3);
+                let c = parseFloat(luminance['ambient']) + parseFloat(luminance[1]);
+                let d = parseFloat(luminance['ambient']) + parseFloat(luminance[18]);
+                let b = Math.round(d/c);
+                
+                this.basicLuminance = { a: a, b: b, c: c, d: d };
+            }
+        }
+        
         this.scannerEquipmentDetails = [
             {
                 layout: 'withImg',
@@ -198,22 +212,15 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
                 data: this.scanner?.last_evaluation?.display_performance?.pixels 
             },
             {
-                layout: 'withoutImg',
-                title: 'Brightness',
-                parentCategory: 'display_performance',
-                category: 'brightness',
-                data: this.scanner?.last_evaluation?.display_performance?.brightness 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Luminance',
-                parentCategory: 'display_performance',
-                category: 'luminance',
-                data: this.scanner?.last_evaluation?.display_performance?.luminance 
+                layout: this.basicLuminance ? 'layoutThree' : this.basicLuminance,
+                title: this.basicLuminance ? 'Basic Luminance' : this.basicLuminance,
+                parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
+                category: this.basicLuminance ? 'luminance' : this.basicLuminance,
+                data: this.basicLuminance
             }
-        ]	
+        ];
     }
-       
+    
     async overallAssessmenFunction(scannerData:any){
         let overallAssessmen = true;
         scannerData.newOverallAssessmen = Object.values({ 
@@ -230,5 +237,5 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
     ascOrderObject = (a:any, b:any) =>{
         if(a.key > b.key) return b.key;
     }
-        
+    
 }
