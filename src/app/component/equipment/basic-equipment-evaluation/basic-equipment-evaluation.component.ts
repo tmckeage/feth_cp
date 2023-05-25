@@ -19,6 +19,7 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
     scannerId: any;
     transducerId: any;
     basicLuminance: any;
+    luminanceUniformity: any;
     
     @Input() scanner:any;
     
@@ -119,17 +120,48 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
             // transducerImageAnalysis;
             transData.last_evaluation.physical_condition.transducerEvaluationData = [...this.transducerEvaluationData, ... transducerImageAnalysis];
         });
-
+        
+        // Basic Luminance
         if(this.scanner?.last_evaluation?.display_performance?.luminance){
             let luminance = this.scanner?.last_evaluation?.display_performance?.luminance;
-
+            
             if(parseFloat(luminance.ambient) > 0 && parseFloat(luminance[1]) > 0 && parseFloat(luminance[18]) > 0){
-                let a = (parseFloat(luminance['ambient']) / parseFloat(luminance[1])).toFixed(3);
-                let c = parseFloat(luminance['ambient']) + parseFloat(luminance[1]);
-                let d = parseFloat(luminance['ambient']) + parseFloat(luminance[18]);
-                let b = Math.round(d/c);
+                let ambianceRatio = (parseFloat(luminance['ambient']) / parseFloat(luminance[1])).toFixed(3); // A Value
+                let lMin = parseFloat(luminance['ambient']) + parseFloat(luminance[1]); // C Value
+                let lMax = parseFloat(luminance['ambient']) + parseFloat(luminance[18]); // D Value
+                let luminanceRatio = Math.round(lMax/lMin); // B Value
                 
-                this.basicLuminance = { a: a, b: b, c: c, d: d };
+                this.basicLuminance = { ambianceRatio: ambianceRatio, luminanceRatio: luminanceRatio, lMin: lMin, lMax: lMax };
+            }
+        }
+        
+        // Luminance Uniformity
+        if(this.scanner?.last_evaluation?.display_performance?.test_pattern && this.scanner?.last_evaluation?.display_performance?.luminance){
+            let ambient = parseFloat(this.scanner?.last_evaluation?.display_performance?.luminance?.ambient);
+            let testPattern = this.scanner?.last_evaluation?.display_performance?.test_pattern;
+            let testPatternValues = true;
+                        
+            if(ambient >= 0){
+                Object.keys(testPattern).forEach( (key, index) => {
+
+                    testPattern[key] = parseFloat(testPattern[key]);
+                    if( testPattern[key] <= 0 && testPatternValues){
+                        testPatternValues = false;
+                    }
+                })
+                
+                if(ambient > 0 && testPatternValues){
+                    let arrayOfTestPattern:any[] = Object.values(testPattern);
+                    let max = Math.max(...arrayOfTestPattern);
+                    let min = Math.min(...arrayOfTestPattern);
+                    let maximumDeviation = (200 * (max - min) / (max + min + 2 * ambient)).toFixed(0);
+
+                    this.luminanceUniformity = { 
+                        ambient: ambient,
+                        testPattern: testPattern, 
+                        maximumDeviation: maximumDeviation, 
+                    };
+                }
             }
         }
         
@@ -212,12 +244,20 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
                 data: this.scanner?.last_evaluation?.display_performance?.pixels 
             },
             {
-                layout: this.basicLuminance ? 'layoutThree' : this.basicLuminance,
+                layout: this.basicLuminance ? 'basicLuminance' : this.basicLuminance,
                 title: this.basicLuminance ? 'Basic Luminance' : this.basicLuminance,
                 parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
                 category: this.basicLuminance ? 'luminance' : this.basicLuminance,
                 data: this.basicLuminance
+            },
+            {
+                layout: this.basicLuminance ? 'luminanceUniformity' : this.basicLuminance,
+                title: this.basicLuminance ? 'Luminance Uniformity' : this.basicLuminance,
+                parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
+                category: this.basicLuminance ? 'test_pattern' : this.basicLuminance,
+                data: this.luminanceUniformity
             }
+            
         ];
     }
     

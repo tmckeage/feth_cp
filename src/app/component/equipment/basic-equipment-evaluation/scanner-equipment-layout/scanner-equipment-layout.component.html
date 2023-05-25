@@ -9,7 +9,7 @@
 </div>
 
 <div [attr.id]="'scannerDataTitleButton'+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'scannerDataTitle'+categoryIndex" data-bs-parent="#scannerEvData">
-    <div *ngIf="equDetails?.value?.layout !== 'layoutThree' ">
+    <div *ngIf="equDetails?.value?.layout !== 'basicLuminance' && equDetails?.value?.layout !== 'luminanceUniformity'">
         <h6 class="mb-3">Evaluation Notes</h6>
         <div class="row mb-4">
             <div *ngIf="equDetails?.value?.data !== undefined" class="col">
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="equDetails?.value?.layout === 'layoutThree'">
+    <div *ngIf="equDetails?.value?.layout === 'basicLuminance'">
         <table class="scanner-table tabel-border-th tabel-border-td">
             <tr>
                 <th></th>
@@ -51,23 +51,81 @@
             </tr>
             <tr>
                 <td>Ambience Ratio</td>
-                <td>{{equDetails.value.data.a}}</td>
+                <td>{{equDetails.value.data.ambianceRatio}}</td>
                 <td> < 0.25 </td>
             </tr>
             <tr>
                 <td>Luminance Ratio</td>
-                <td>{{equDetails.value.data.b}}</td>
+                <td>{{equDetails.value.data.luminanceRatio}}</td>
                 <td> 250 - 450 </td>
             </tr>
             <tr>
                 <td>L'<sub>min</sub></td>
-                <td>{{equDetails.value.data.c}}</td>
+                <td>{{equDetails.value.data.lMin}}</td>
                 <td> > 1.0 </td>
             </tr>
             <tr>
                 <td>L'<sub>max</sub></td>
-                <td>{{equDetails.value.data.d}}</td>
+                <td>{{equDetails.value.data.lMax}}</td>
                 <td> > 300 </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div *ngIf="equDetails?.value?.layout === 'luminanceUniformity'">
+        <table class="w-100">
+            <tr>
+                <td class="p-2 pb-3">
+                    <table class="m-auto">
+                        <tr>
+                            <td class="p-1 text-end">Upper Left:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.upper_left}} </td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 text-end">Lower Left:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.lower_left}} </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="p-2 pb-3">
+                    <table class="m-auto">
+                        <tr>
+                            <td class="p-1 text-end">Ambient:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.ambient}} </td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 text-end">Center:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.center}} </td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="p-2 pb-3">
+                    <table class="m-auto">
+                        <tr>
+                            <td class="p-1 text-end">Upper Right:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.lower_right}} </td>
+                        </tr>
+                        <tr>
+                            <td class="p-1 text-end">Lower Right:</td>
+                            <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.upper_right}} </td>
+                        </tr>
+                    </table>
+                </td>                    
+            </tr> 
+        </table>
+        
+        
+        
+        <table class="scanner-table tabel-border-th tabel-border-td">
+            <tr>
+                <th></th>
+                <th>Calculated Value</th>
+                <th>Suggested Range</th>
+            </tr>
+            <tr>
+                <td>Maximum Deviation</td>
+                <td>{{equDetails.value.data.maximumDeviation}}</td>
+                <td> < 30% </td>
             </tr>
         </table>
     </div>
