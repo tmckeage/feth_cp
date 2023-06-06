@@ -400,7 +400,6 @@ export class EquipmentComponent implements OnInit {
 		});
 	}
 
-
 	//scanner make autocomplete
 	private make_filter(value: string): string[] {
 		const filterValue = value.toLowerCase();

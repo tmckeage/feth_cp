@@ -132,7 +132,7 @@
     
     
     <div *ngIf="equDetails?.value?.layout === 'luminanceResponse'">
-        <div class="container mb-5">
+        <!-- <div class="container mb-5">
             <table class='master_tbl'>
                 <tr>
                     <th>Grey Level</th>
@@ -157,7 +157,7 @@
                     <td class='dl_per_l_per_jnd_error'>{{masterData.dl_per_l_per_jnd_error}}</td>
                 </tr>
             </table>
-        </div>
+        </div> -->
         <div class="container mb-5">
             <div class="chart-container mb-5">
                 <canvas id="JNDChart"></canvas>
@@ -170,124 +170,12 @@
                     <th>GSDF dL/L per JND</th>
                     <th>dL/L per JND error</th>
                 </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
-                </tr>
-                <tr>
-                    <td class='measured_jnd'></td>
-                    <td class='gsdf_jnd'></td>
-                    <td class='meas_dl_per_l_per_jnd'></td>
-                    <td class='gsdf_dl_per_l_per_jnd'></td>
-                    <td class='dl_per_l_per_jnd_error'></td>
+                <tr *ngFor="let jndPlotData of jndPlotTableData" [ngClass]="jndPlotData?.className">
+                    <td class='measured_jnd'>{{jndPlotData.measured_jnd}}</td>
+                    <td class='gsdf_jnd'>{{jndPlotData.gsdf_jnd}}</td>
+                    <td class='meas_dl_per_l_per_jnd'>{{jndPlotData.meas_dl_per_l_per_jnd}}</td>
+                    <td class='gsdf_dl_per_l_per_jnd'>{{jndPlotData.gsdf_dl_per_l_per_jnd}}</td>
+                    <td class='dl_per_l_per_jnd_error'>{{jndPlotData.dl_per_l_per_jnd_error}}</td>
                 </tr>
             </table>
         </div>
@@ -303,131 +191,12 @@
                     <th>GSDF L'</th>
                     <th>L' Error</th>
                 </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
-                </tr>
-                <tr>
-                    <td class='grey_level'></td>
-                    <td class='measured_luminance'></td>
-                    <td class='l_prime'></td>
-                    <td class='gsdf_l_prime'></td>
-                    <td class='l_prime_error'></td>
+                <tr *ngFor="let glPlotData of glPlotTableData" [ngClass]="glPlotData?.className">
+                    <td class='grey_level'>{{glPlotData.grey_level}}</td>
+                    <td class='measured_luminance'>{{glPlotData.measured_luminance}}</td>
+                    <td class='l_prime'>{{glPlotData.l_prime}}</td>
+                    <td class='gsdf_l_prime'>{{glPlotData.gsdf_l_prime}}</td>
+                    <td class='l_prime_error'>{{glPlotData.l_prime_error}}</td>
                 </tr>
             </table>
         </div>

@@ -22,6 +22,9 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
     // ambient:any = 0.10; // this valu come from API
     
     masterTableData: any[] = [];
+    jndPlotTableData: any[] = [];
+    glPlotTableData: any[] = [];
+    
     
     constructor(private equipmentService: EquipmentService, public toastr: ToastrService) {}
     
@@ -102,11 +105,11 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
     
     
     
-    // 2
+    
     getLprime(luminanceData:any, ambientValue:any){
         return luminanceData.map((lum:any, i:any) => {return lum + ambientValue;});
     }
-    // 2
+    
     getMeasuredJND(lPrimeData:any){
         return lPrimeData.map((lum:any, i:any) => {
             let l = Math.log10(lum);
@@ -123,11 +126,11 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         });
         
     }
-    // 2
+    
     getMeanJndPerStep(measuredJNDMax:any, measuredJNDMin:any, ttlLvls:any, lvlsPerStep:any){
         return (measuredJNDMax - measuredJNDMin) * lvlsPerStep / ttlLvls;
     }
-    // 2
+    
     getGSDFjnd(meas_jnd_data:any, mean_jnd_per_step:any) {
         let ret = [ meas_jnd_data[0] ]
         for (let i = 0; i < 17; i++){
@@ -135,7 +138,7 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         }
         return ret
     }
-    // 2
+    
     getGSDFLPrime(gsdfJNDData:any){
         return gsdfJNDData.map((gj:any, i:any) => {
             let l = Math.log(gj);
@@ -153,7 +156,7 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
             return 10**p
         })
     }
-    // 2
+    
     calculateLuminanceResponse(meas_luminance:any, greyLevel:any, ambientValue:any){
         let ret:any = {
             greyLevel: greyLevel,
@@ -174,11 +177,11 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         ret.gsdfn20 = this.getPercentLimit(-0.2, ret.gsdf_dl_per_l_per_jnd);
         return ret
     }
-    // 2
+    
     populateTbls(meas_luminance:any, data:any){
-        this.populateMasterTbl(meas_luminance, data);
-        this.populateJNDPlotTbl(data);
-        this.populateGLPlotTbl(data);
+        // this.populateMasterTbl(meas_luminance, data);
+        this.populateJNDPlotTbl(meas_luminance, data);
+        this.populateGLPlotTbl(meas_luminance, data);
     }
     
     // Used to create Table
@@ -189,8 +192,7 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
     }  
     
     // Used to create Table
-    // 2
-    populateMasterTbl(meas_luminance:any, data:any){        
+    /* populateMasterTbl(meas_luminance:any, data:any){        
         for(let i=0; i < meas_luminance.length; i++){
             let master_tbl = {
                 grey_level: data?.greyLevel[i] !== undefined ? data.greyLevel[i].toFixed(0) : '',
@@ -205,56 +207,9 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
             }
             this.masterTableData.push(master_tbl);
         }
-    }
-    // Used to create Table
-    // 2
-    populateJNDPlotTbl(data:any){
-        let tbl = "jnd_plot";
-        this.populateColumn(tbl, "measured_jnd", data.meas_jnd.slice(1));
-        this.populateColumn(tbl, "gsdf_jnd", data.gsdf_jnd.slice(1));
-        this.populateColumn(tbl, "meas_dl_per_l_per_jnd", data.meas_dl_per_l_per_jnd, 4);
-        this.populateColumn(tbl, "gsdf_dl_per_l_per_jnd", data.gsdf_dl_per_l_per_jnd, 4);
-        this.populateColumn(tbl, "dl_per_l_per_jnd_error", data.dl_per_l_per_jnd_error, 1, '%');
-                
-        let gIndex = this.getGreatestIndex(data.dl_per_l_per_jnd_error) + 1;
-        let rows = document.querySelectorAll("." + tbl + " tr");
-        let gRow = rows[gIndex];
-        if (Math.abs(data.dl_per_l_per_jnd_error[gIndex]) < 20){
-            gRow.className += 'greatestRed';
-        } else if (Math.abs(data.dl_per_l_per_jnd_error[gIndex]) > 10) {
-            gRow.className += 'greatestYellow';
-        } else {
-            gRow.className += 'greatestGreen';
-        }
-    }
-    // Used to create Table
-    // 2
-    populateGLPlotTbl(data:any){
-        let tbl = "gl_plot";
-        this.populateColumn(tbl, "grey_level", data.greyLevel, 0);
-        this.populateColumn(tbl, "measured_luminance", data.meas_luminance);
-        this.populateColumn(tbl, "l_prime", data.l_prime);
-        this.populateColumn(tbl, "gsdf_l_prime", data.gsdf_l_prime);
-        this.populateColumn(tbl, "l_prime_error", data.l_prime_error,1, '%');
-        let gIndex = this.getGreatestIndex(data.l_prime_error) + 1;
-        let rows = document.querySelectorAll("." + tbl + " tr");
-        let gRow = rows[gIndex];
-        gRow.className += 'greatest';
-    }
+    } */
     
-    // 3 - Used for calculations
-    getDl_per_l_per_jnd(l_prime_data:any, mean_jnd_per_step:any) {
-        let ret = []
-        for (let i = 1; i < 18; i++){
-            let prev_lp = l_prime_data[i-1];
-            let this_lp = l_prime_data[i];
-            let dif = this_lp - prev_lp;
-            let sum = this_lp + prev_lp;
-            ret.push((2 * dif) / (sum * mean_jnd_per_step));
-        }
-        return ret
-    }
-    // 3 - Used for calculations
+    // Used for calculations
     getGreatestIndex(data:any){
         let gIndex = 0;
         let gValue = Math.abs(data[0]);
@@ -266,25 +221,80 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         }
         return gIndex;
     }
-    // 3 - Used for calculations
+
+    // Used to create Table
+    populateJNDPlotTbl(meas_luminance:any, data:any){
+        let getLargestIndex = this.getGreatestIndex(data.dl_per_l_per_jnd_error);
+        let className = '';
+        
+        if (Math.abs(data.dl_per_l_per_jnd_error[getLargestIndex]) > 20){
+            className = 'greatestRed';
+        } else if (Math.abs(data.dl_per_l_per_jnd_error[getLargestIndex]) > 10) {
+            className = 'greatestYellow';
+        } else {
+            className = 'greatestGreen';
+        }
+        
+        for(let i=1; i < meas_luminance.length; i++){            
+            let jnd_plot = {
+                measured_jnd: data?.meas_jnd[i] !== undefined ? data.meas_jnd[i].toFixed(2) : '',
+                gsdf_jnd: data?.gsdf_jnd[i] !== undefined ? data.gsdf_jnd[i].toFixed(2) : '',
+                meas_dl_per_l_per_jnd: data?.meas_dl_per_l_per_jnd[i-1] !== undefined ? data.meas_dl_per_l_per_jnd[i-1].toFixed(4) : '',
+                gsdf_dl_per_l_per_jnd: data?.gsdf_dl_per_l_per_jnd[i-1] !== undefined ? data.gsdf_dl_per_l_per_jnd[i-1].toFixed(4) : '',
+                dl_per_l_per_jnd_error: data?.dl_per_l_per_jnd_error[i-1] !== undefined ? data.dl_per_l_per_jnd_error[i-1].toFixed(1) + '%' : '',
+                className: i-1 == getLargestIndex ? className : '',
+            }
+            this.jndPlotTableData.push(jnd_plot);
+        } 
+    }
+    
+    // Used to create Table
+    populateGLPlotTbl(meas_luminance:any, data:any){
+        let className = this.getGreatestIndex(data.l_prime_error);
+        
+        for(let i=0; i < meas_luminance.length; i++){
+            let gl_plot = {
+                grey_level: data?.greyLevel[i] !== undefined ? data.greyLevel[i].toFixed(0) : '',
+                measured_luminance: data?.meas_luminance[i] !== undefined ? data.meas_luminance[i].toFixed(2) : '',
+                l_prime: data?.l_prime[i] !== undefined ? data.l_prime[i].toFixed(2) : '',
+                gsdf_l_prime: data?.gsdf_l_prime[i] !== undefined ? data.gsdf_l_prime[i].toFixed(2) : '',
+                l_prime_error: data?.l_prime_error[i] !== undefined ? data.l_prime_error[i].toFixed(1)+ '%' : '',
+                className: i == className ? 'greatest' : '',
+            }
+            this.glPlotTableData.push(gl_plot);
+        }
+    }
+    
+    // Used for calculations
+    getDl_per_l_per_jnd(l_prime_data:any, mean_jnd_per_step:any) {
+        let ret = []
+        for (let i = 1; i < 18; i++){
+            let prev_lp = l_prime_data[i-1];
+            let this_lp = l_prime_data[i];
+            let dif = this_lp - prev_lp;
+            let sum = this_lp + prev_lp;
+            ret.push((2 * dif) / (sum * mean_jnd_per_step));
+        }
+        return ret
+    }
+    
+    // Used for calculations
     getDevErr(measDPLPJ:any, gsdfDPLPJ:any){
         return gsdfDPLPJ.map((gsdf:any, i:any) => { 
             return 100 * (measDPLPJ[i] - gsdf) / gsdf 
         })
     }
     
-    // 5 - Used for calculations
+    // Used for calculations
     getPercentLimit(percent:any, ideal:any){
         return ideal.map((value:any) => { return value + value * percent } )
     }
     
-    // 9
     buildDataset(xArray:any, yArray:any){
         return xArray.map((elem:any, i:any) => {return {x: elem, y: yArray[i]}});
     }
     
     // Used to populate graph
-    // 2
     buildJNDChart(data:any){
         
         let gsdfPoints = this.buildDataset(data.gsdf_jnd.slice(1), data.gsdf_dl_per_l_per_jnd);
@@ -372,7 +382,8 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         });
         
     }
-    // 2
+    
+    // Used to populate graph
     buildGLChart(data:any){
         let measuredLPrimePoints = this.buildDataset(data.greyLevel, data.l_prime);
         let gsdfLPrimePoints = this.buildDataset(data.greyLevel, data.gsdf_l_prime);
