@@ -196,52 +196,10 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
             },
             {
                 layout: 'withoutImg',
-                title: 'Ports',
-                parentCategory: 'physical_condition',
-                category: 'ports',
-                data: this.scanner?.last_evaluation?.physical_condition?.ports 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Greyscale',
+                title: 'Qualitative Display Performance',
                 parentCategory: 'display_performance',
-                category: 'greyscale',
-                data: this.scanner?.last_evaluation?.display_performance?.greyscale 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Geometric Distortion',
-                parentCategory: 'display_performance',
-                category: 'distortion',
-                data: this.scanner?.last_evaluation?.display_performance?.distortion 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'High Constrast Line Pattern',
-                parentCategory: 'display_performance',
-                category: 'hc_line_patterns',
-                data: this.scanner?.last_evaluation?.display_performance?.hc_line_patterns 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Low Constrast Line Pattern',
-                parentCategory: 'display_performance',
-                category: 'lc_line_patterns',
-                data: this.scanner?.last_evaluation?.display_performance?.lc_line_patterns 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Display Resolution',
-                parentCategory: 'display_performance',
-                category: 'resolution',
-                data: this.scanner?.last_evaluation?.display_performance?.resolution 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Missing Pixels',
-                parentCategory: 'display_performance',
-                category: 'pixels',
-                data: this.scanner?.last_evaluation?.display_performance?.pixels 
+                category: 'qualitative',
+                data: this.scanner?.last_evaluation?.display_performance?.qualitative,
             },
             {
                 layout: this.basicLuminance ? 'basicLuminance' : this.basicLuminance,
@@ -251,13 +209,26 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
                 data: this.basicLuminance
             },
             {
-                layout: this.basicLuminance ? 'luminanceUniformity' : this.basicLuminance,
-                title: this.basicLuminance ? 'Luminance Uniformity' : this.basicLuminance,
-                parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
-                category: this.basicLuminance ? 'test_pattern' : this.basicLuminance,
+                layout: 'luminanceResponse',
+                title: 'Luminance Response',
+                parentCategory: 'luminanceResponse',
+                category: 'luminanceResponse',
+                data: this.scanner?.last_evaluation?.display_performance?.luminance
+            },
+            {
+                layout: this.luminanceUniformity ? 'luminanceUniformity' : this.luminanceUniformity,
+                title: this.luminanceUniformity ? 'Luminance Uniformity' : this.luminanceUniformity,
+                parentCategory: this.luminanceUniformity ? 'display_performance' : this.luminanceUniformity,
+                category: this.luminanceUniformity ? 'test_pattern' : this.luminanceUniformity,
                 data: this.luminanceUniformity
-            }
-            
+            },
+            {
+                layout: 'withoutImg',
+                title: 'Ports',
+                parentCategory: 'physical_condition',
+                category: 'ports',
+                data: this.scanner?.last_evaluation?.physical_condition?.ports 
+            }            
         ];
     }
     
