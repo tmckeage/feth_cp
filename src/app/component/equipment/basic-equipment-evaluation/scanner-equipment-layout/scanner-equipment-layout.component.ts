@@ -191,24 +191,6 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
         elements.map((element:any, i:any) => element.textContent = data[i].toFixed(digits) + appendText );
     }  
     
-    // Used to create Table
-    /* populateMasterTbl(meas_luminance:any, data:any){        
-        for(let i=0; i < meas_luminance.length; i++){
-            let master_tbl = {
-                grey_level: data?.greyLevel[i] !== undefined ? data.greyLevel[i].toFixed(0) : '',
-                measured_luminance: data?.meas_luminance[i] !== undefined ? data.meas_luminance[i].toFixed(2) : '',
-                l_prime: data?.l_prime[i] !== undefined ? data.l_prime[i].toFixed(2) : '',
-                measured_jnd: data?.meas_jnd[i] !== undefined ? data.meas_jnd[i].toFixed(2) : '',
-                gsdf_jnd: data?.gsdf_jnd[i] !== undefined ? data.gsdf_jnd[i].toFixed(2) : '',
-                gsdf_l_prime: data?.gsdf_l_prime[i] !== undefined ? data.gsdf_l_prime[i].toFixed(2) : '',
-                meas_dl_per_l_per_jnd: i > 0 && data?.meas_dl_per_l_per_jnd[i-1] !== undefined ? data.meas_dl_per_l_per_jnd[i-1].toFixed(4) : '',
-                gsdf_dl_per_l_per_jnd: i > 0 && data?.gsdf_dl_per_l_per_jnd[i-1] !== undefined ? data.gsdf_dl_per_l_per_jnd[i-1].toFixed(4) : '',
-                dl_per_l_per_jnd_error: i > 0 && data?.dl_per_l_per_jnd_error[i-1] !== undefined ? data.dl_per_l_per_jnd_error[i-1].toFixed(1) + '%' : '',
-            }
-            this.masterTableData.push(master_tbl);
-        }
-    } */
-    
     // Used for calculations
     getGreatestIndex(data:any){
         let gIndex = 0;

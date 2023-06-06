@@ -132,32 +132,6 @@
     
     
     <div *ngIf="equDetails?.value?.layout === 'luminanceResponse'">
-        <!-- <div class="container mb-5">
-            <table class='master_tbl'>
-                <tr>
-                    <th>Grey Level</th>
-                    <th>Measured Luminance</th>
-                    <th>L'</th>
-                    <th>Measured JND</th>
-                    <th>GSDF JND</th>
-                    <th>GSDF L'</th>
-                    <th>Meas. dL/L per JND</th>
-                    <th>GSDF dL/L per JND</th>
-                    <th>dL/L per JND error</th>
-                </tr>
-                <tr *ngFor="let masterData of masterTableData" >
-                    <td class='grey_level'>{{masterData.grey_level}}</td>
-                    <td class='measured_luminance'>{{masterData.measured_luminance}}</td>
-                    <td class='l_prime'>{{masterData.l_prime}}</td>
-                    <td class='measured_jnd'>{{masterData.measured_jnd}}</td>
-                    <td class='gsdf_jnd'>{{masterData.gsdf_jnd}}</td>
-                    <td class='gsdf_l_prime'>{{masterData.gsdf_l_prime}}</td>
-                    <td class='meas_dl_per_l_per_jnd'>{{masterData.meas_dl_per_l_per_jnd}}</td>
-                    <td class='gsdf_dl_per_l_per_jnd'>{{masterData.gsdf_dl_per_l_per_jnd}}</td>
-                    <td class='dl_per_l_per_jnd_error'>{{masterData.dl_per_l_per_jnd_error}}</td>
-                </tr>
-            </table>
-        </div> -->
         <div class="container mb-5">
             <div class="chart-container mb-5">
                 <canvas id="JNDChart"></canvas>
