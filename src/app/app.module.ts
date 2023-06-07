@@ -53,6 +53,9 @@ import { ReviewModule } from './modules/review/review.module';
 import { AnalysisComponent } from './component/analysis/analysis.component';
 
 import * as CanvasJSAngularChart from '../assets/canvasjs.angular.component';
+import { BasicEquipmentEvaluationComponent } from './component/equipment/basic-equipment-evaluation/basic-equipment-evaluation.component';
+import { ScannerEquipmentLayoutComponent } from './component/equipment/basic-equipment-evaluation/scanner-equipment-layout/scanner-equipment-layout.component';
+import { TransducerEquipmentLayoutComponent } from './component/equipment/basic-equipment-evaluation/transducer-equipment-layout/transducer-equipment-layout.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
@@ -64,7 +67,10 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     UsersComponent,
     RequestReceivedComponent,
     NavbarComponent,
-    AnalysisComponent
+    AnalysisComponent,
+    BasicEquipmentEvaluationComponent,
+    ScannerEquipmentLayoutComponent,
+    TransducerEquipmentLayoutComponent
   ],
   imports: [
     AuthenticationModule,

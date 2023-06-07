@@ -1,0 +1,59 @@
+<!-- view Equipment Evaluation modal-->
+<div class="evalutionData" *ngFor="let evaluation of evaluationData; let evdIndex = index">
+    <div class="scanner-data mb-4">
+        <div class="accordion accordion-flush" id="scannerEvaluationData">
+
+            <!-- Scanner Data -->
+            <div class="accordion-item border-0">
+                <div class="accordion-header" id="scannerTitle">
+                    <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#scannerEvlCategories" aria-controls="scannerEvlCategories">
+                        <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                        <div class="acc-title ms-3 d-flex w-100 justify-content-between border-bottom-3">
+                            <h5 class="modal-title fw-normal">{{evaluation?.manufacturer}} {{evaluation?.model}} : {{evaluation?.serial_number}}</h5>
+                            <h5 *ngIf="evaluation?.last_evaluation?.date_performed" class="modal-title fw-normal">{{evaluation?.last_evaluation?.date_performed}}</h5>
+                        </div>
+                    </button>                            
+                </div>
+                <div id="scannerEvlCategories" class="accordion-collapse collapse mb-3" aria-labelledby="scannerTitle" data-bs-parent="#scannerEvaluationData">
+                    <div *ngIf="evaluation?.last_evaluation && evaluation?.transducers" class="ps-5">
+                        <div class="accordion accordion-flush mb-2" id="scannerEvData" >
+                            <div class="accordion-item border-0" *ngFor="let equDetails of scannerEquipmentDetails | keyvalue:ascOrderObject; let categoryIndex = index">
+                                <app-scanner-equipment-layout *ngIf="equDetails?.value?.data !== undefined" [scannerId]="scannerId" [scanner]="scanner" [equDetails]="equDetails" [categoryIndex]="categoryIndex"></app-scanner-equipment-layout> 
+                            </div>                            
+                        </div>                        
+                        <div class="text-center">
+                            <p class="mb-2"> Overall Assessment: 
+                                <span class="text-uppercase">{{evaluation.overallAssessmen}}</span>
+                            </p>
+                            <button class="btn btn-outline-dark m-1"> Submit </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transducers Data -->
+            <div class="accordion-item border-0" *ngFor="let transducersData of evaluation.transducers; let transdIndex = index">
+                <div class="accordion-header" [attr.id]="'transdTitle'+transdIndex">
+                    <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#transData'+transdIndex" [attr.aria-controls]="'transData'+transdIndex">
+                        <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                        <div class="acc-title ms-3 d-flex w-100 justify-content-between border-bottom-3">
+                            <h5 class="modal-title fw-normal">{{transducersData.manufacturer}} {{transducersData.model}} : {{transducersData.serial_number}}</h5>
+                            <h5 class="modal-title fw-normal">{{transducersData.last_evaluation.date_performed}}</h5>
+                        </div>
+                    </button>                            
+                </div>
+                <div [attr.id]="'transData'+transdIndex" class="accordion-collapse collapse" [attr.aria-labelledby]="'transdTitle'+transdIndex" data-bs-parent="#scannerEvaluationData">
+                    <div *ngIf="evaluation?.last_evaluation && evaluation?.transducers" class="ps-5">
+                        <div class="accordion accordion-flush mb-2" [attr.id]="'transducersEvData'+transdIndex" >
+                            <!-- Transducers Data Layout -->
+                            <div class="accordion-item border-0" *ngFor="let tranSubDetails of transducersData.last_evaluation.physical_condition.transducerEvaluationData; let categoryIndex = index">
+                                <app-transducer-equipment-layout [transducerId]="transducersData.transducer_id" [scanner]="scanner" [tranSubDetails]="tranSubDetails" [transdIndex]="transdIndex" [categoryIndex]="categoryIndex"></app-transducer-equipment-layout>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

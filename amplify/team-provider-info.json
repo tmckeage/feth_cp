@@ -10,6 +10,11 @@
       "StackName": "amplify-fathommanagementweba-dev-80857",
       "StackId": "arn:aws:cloudformation:us-east-1:184851202404:stack/amplify-fathommanagementweba-dev-80857/b10e6480-13cc-11ed-89da-0a1b4053af2d",
       "AmplifyAppId": "d1lqland0u2q1j"
+    },
+    "categories": {
+      "auth": {
+        "amplifyappcabe3d33": {}
+      }
     }
   }
 }
