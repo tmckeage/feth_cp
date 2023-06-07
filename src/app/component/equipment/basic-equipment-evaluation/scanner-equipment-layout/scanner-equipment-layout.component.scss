@@ -99,7 +99,9 @@ img{
 }
 
 
-
+.JNDChart table, .GLChart table{
+    table-layout: fixed;
+}
 .greatestRed {
     background-color: #e9967a;
 }
