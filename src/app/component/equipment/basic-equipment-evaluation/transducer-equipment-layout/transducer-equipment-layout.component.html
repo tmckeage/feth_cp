@@ -22,12 +22,7 @@
         </div>
         <div *ngIf="tranSubDetails?.layout === 'withImg'" class="col d-flex flex-column align-items-end justify-content-between">
             <div *ngIf="tranSubDetails?.data?.img !== undefined" class="mb-2 evaluation-image">
-                <div *ngIf="tranSubDetails?.data?.img; else imgNotFound">
-                    <img src="{{tranSubDetails.data.img}}" alt="">
-                </div>
-                <ng-template #imgNotFound> 
-                    <img src="../../../assets/images/NoImageFound.png" alt=""> 
-                </ng-template>
+                    <img src="{{tranSubDetails?.data?.img}}" onerror="this.src='../../../assets/images/NoImageFound.png'" alt="">
             </div>
         </div>
         
@@ -501,8 +496,7 @@
                 <h4>Baseline: 1.75 cm</h4>
                 <h4>Measured: 1.73 cm</h4>
             </div>
-                        
-        </div>     
+        </div>   
         
         <div>
             <div *ngIf="tranSubDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
