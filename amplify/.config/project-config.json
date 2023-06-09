@@ -2,7 +2,7 @@
   "providers": [
     "awscloudformation"
   ],
-  "projectName": "FathomManagementWebA",
+  "projectName": "FathomWebApp",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {

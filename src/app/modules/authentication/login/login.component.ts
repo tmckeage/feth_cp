@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 	doLogin() {
 		this.usernameValue = this.loginForm.controls.username.value;
 		this.passwordValue = this.loginForm.controls.password.value;
-		if (this.usernameValue && this.passwordValue) {
+		/* if (this.usernameValue && this.passwordValue) {
 			this.showLoading = true;
 			Auth.signIn(this.usernameValue, this.passwordValue).then(user => {
 				this.showLoading = false;
@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
 				console.log(err);
 				this.showLoading = false;
 			});
-		}
+		} */
+		this.router.navigate(['/users']);
 	}
 }
