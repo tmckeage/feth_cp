@@ -7,15 +7,15 @@ import { UsersComponent } from '../component/users/users.component';
 import { AuthGuard } from '../guard/auth.guard';
 
 const routes: Routes = [
-    { path: '', component: EquipmentComponent, //canActivate: [AuthGuard]
+    { path: '', component: EquipmentComponent, canActivate: [AuthGuard]
 },
-    { path: 'equipment', component: EquipmentComponent, //canActivate: [AuthGuard] 
+    { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] 
 },
-    { path: 'analysis', component: AnalysisComponent, //canActivate: [AuthGuard] 
+    { path: 'analysis', component: AnalysisComponent, canActivate: [AuthGuard] 
 },
-    { path: 'reports', component: ReportsComponent, //canActivate: [AuthGuard] 
+    { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] 
 },
-    { path: 'users', component: UsersComponent, //canActivate: [AuthGuard] 
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] 
 }
 ];
 

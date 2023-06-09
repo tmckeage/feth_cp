@@ -31,7 +31,7 @@ export class ScannerEquipmentLayoutComponent implements OnInit {
     async ngOnInit() {
         
         if(this.equDetails?.value?.category == "luminanceResponse") {
-            let data = this.equDetails?.value?.data;         
+            let data = this.equDetails?.value?.data;      
             let meas_luminance:any [] = []; // this value come from API
             let ambient:any; // this value come from API
             let greyLevel:any = [0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255]; // In future that will get replce with API

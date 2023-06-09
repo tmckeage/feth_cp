@@ -18,7 +18,7 @@
                     <div *ngIf="evaluation?.last_evaluation && evaluation?.transducers" class="ps-5">
                         <div class="accordion accordion-flush mb-2" id="scannerEvData" >
                             <div class="accordion-item border-0" *ngFor="let equDetails of scannerEquipmentDetails | keyvalue:ascOrderObject; let categoryIndex = index">
-                                <app-scanner-equipment-layout *ngIf="equDetails?.value?.data !== undefined" [scannerId]="scannerId" [scanner]="scanner" [equDetails]="equDetails" [categoryIndex]="categoryIndex"></app-scanner-equipment-layout> 
+                                <app-scanner-equipment-layout *ngIf="equDetails?.value?.data" [scannerId]="scannerId" [scanner]="scanner" [equDetails]="equDetails" [categoryIndex]="categoryIndex"></app-scanner-equipment-layout> 
                             </div>                            
                         </div>                        
                         <div class="text-center">
