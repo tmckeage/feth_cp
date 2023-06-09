@@ -105,20 +105,21 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
         
         this.scanner.transducers.map( (transData:any) => {
             this.transducerEvaluationData = [];
-            Object.keys(transData.last_evaluation.physical_condition).map( (keyData:any) => {
-                if(keyData !== 'transducerEvaluationData'){
-                    this.transducerEvaluationData.push({
-                        layout: 'withImg',
-                        title: keyData,
-                        parentCategory: 'physical_condition',
-                        category: keyData,
-                        data: transData.last_evaluation.physical_condition[keyData]
-                    });
-                }
-            });
-            
-            // transducerImageAnalysis;
-            transData.last_evaluation.physical_condition.transducerEvaluationData = [...this.transducerEvaluationData, ... transducerImageAnalysis];
+            if(transData?.last_evaluation?.physical_condition){
+                Object.keys(transData.last_evaluation.physical_condition).map( (keyData:any) => {
+                    if(keyData !== 'transducerEvaluationData'){
+                        this.transducerEvaluationData.push({
+                            layout: 'withImg',
+                            title: keyData,
+                            parentCategory: 'physical_condition',
+                            category: keyData,
+                            data: transData.last_evaluation.physical_condition[keyData]
+                        });
+                    }
+                });
+                // transducerImageAnalysis;
+                transData.last_evaluation.physical_condition.transducerEvaluationData = [...this.transducerEvaluationData, ... transducerImageAnalysis];
+            }
         });
         
         // Basic Luminance
@@ -140,10 +141,10 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
             let ambient = parseFloat(this.scanner?.last_evaluation?.display_performance?.luminance?.ambient);
             let testPattern = this.scanner?.last_evaluation?.display_performance?.test_pattern;
             let testPatternValues = true;
-                        
+            
             if(ambient >= 0){
                 Object.keys(testPattern).forEach( (key, index) => {
-
+                    
                     testPattern[key] = parseFloat(testPattern[key]);
                     if( testPattern[key] <= 0 && testPatternValues){
                         testPatternValues = false;
@@ -155,7 +156,7 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
                     let max = Math.max(...arrayOfTestPattern);
                     let min = Math.min(...arrayOfTestPattern);
                     let maximumDeviation = (200 * (max - min) / (max + min + 2 * ambient)).toFixed(0);
-
+                    
                     this.luminanceUniformity = { 
                         ambient: ambient,
                         testPattern: testPattern, 
@@ -165,71 +166,69 @@ export class BasicEquipmentEvaluationComponent implements OnInit {
             }
         }
         
-        this.scannerEquipmentDetails = [
-            {
-                layout: 'withImg',
-                title:'Housing',
-                parentCategory: 'physical_condition',
-                category: 'housing',
-                data: this.scanner?.last_evaluation?.physical_condition?.housing 
-            },
-            {
-                layout: 'withImg',
-                title: 'Power Cord',
-                parentCategory: 'physical_condition',
-                category: 'power_cord',
-                data: this.scanner?.last_evaluation?.physical_condition?.power_cord 
-            },
-            {
-                layout: 'withImg',
-                title: 'Wheels',
-                parentCategory: 'physical_condition',
-                category: 'wheels',
-                data: this.scanner?.last_evaluation?.physical_condition?.wheels 
-            },
-            {
-                layout: 'withImg',
-                title: 'Controls',
-                parentCategory: 'physical_condition',
-                category: 'controls',
-                data: this.scanner?.last_evaluation?.physical_condition?.controls 
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Qualitative Display Performance',
-                parentCategory: 'display_performance',
-                category: 'qualitative',
-                data: this.scanner?.last_evaluation?.display_performance?.qualitative,
-            },
-            {
-                layout: this.basicLuminance ? 'basicLuminance' : this.basicLuminance,
-                title: this.basicLuminance ? 'Basic Luminance' : this.basicLuminance,
-                parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
-                category: this.basicLuminance ? 'luminance' : this.basicLuminance,
-                data: this.basicLuminance
-            },
-            {
-                layout: 'luminanceResponse',
-                title: 'Luminance Response',
-                parentCategory: 'luminanceResponse',
-                category: 'luminanceResponse',
-                data: this.scanner?.last_evaluation?.display_performance?.luminance
-            },
-            {
-                layout: this.luminanceUniformity ? 'luminanceUniformity' : this.luminanceUniformity,
-                title: this.luminanceUniformity ? 'Luminance Uniformity' : this.luminanceUniformity,
-                parentCategory: this.luminanceUniformity ? 'display_performance' : this.luminanceUniformity,
-                category: this.luminanceUniformity ? 'test_pattern' : this.luminanceUniformity,
-                data: this.luminanceUniformity
-            },
-            {
-                layout: 'withoutImg',
-                title: 'Ports',
-                parentCategory: 'physical_condition',
-                category: 'ports',
-                data: this.scanner?.last_evaluation?.physical_condition?.ports 
-            }            
-        ];
+        this.scannerEquipmentDetails = [{
+            layout: 'withImg',
+            title:'Housing',
+            parentCategory: 'physical_condition',
+            category: 'housing',
+            data: this.scanner?.last_evaluation?.physical_condition?.housing 
+        },
+        {
+            layout: 'withImg',
+            title: 'Power Cord',
+            parentCategory: 'physical_condition',
+            category: 'power_cord',
+            data: this.scanner?.last_evaluation?.physical_condition?.power_cord 
+        },
+        {
+            layout: 'withImg',
+            title: 'Wheels',
+            parentCategory: 'physical_condition',
+            category: 'wheels',
+            data: this.scanner?.last_evaluation?.physical_condition?.wheels 
+        },
+        {
+            layout: 'withImg',
+            title: 'Controls',
+            parentCategory: 'physical_condition',
+            category: 'controls',
+            data: this.scanner?.last_evaluation?.physical_condition?.controls 
+        },
+        {
+            layout: 'withoutImg',
+            title: 'Qualitative Display Performance',
+            parentCategory: 'display_performance',
+            category: 'qualitative',
+            data: this.scanner?.last_evaluation?.display_performance?.qualitative,
+        },
+        {
+            layout: this.basicLuminance ? 'basicLuminance' : this.basicLuminance,
+            title: this.basicLuminance ? 'Basic Luminance' : this.basicLuminance,
+            parentCategory: this.basicLuminance ? 'display_performance' : this.basicLuminance,
+            category: this.basicLuminance ? 'luminance' : this.basicLuminance,
+            data: this.basicLuminance
+        },
+        {
+            layout: 'luminanceResponse',
+            title: 'Luminance Response',
+            parentCategory: 'luminanceResponse',
+            category: 'luminanceResponse',
+            data: this.scanner?.last_evaluation?.display_performance?.luminance
+        },
+        {
+            layout: this.luminanceUniformity ? 'luminanceUniformity' : this.luminanceUniformity,
+            title: this.luminanceUniformity ? 'Luminance Uniformity' : this.luminanceUniformity,
+            parentCategory: this.luminanceUniformity ? 'display_performance' : this.luminanceUniformity,
+            category: this.luminanceUniformity ? 'test_pattern' : this.luminanceUniformity,
+            data: this.luminanceUniformity
+        },
+        {
+            layout: 'withoutImg',
+            title: 'Ports',
+            parentCategory: 'physical_condition',
+            category: 'ports',
+            data: this.scanner?.last_evaluation?.physical_condition?.ports 
+        }];
     }
     
     async overallAssessmenFunction(scannerData:any){
