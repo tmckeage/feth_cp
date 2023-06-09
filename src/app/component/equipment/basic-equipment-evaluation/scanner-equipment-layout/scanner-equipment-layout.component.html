@@ -24,12 +24,7 @@
             </div>
             <div *ngIf="equDetails?.value?.layout === 'withImg'" class="col d-flex align-items-end">
                 <div class="mb-2 evaluation-image">
-                    <div *ngIf="equDetails?.value?.data?.img; else imgNotFound">
-                        <img src="{{equDetails.value.data.img}}" alt="">
-                    </div>
-                    <ng-template #imgNotFound>
-                        <img src="../../../assets/images/NoImageFound.png" alt=""> 
-                    </ng-template>
+                        <img src="{{equDetails.value.data.img}}" onerror="this.src='../../../assets/images/NoImageFound.png'" alt="">
                 </div>
             </div>
         </div>
