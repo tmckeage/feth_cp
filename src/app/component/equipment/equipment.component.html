@@ -185,6 +185,7 @@
     <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
 </div>
 </ng-template>
+
 <!-- Add/ Edit transducer modal -->
 <ng-template #transducerModal let-modal>
     <div class="modal-header">
@@ -197,183 +198,75 @@
                 <div class="col-md-6 mb-3">
                     <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Manufacturer :</mat-label>
-                        <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer"
-                        (keyup)="onKey($event,manufacturer);modelTranducerFilter(manufacturer)">
-                        <mat-autocomplete #manufacturer="matAutocomplete"
-                        (optionSelected)='modelTranducerFilter($event.option.value)'>
-                        <mat-option *ngFor="let manufacturer of filteredMakeTransducer | async" value="{{manufacturer}}">
-                            {{manufacturer}}
+                        
+                        <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer" (keyup)="onKey($event,manufacturer);modelTranducerFilter(manufacturer)">
+                        <mat-autocomplete #manufacturer="matAutocomplete" (optionSelected)='modelTranducerFilter($event.option.value)'>
+                            <mat-option *ngFor="let manufacturer of filteredMakeTransducer | async" value="{{manufacturer}}"> {{manufacturer}} </mat-option>
+                        </mat-autocomplete>
+                        
+                        
+                        <mat-error *ngIf="transducerFormGroup.controls.manufacturer.errors?.required">
+                            Manufacturer is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="matInput">
+                        <mat-label>Scanner:</mat-label>
+                        <input type="text" matInput formControlName="scanner" [matAutocomplete]="scanner">
+                        <mat-autocomplete #scanner="matAutocomplete" [displayWith]="getScannerId.bind(this)">
+                            <mat-option *ngFor="let scanner of scannerLists" value="{{scanner.scanner_id}}"> {{scanner.scannerName}} </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3" (click)="onModelTranducer()">
+                    <mat-form-field appearance="fill" class="matInput">
+                        <mat-label>Model :</mat-label>
+                        <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
+                        (keyup)="onKey($event, model)">
+                        <mat-autocomplete #model="matAutocomplete"
+                        (optionSelected)="onChangeModalTransducer(model);onKey($event, model)">
+                        <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
+                            {{model}}
                         </mat-option>
                     </mat-autocomplete>
-                    <mat-error *ngIf="transducerFormGroup.controls.manufacturer.errors?.required">
-                        Manufacturer is required
+                    <mat-error *ngIf="transducerFormGroup.controls.model.errors?.required">
+                        Model is required
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-md-6 mb-3">
                 <mat-form-field appearance="fill" class="matInput">
-                    <mat-label>Scanner:</mat-label>
-                    <input type="text" matInput formControlName="scanner" [matAutocomplete]="scanner">
-                    <mat-autocomplete #scanner="matAutocomplete" [displayWith]="getScannerId.bind(this)">
-                        <mat-option *ngFor="let scanner of scannerLists" value="{{scanner.scanner_id}}">
-                            {{scanner.scannerName}}
-                        </mat-option>
-                    </mat-autocomplete>
+                    <mat-label>S/N :</mat-label>
+                    <input type="text" matInput formControlName="serial_number" required>
+                    <mat-error *ngIf="transducerFormGroup.controls.serial_number.errors?.required">
+                        S/N is required
+                    </mat-error>
                 </mat-form-field>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-3" (click)="onModelTranducer()">
+            <div class="col-md-6 mb-3">
                 <mat-form-field appearance="fill" class="matInput">
-                    <mat-label>Model :</mat-label>
-                    <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
-                    (keyup)="onKey($event, model)">
-                    <mat-autocomplete #model="matAutocomplete"
-                    (optionSelected)="onChangeModalTransducer(model);onKey($event, model)">
-                    <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
-                        {{model}}
-                    </mat-option>
-                </mat-autocomplete>
-                <mat-error *ngIf="transducerFormGroup.controls.model.errors?.required">
-                    Model is required
-                </mat-error>
-            </mat-form-field>
+                    <mat-label>Asset Number :</mat-label>
+                    <input type="text" matInput formControlName="asset_number">
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 mb-3" *ngIf="transducerId !== null">
+                <mat-form-field appearance="fill" class="matInput">
+                    <mat-label>Barcode :</mat-label>
+                    <input type="text" matInput formControlName="barcode_number">
+                </mat-form-field>
+            </div>
         </div>
-        <div class="col-md-6 mb-3">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>Image Setup:</mat-label>
-                <input type="text" matInput formControlName="image" [matAutocomplete]="image">
-                <mat-autocomplete #image="matAutocomplete">
-                    <mat-option *ngFor="let image of filteredImageTransducer | async" [value]="image">
-                        {{image}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
+        <div class="row g-2 float-center" *ngIf="isEmpty">
+            <h6 class="text-center">Unknown Transducer model </h6>
+            <span class="text-center"> Analysis field of view and parameters</span><span
+            class="text-center">Will be determined at onboarding</span>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>S/N :</mat-label>
-                <input type="text" matInput formControlName="serial_number" required>
-                <mat-error *ngIf="transducerFormGroup.controls.serial_number.errors?.required">
-                    S/N is required
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-md-6 mb-3">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>Asset Number :</mat-label>
-                <input type="text" matInput formControlName="asset_number">
-            </mat-form-field>
-        </div>
-        <div class="col-md-6 mb-3" *ngIf="transducerId !== null">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>Barcode :</mat-label>
-                <input type="text" matInput formControlName="barcode_number">
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>Type :</mat-label>
-                <input type="text" matInput formControlName="type" required [matAutocomplete]="type">
-                <mat-autocomplete #type="matAutocomplete" [displayWith]="getType.bind(this)">
-                    <mat-option *ngFor="let type of filteredType | async" value="{{type.value}}">
-                        {{type.name}}
-                    </mat-option>
-                </mat-autocomplete>
-                <mat-error *ngIf="transducerFormGroup.controls.type.errors?.required">
-                    Type is required
-                </mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-md-6 mb-3" *ngIf="transducerId !== null">
-            <mat-form-field appearance="fill" class="matInput">
-                <mat-label>Barcode :</mat-label>
-                <input type="text" matInput formControlName="barcode_number">
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row g-2" id="tab" *ngIf="isModel">
-        <mat-tab-group animationDuration="0ms">
-            <mat-tab label="Uniformity Window">
-                <div class="row g-2 pt-2">
-                    <div class="col-4">
-                        <div class="row">
-                            <h4 class="text-cente fs-6">Analysis Parameters</h4>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">P0: </label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p0_x">
-                                <input type="text" class="w-25 h-75" formControlName="p0_y">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">P1: </label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p1_x">
-                                <input type="text" class="w-25 h-75" formControlName="p1_y">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
-                                <input type="text" class="w-50 h-75" formControlName="radius_one">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
-                                <input type="text" class="w-50 h-75" formControlName="radius_two">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">Theta: </label>
-                                <input type="text" class="w-50 h-75" formControlName="theta">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <img class="scanner-img" src="../../../assets/scanner.png">
-                    </div>
-                </div>
-            </mat-tab>
-            <mat-tab label="Image Quality Window">
-                <div class="row g-2 pt-2">
-                    <div class="col-4">
-                        <div class="row">
-                            <h4 class="text-cente fs-6">Analysis Parameters</h4>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">P0: </label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p0_x">
-                                <input type="text" class="w-25 h-75" formControlName="p0_y">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">P1: </label>&nbsp;&nbsp;&nbsp;
-                                <input type="text" class="w-25 me-1 h-75 me-2" formControlName="p1_x">
-                                <input type="text" class="w-25 h-75" formControlName="p1_y">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold">Radius One: </label>&nbsp;
-                                <input type="text" class="w-50 h-75" formControlName="radius_one">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold">Radius Two: </label>&nbsp;
-                                <input type="text" class="w-50 h-75" formControlName="radius_two">
-                            </div>
-                            <div class="form-group input-group-sm">
-                                <label class="col-form-label-sm fw-bold me-5">Theta: </label>
-                                <input type="text" class="w-50 h-75" formControlName="theta">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <img class="scanner-img" src="../../../assets/scanner.png">
-                    </div>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
-    <div class="row g-2 float-center" *ngIf="isEmpty">
-        <h6 class="text-center">Unknown Transducer model </h6>
-        <span class="text-center"> Analysis field of view and parameters</span><span
-        class="text-center">Will be determined at onboarding</span>
-    </div>
-</form>
+    </form>
 </div>
 <div class="modal-footer">
     <button 

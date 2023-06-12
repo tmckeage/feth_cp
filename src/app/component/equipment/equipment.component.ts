@@ -96,6 +96,18 @@ export class EquipmentComponent implements OnInit {
 	transducerEvaluationData: any[] = [];
 	scannerDataEditNote: string = '';
 	transducerDataEditNote: string = '';
+	foods:any = [{
+		value: 'viewValue',
+		viewValue: 'viewValue'
+	},
+	{
+		value: 'viewValue1',
+		viewValue: 'viewValue1'
+	},
+	{
+		value: 'viewValue2',
+		viewValue: 'viewValue2'
+	}];
 
 	constructor(
 		private toastr: ToastrService,
@@ -175,6 +187,7 @@ export class EquipmentComponent implements OnInit {
 			startWith(''),
 			map(value => this.makeTransducer_filter(value))
 		);
+		
 
 		this.filteredModelTransducer = this.transducerFormGroup.controls['model'].valueChanges.pipe(
 			startWith(''),
@@ -337,7 +350,9 @@ export class EquipmentComponent implements OnInit {
 				this.unassignedTransducers.forEach((elements: any) => {
 					transducerList.push(elements);
 				});
-				let modelName = res.filter((item: any) => { return item.manufacturer == this.selectedTransducerModel });
+				let modelName = res.filter((item: any) => { 
+					return item.manufacturer == this.selectedTransducerModel;
+				});
 				modelName.forEach((item: any) => {
 					this.modelTranducerNameList.push(item.model);
 					this.modelTransducerOption = [...this.modelTranducerNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
@@ -730,7 +745,6 @@ export class EquipmentComponent implements OnInit {
 						this.isModel = false;
 					}
 				}
-
 			 });
 		})
 	}
@@ -803,7 +817,7 @@ export class EquipmentComponent implements OnInit {
 		// scanner list 
 		this.scannersObject.forEach((res: any) => {
 			let scannerNameList: any[] = [];
-			scannerNameList.push(res.make + " " + res.model + "" + ' : ' + "" + res.serial_number);
+			scannerNameList.push(res?.manufacturer + " " + res?.model + "" + ' : ' + "" + res?.serial_number);
 			let result = scannerNameList.filter((val: any, index: any) => scannerNameList.indexOf(val) == index);
 			let obj = { scanner_id: res.scanner_id, scannerName: result };
 			this.scannerLists.push(obj);
