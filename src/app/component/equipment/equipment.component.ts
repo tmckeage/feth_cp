@@ -44,8 +44,8 @@ export class EquipmentComponent implements OnInit {
 	filteredRoom: Observable<any[]>;
 	filteredMakeTransducer: Observable<any[]>;
 	filteredModelTransducer: Observable<any[]>;
-	filteredImageTransducer: Observable<any[]>;
-	filteredType: Observable<any[]>;
+	// filteredImageTransducer: Observable<any[]>;
+	// filteredType: Observable<any[]>;
 	isMake: boolean = false;
 	isModel: boolean = false;
 	isEmpty: boolean = false;
@@ -140,7 +140,7 @@ export class EquipmentComponent implements OnInit {
 			"model": new FormControl('', [Validators.required]),
 			"scanner": new FormControl('', []),
 			"serial_number": new FormControl('', [Validators.required]),
-			"type": new FormControl('', [Validators.required]),
+			// "type": new FormControl('', [Validators.required]),
 			"image": new FormControl('', []),
 			"p0_x": new FormControl('', []),
 			"p0_y": new FormControl('', []),
@@ -184,16 +184,16 @@ export class EquipmentComponent implements OnInit {
 			map(value => this.modelTransducer_filter(value))
 		);
 
-		this.filteredType = this.transducerFormGroup.controls['type'].valueChanges.pipe(
-			startWith(''),
-			map(values => typeof values === 'string' ? values : values.name),
-			map(name => name ? this.type_filter(name) : this.typeTransducerOption.slice())
-		);
+		// this.filteredType = this.transducerFormGroup.controls['type'].valueChanges.pipe(
+		// 	startWith(''),
+		// 	map(values => typeof values === 'string' ? values : values.name),
+		// 	map(name => name ? this.type_filter(name) : this.typeTransducerOption.slice())
+		// );
 
-		this.filteredImageTransducer = this.transducerFormGroup.controls['image'].valueChanges.pipe(
-			startWith(''),
-			map(value => this.image_filter(value))
-		);
+		// this.filteredImageTransducer = this.transducerFormGroup.controls['image'].valueChanges.pipe(
+		// 	startWith(''),
+		// 	map(value => this.image_filter(value))
+		// );
 
 		this.equipmentService.defaultEquipmentData().subscribe( response => {
 			this.defaultEquipmentData = response.default_equipment;
@@ -596,8 +596,8 @@ export class EquipmentComponent implements OnInit {
 			transducer_id :equipment.transducer_id
 		};
 
-		let imageAnalysis = equipment.settings.image_quality;
-		let uniformityAnalysis = equipment.settings.uniformity;
+		let imageAnalysis = equipment?.settings?.image_quality;
+		let uniformityAnalysis = equipment?.settings?.uniformity;
 
 		if (imageAnalysis == undefined || uniformityAnalysis == undefined) {
 			this.modalService.dismissAll();
@@ -763,7 +763,7 @@ export class EquipmentComponent implements OnInit {
 		this.setSNTransducer(viewTransducer.serial_number);
 		this.setAssetNumberTransducer(viewTransducer.asset_number);
 		this.setScannerTransducer(viewTransducer.scanner_id);
-		this.setTypeTransducer(viewTransducer.type);
+		// this.setTypeTransducer(viewTransducer.type);
 		this.setBarcodeTransducer(viewTransducer.barcode);
 
 		this.isModel = true;
@@ -786,7 +786,7 @@ export class EquipmentComponent implements OnInit {
 		this.setModelTransducer('');
 		this.setSNTransducer('');
 		this.setScannerTransducer('');
-		this.setTypeTransducer('');
+		// this.setTypeTransducer('');
 		this.setBarcodeTransducer('');
 		this.setAssetNumberTransducer('');
 		this.transducerId = null;
@@ -928,8 +928,8 @@ export class EquipmentComponent implements OnInit {
 	setModelTransducer(inputVal: any) { this.transducerFormGroup.controls.model.setValue(inputVal) }
 	setSNTransducer(inputVal: any) { this.transducerFormGroup.controls.serial_number.setValue(inputVal) }
 	setScannerTransducer(inputVal: any) { this.transducerFormGroup.controls.scanner.setValue(inputVal) }
-	setTypeTransducer(inputVal: any) { this.transducerFormGroup.controls.type.setValue(inputVal) }
-	setImageTransducer(inputVal: any) { this.transducerFormGroup.controls.image.setValue(inputVal) }
+	// setTypeTransducer(inputVal: any) { this.transducerFormGroup.controls.type.setValue(inputVal) }
+	// setImageTransducer(inputVal: any) { this.transducerFormGroup.controls.image.setValue(inputVal) }
 	setBarcodeTransducer(inputVal: any) { this.transducerFormGroup.controls.barcode_number.setValue(inputVal) }
 	setAssetNumberTransducer(inputVal: any) { this.transducerFormGroup.controls.asset_number.setValue(inputVal) }
 	get scannerForm() { return this.scannerFormGroup.controls; }
