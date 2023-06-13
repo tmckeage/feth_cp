@@ -96,12 +96,15 @@
                 <div class="col-md-6 mb-3">
                     <mat-form-field appearance="fill">
                         <mat-label>Manufacturer :</mat-label>
-                        <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer">
-                        <mat-autocomplete #manufacturer="matAutocomplete"(optionSelected)='modelFilter($event.option.value)'>
-                            <mat-option *ngFor="let manufacturer of filteredMake | async" [value]="manufacturer">
-                                {{manufacturer}}
-                            </mat-option>
-                        </mat-autocomplete>
+                        
+                        <!-- <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer"> <mat-autocomplete #manufacturer="matAutocomplete"(optionSelected)='modelFilter($event.option.value)'> <mat-option *ngFor="let manufacturer of filteredMake | async" [value]="manufacturer"> {{manufacturer}} </mat-option> </mat-autocomplete> -->
+                        
+                        
+                        <mat-select matInput required formControlName="manufacturer" (selectionChange)="modelFilter($event.value)"> <mat-option *ngFor="let defaultEqData of defaultEquipmentData" [value]="defaultEqData.manufacturer"> {{defaultEqData.manufacturer}} </mat-option> </mat-select> 
+                        
+                        
+                        
+                        
                         <mat-error *ngIf="scannerFormGroup.controls.manufacturer.errors?.required">
                             Manufacturer is required
                         </mat-error>
@@ -123,12 +126,13 @@
                 <div class="col-md-6 mb-3" (click)="onModel()">
                     <mat-form-field appearance="fill">
                         <mat-label>Model :</mat-label>
-                        <input type="text" matInput formControlName="model" required [matAutocomplete]="model">
-                        <mat-autocomplete #model="matAutocomplete">
-                            <mat-option *ngFor="let model of filteredModel | async" [value]="model">
-                                {{model}}
-                            </mat-option>
-                        </mat-autocomplete>
+                        
+                        <!-- <input type="text" matInput formControlName="model" required [matAutocomplete]="model"> <mat-autocomplete #model="matAutocomplete"> <mat-option *ngFor="let model of filteredModel | async" [value]="model"> {{model}} </mat-option> </mat-autocomplete> -->
+                        
+                        <mat-select matInput required formControlName="model"> <mat-option *ngFor="let modals of scannerModelEquipmentData" [value]="modals"> {{modals}} </mat-option> </mat-select> 
+                        
+                        
+                        
                         <mat-error *ngIf="scannerFormGroup.controls.model.errors?.required">
                             Model is required
                         </mat-error>
@@ -199,13 +203,15 @@
                     <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Manufacturer :</mat-label>
                         
-                        <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer" (keyup)="onKey($event,manufacturer);modelTranducerFilter(manufacturer)">
-                        <mat-autocomplete #manufacturer="matAutocomplete" (optionSelected)='modelTranducerFilter($event.option.value)'>
-                            <mat-option *ngFor="let manufacturer of filteredMakeTransducer | async" value="{{manufacturer}}"> {{manufacturer}} </mat-option>
-                        </mat-autocomplete>
+                        <!-- <input type="text" matInput formControlName="manufacturer" required [matAutocomplete]="manufacturer" (keyup)="onKey($event,manufacturer);modelTranducerFilter(manufacturer)"> <mat-autocomplete #manufacturer="matAutocomplete" (optionSelected)='modelTranducerFilter($event.option.value)'> <mat-option *ngFor="let manufacturer of filteredMakeTransducer | async" value="{{manufacturer}}"> {{manufacturer}} </mat-option> </mat-autocomplete> -->
                         
                         
-                        <mat-error *ngIf="transducerFormGroup.controls.manufacturer.errors?.required">
+                        
+                        <mat-select matInput required formControlName="manufacturer" (selectionChange)="modelTranducerFilter($event.value)"> <mat-option *ngFor="let defaultEqData of defaultEquipmentData" [value]="defaultEqData.manufacturer"> {{defaultEqData.manufacturer}} </mat-option> </mat-select> 
+                        
+                        
+                        
+                        <mat-error *ngIf="transducerFormGroup?.controls?.manufacturer?.errors?.required">
                             Manufacturer is required
                         </mat-error>
                     </mat-form-field>
@@ -224,64 +230,59 @@
                 <div class="col-md-6 mb-3" (click)="onModelTranducer()">
                     <mat-form-field appearance="fill" class="matInput">
                         <mat-label>Model :</mat-label>
-                        <input type="text" matInput formControlName="model" required [matAutocomplete]="model"
-                        (keyup)="onKey($event, model)">
-                        <mat-autocomplete #model="matAutocomplete"
-                        (optionSelected)="onChangeModalTransducer(model);onKey($event, model)">
-                        <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}">
-                            {{model}}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <mat-error *ngIf="transducerFormGroup.controls.model.errors?.required">
-                        Model is required
-                    </mat-error>
-                </mat-form-field>
+                        <!-- <input type="text" matInput formControlName="model" required [matAutocomplete]="model" (keyup)="onKey($event, model)"> <mat-autocomplete #model="matAutocomplete" (optionSelected)="onChangeModalTransducer(model);onKey($event, model)"> <mat-option *ngFor="let model of filteredModelTransducer | async" value="{{model}}"> {{model}} </mat-option> </mat-autocomplete> -->
+                        
+                        
+                        <input type="text" matInput formControlName="model" required (keyup)="onKey($event, model)">
+                        
+                        
+                        
+                        <mat-error *ngIf="transducerFormGroup.controls.model.errors?.required">
+                            Model is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="matInput">
+                        <mat-label>S/N :</mat-label>
+                        <input type="text" matInput formControlName="serial_number" required>
+                        <mat-error *ngIf="transducerFormGroup.controls.serial_number.errors?.required">
+                            S/N is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <mat-form-field appearance="fill" class="matInput">
-                    <mat-label>S/N :</mat-label>
-                    <input type="text" matInput formControlName="serial_number" required>
-                    <mat-error *ngIf="transducerFormGroup.controls.serial_number.errors?.required">
-                        S/N is required
-                    </mat-error>
-                </mat-form-field>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="matInput">
+                        <mat-label>Asset Number :</mat-label>
+                        <input type="text" matInput formControlName="asset_number">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3" *ngIf="transducerId !== null">
+                    <mat-form-field appearance="fill" class="matInput">
+                        <mat-label>Barcode :</mat-label>
+                        <input type="text" matInput formControlName="barcode_number">
+                    </mat-form-field>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <mat-form-field appearance="fill" class="matInput">
-                    <mat-label>Asset Number :</mat-label>
-                    <input type="text" matInput formControlName="asset_number">
-                </mat-form-field>
+            <div class="row g-2 float-center" *ngIf="isEmpty">
+                <h6 class="text-center">Unknown Transducer model </h6>
+                <span class="text-center"> Analysis field of view and parameters</span><span
+                class="text-center">Will be determined at onboarding</span>
             </div>
-            <div class="col-md-6 mb-3" *ngIf="transducerId !== null">
-                <mat-form-field appearance="fill" class="matInput">
-                    <mat-label>Barcode :</mat-label>
-                    <input type="text" matInput formControlName="barcode_number">
-                </mat-form-field>
-            </div>
-        </div>
-        <div class="row g-2 float-center" *ngIf="isEmpty">
-            <h6 class="text-center">Unknown Transducer model </h6>
-            <span class="text-center"> Analysis field of view and parameters</span><span
-            class="text-center">Will be determined at onboarding</span>
-        </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button 
-    type="button" 
-    class="btn btn-secondary btn-sm" 
-    [disabled]="!transducerFormGroup.valid || addingTransducer" 
-    (click)="onSubmitTranducer(transducerId)">
-    <span *ngIf="addingTransducer" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> 
-    Save
-</button>
-<button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
-</div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" 
+        [disabled]="!transducerFormGroup.valid || addingTransducer" 
+        (click)="onSubmitTranducer(transducerId)">
+        <span *ngIf="addingTransducer" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Save </button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Cancel</button>
+    </div>
 </ng-template>
 
-<!-- view scanner  details modal-->
+<!-- view scanner details modal -->
 <ng-template #view let-modal>
     <div class="modal-header">
         <h5 class="modal-title " id="modal-view">Scanner Details</h5>
@@ -326,19 +327,16 @@
                     class="tranducerPrint">
                     <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
                     (click)="printScanner(viewData.barcode)" [bc-value]="viewData.barcode"
-                    [bc-display-value]="true"></ngx-barcode6>
-                </button>
+                    [bc-display-value]="true"></ngx-barcode6> </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary btn-sm"
-    (click)="onScannerEdit(viewData,content)">Edit</button>
-    <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
-    <button type="button" class="btn btn-danger btn-sm"
-    (click)="confirmScannerDelete(viewData, deleteScanner)">Delete</button>
-</div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="onScannerEdit(viewData,content)">Edit</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="modal.dismiss('Cross click')">Return</button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="confirmScannerDelete(viewData, deleteScanner)"> Delete </button>
+    </div>
 </ng-template>
 
 <!-- view Equipment Evaluation modal-->

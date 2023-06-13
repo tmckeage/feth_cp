@@ -1656,4 +1656,8 @@ export class EquipmentService {
   // submitAssesment(scannerId: any, category: any, data: any): Observable<any>{
   //   return this.http.put(`${environment.api_url}/api/v1/scanners/${scannerId}/last_evaluation/${category}`, data);
   // }
+
+  defaultEquipmentData(): Observable<any>{
+    return this.http.get(environment.api_url+'/api/v1/default_equipment');
+  }
 }

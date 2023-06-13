@@ -96,18 +96,8 @@ export class EquipmentComponent implements OnInit {
 	transducerEvaluationData: any[] = [];
 	scannerDataEditNote: string = '';
 	transducerDataEditNote: string = '';
-	foods:any = [{
-		value: 'viewValue',
-		viewValue: 'viewValue'
-	},
-	{
-		value: 'viewValue1',
-		viewValue: 'viewValue1'
-	},
-	{
-		value: 'viewValue2',
-		viewValue: 'viewValue2'
-	}];
+	defaultEquipmentData:any [] = [];
+	scannerModelEquipmentData:any [] = [];
 
 	constructor(
 		private toastr: ToastrService,
@@ -204,6 +194,10 @@ export class EquipmentComponent implements OnInit {
 			startWith(''),
 			map(value => this.image_filter(value))
 		);
+
+		this.equipmentService.defaultEquipmentData().subscribe( response => {
+			this.defaultEquipmentData = response.default_equipment;
+		});
 	}
 
 	ngOnInit(): void {
@@ -213,7 +207,6 @@ export class EquipmentComponent implements OnInit {
 		this.oldDate = d.toISOString().split('T')[0];
 		// scanner model is select make show model 
 		this.scannerFormGroup.controls['model'].disable();
-		this.transducerFormGroup.controls['model'].disable();
 		this.getAllEquipments();  // scanner API
 	}
 
@@ -319,13 +312,20 @@ export class EquipmentComponent implements OnInit {
 		this.modelNameList = [];
 		this.selectedMake = make;
 		if (this.selectedMake) {
-			// duplicate value remove in model list
-			this.scannerFormGroup.controls['model'].enable()
-			let modelName = this.scannersObject.filter((item: any) => { return item.make == this.selectedMake });
-			modelName.forEach((item: any) => {
-				this.modelNameList.push(item.model);
-				this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+			this.defaultEquipmentData.map( data => {
+				if(data.manufacturer === make){
+					this.scannerModelEquipmentData = data.scanners;
+
+					// duplicate value remove in model list
+					this.scannerFormGroup.controls['model'].enable();
+					let modelName = this.scannersObject.filter((item: any) => { return item.make == this.selectedMake });
+					modelName.forEach((item: any) => {
+						this.modelNameList.push(item.model);
+						this.modelOptions = [...this.modelNameList.reduce((p, c) => p.set(c, true), new Map()).keys()];
+					});
+				}
 			});
+			
 		} else {
 			this.scannerFormGroup.controls['model'].disable();
 			this.modelNameList = [];
@@ -344,7 +344,6 @@ export class EquipmentComponent implements OnInit {
 
 		if (this.selectedTransducerModel) {
 			// duplicate value remove in model list
-			this.transducerFormGroup.controls['model'].enable();
 			transducerList.forEach((res: any) => {
 				// unassigned Transducers list
 				this.unassignedTransducers.forEach((elements: any) => {
@@ -359,8 +358,6 @@ export class EquipmentComponent implements OnInit {
 				});
 			});
 
-		} else {
-			this.transducerFormGroup.controls['model'].disable();
 		}
 	}
 
@@ -484,6 +481,7 @@ export class EquipmentComponent implements OnInit {
 		this.modelFilter(make);
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
+			this.scannerFormGroup.controls['model'].disable();
 		}, (reason)=>{ 
  
  		});
@@ -637,7 +635,12 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	// Edit scanner modal
-	onScannerEdit(viewData: any, content: any) {
+	async onScannerEdit(viewData: any, content: any) {
+		await this.defaultEquipmentData.map( data => {
+			if(viewData.manufacturer === data.manufacturer){
+				this.scannerModelEquipmentData = data.scanners;
+			}
+		});
 		this.addModalTitle = 'Edit Scanner';
 		this.scannerFormGroup.controls['model'].enable();
 		this.selectedMake = viewData.make;
@@ -726,8 +729,8 @@ export class EquipmentComponent implements OnInit {
 	}
 
 	// Enter new value in input make
-	onKey(event: any, makeTransducer: any) {
-		let modelValue = event.target.value;
+	onKey(event: any, makeTransducer?: any) {
+		let modelValue = event?.target?.value || event?.value;
 		this.onChangeMakeTransducer(modelValue);
 		this.filteredModelTransducer.forEach(item => {
 			 item.forEach(res => {
@@ -754,8 +757,6 @@ export class EquipmentComponent implements OnInit {
 
 		// debugger;
 		this.transducerModalTitle = 'Edit Transducer';
-		this.transducerFormGroup.controls['model'].enable();
-
 		this.prepareScannerListForAutoComplete();
 		this.setMakeTransducer(viewTransducer.manufacturer);
 		this.setModelTransducer(viewTransducer.model);
@@ -864,7 +865,6 @@ export class EquipmentComponent implements OnInit {
 
 		if (this.selectedTransducerModel) {
 			// duplicate value remove in model list
-			this.transducerFormGroup.controls['model'].enable();
 			transducerList.forEach((res: any) => {
 				// unassigned Transducers list
 				this.unassignedTransducers.forEach((elements: any) => {
@@ -877,8 +877,6 @@ export class EquipmentComponent implements OnInit {
 				});
 			});
 
-		} else {
-			this.transducerFormGroup.controls['model'].disable();
 		}
 	}
 
