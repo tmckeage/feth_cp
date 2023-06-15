@@ -74,7 +74,7 @@
 <!-- Barcode print code -->
 <div id="scannerPrint" #scannerPrint class="scanner-print">
     <ngx-barcode6 
-    [bc-format]="'MSI'" 
+    [bc-format]="'CODE128'" 
     [bc-font-size]="50" 
     [bc-width]="4" 
     [bc-height]="100" 
@@ -325,7 +325,7 @@
                 <div class="scanner-print">
                     <button id="scanner" printSectionId="scannerPrint" ngxPrint [useExistingCss]="true"
                     class="tranducerPrint">
-                    <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
+                    <ngx-barcode6 [bc-format]="'CODE128'" [bc-width]="1" [bc-height]="20"
                     (click)="printScanner(viewData.barcode)" [bc-value]="viewData.barcode"
                     [bc-display-value]="true"></ngx-barcode6> </button>
                 </div>
@@ -398,7 +398,7 @@
                     <label class="col-form-label-sm fw-bold">Barcode:</label>&nbsp;
                     <div class="scanner-print">
                         <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint>
-                            <ngx-barcode6 [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
+                            <ngx-barcode6 [bc-format]="'CODE128'" [bc-width]="1" [bc-height]="20"
                             (click)="printScanner(viewTransducer.barcode)" [bc-value]="viewTransducer.barcode"
                             [bc-display-value]="true"></ngx-barcode6>
                         </button>
@@ -600,7 +600,7 @@
         <li class="list-type" *ngFor="let scanner of scannerToPrint">
             <ul class="list-type"style="margin-bottom: 1000px;">
                 <button class="tranducerPrint" printSectionId="scannerPrint" ngxPrint>
-                    <ngx-barcode6  [bc-format]="'MSI'" [bc-width]="1" [bc-height]="20"
+                    <ngx-barcode6  [bc-format]="'CODE128'" [bc-width]="1" [bc-height]="20"
                     (click)="printScanner(scanner.barcode)" [bc-value]="scanner.barcode"
                     [bc-display-value]="true"></ngx-barcode6>
                 </button>
