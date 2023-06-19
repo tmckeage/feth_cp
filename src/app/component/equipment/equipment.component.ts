@@ -141,14 +141,14 @@ export class EquipmentComponent implements OnInit {
 			"scanner": new FormControl('', []),
 			"serial_number": new FormControl('', [Validators.required]),
 			// "type": new FormControl('', [Validators.required]),
-			"image": new FormControl('', []),
-			"p0_x": new FormControl('', []),
-			"p0_y": new FormControl('', []),
-			"p1_x": new FormControl('', []),
-			"p1_y": new FormControl('', []),
-			"radius_one": new FormControl('', []),
-			"radius_two": new FormControl('', []),
-			"theta": new FormControl('', []),
+			// "image": new FormControl('', []),
+			// "p0_x": new FormControl('', []),
+			// "p0_y": new FormControl('', []),
+			// "p1_x": new FormControl('', []),
+			// "p1_y": new FormControl('', []),
+			// "radius_one": new FormControl('', []),
+			// "radius_two": new FormControl('', []),
+			// "theta": new FormControl('', []),
 			"asset_number": new FormControl('', [])
 		});
 
