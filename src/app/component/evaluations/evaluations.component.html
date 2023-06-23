@@ -1,0 +1,28 @@
+<div class="container mt-5">
+    <div class="loader" *ngIf="loading">
+        <mat-spinner diameter="50" customSpinner color="#fff"></mat-spinner>
+    </div>
+    <div class="" *ngIf="!loading">
+        <h4 class="">Pending Evaluations </h4>
+        <table class="" *ngIf="evaluationsData">
+            <thead>
+                <tr>
+                    <th>Scanner</th>
+                    <th>Transducers</th>
+                    <th>Date Performed</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="evaluationsData">
+                <tr *ngFor="let evData of evaluationsData">
+                    <td>Scanner Name</td>
+                    <td>{{evData.transducerLength}}</td>
+                    <td>{{evData.date_performed}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div *ngIf="!evaluationsData && !loading">
+            No Data Found
+        </div>
+    </div>
+</div>

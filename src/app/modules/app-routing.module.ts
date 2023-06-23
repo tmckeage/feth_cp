@@ -5,11 +5,14 @@ import { EquipmentComponent } from '../component/equipment/equipment.component';
 import { ReportsComponent } from '../component/reports/reports.component';
 import { UsersComponent } from '../component/users/users.component';
 import { AuthGuard } from '../guard/auth.guard';
+import { EvaluationsComponent } from '../component/evaluations/evaluations.component';
 
 const routes: Routes = [
     { path: '', component: EquipmentComponent, canActivate: [AuthGuard]
 },
     { path: 'equipment', component: EquipmentComponent, canActivate: [AuthGuard] 
+},
+    { path: 'evaluations', component: EvaluationsComponent, canActivate: [AuthGuard] 
 },
     { path: 'analysis', component: AnalysisComponent, canActivate: [AuthGuard] 
 },

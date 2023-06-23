@@ -56,6 +56,7 @@ import * as CanvasJSAngularChart from '../assets/canvasjs.angular.component';
 import { BasicEquipmentEvaluationComponent } from './component/equipment/basic-equipment-evaluation/basic-equipment-evaluation.component';
 import { ScannerEquipmentLayoutComponent } from './component/equipment/basic-equipment-evaluation/scanner-equipment-layout/scanner-equipment-layout.component';
 import { TransducerEquipmentLayoutComponent } from './component/equipment/basic-equipment-evaluation/transducer-equipment-layout/transducer-equipment-layout.component';
+import { EvaluationsComponent } from './component/evaluations/evaluations.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
@@ -70,7 +71,8 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     AnalysisComponent,
     BasicEquipmentEvaluationComponent,
     ScannerEquipmentLayoutComponent,
-    TransducerEquipmentLayoutComponent
+    TransducerEquipmentLayoutComponent,
+    EvaluationsComponent
   ],
   imports: [
     AuthenticationModule,
