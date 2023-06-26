@@ -14,7 +14,7 @@
             </thead>
             <tbody *ngIf="evaluationsData">
                 <tr *ngFor="let evData of evaluationsData">
-                    <td>Scanner Name</td>
+                    <td>{{evData.scannerName}}</td>
                     <td>{{evData.transducerLength}}</td>
                     <td>{{evData.date_performed}}</td>
                 </tr>
