@@ -13,5 +13,7 @@ export class EvaluationsService {
     getEvaluations(): Observable<any> {
         return this.http.get(environment.api_url + '/api/v1/evaluations');
     }
-    
+    getScannerEvaluations(scannerEvaluationId:any): Observable<any> {
+        return this.http.get(environment.api_url + '/api/v1/scanner_evaluations/' + scannerEvaluationId);
+    }
 }
