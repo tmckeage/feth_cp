@@ -23,7 +23,7 @@ export class EvalutionReviewComponent implements OnInit {
         this.scannerId = this.activatedRoute.snapshot.paramMap.get('scannerId');
        
         this.equipmentService.getAllEquipments().subscribe( equipment => {
-            console.log(equipment);
+            // console.log(equipment);
             equipment?.scanners.map( (scannerData:any) => {
                 if(scannerData.scanner_id === this.scannerId){
                     this.evaluationsData = [scannerData];

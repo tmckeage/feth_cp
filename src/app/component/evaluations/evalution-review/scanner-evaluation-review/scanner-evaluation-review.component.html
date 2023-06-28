@@ -1,0 +1,181 @@
+<div class="accordion accordion-flush mb-2" id="scannerEvData" >
+    <ng-container *ngFor="let equDetails of scannerEquipmentDetails; let categoryIndex = index">
+        <div class="accordion-item border-0">
+            <div class="accordion-header" [attr.id]="'scannerDataTitle'+categoryIndex">
+                <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#scannerDataTitleButton'+categoryIndex" [attr.aria-controls]="'scannerDataTitleButton'+categoryIndex">
+                    <span class="font-awesome-font fa-solid fa-caret-right"></span>
+                    <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
+                        <h5 *ngIf="equDetails?.title" class="modal-title font-small">{{equDetails.title}}</h5> 
+                        <h5 *ngIf="equDetails?.data?.assessment" class="modal-title font-small text-uppercase">{{equDetails.data.assessment}}</h5>
+                    </div>
+                </button>  
+            </div>
+            
+            <div [attr.id]="'scannerDataTitleButton'+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'scannerDataTitle'+categoryIndex" data-bs-parent="#scannerEvData">
+                <!--<div *ngIf="equDetails?.value?.layout !== 'basicLuminance' && equDetails?.value?.layout !== 'luminanceUniformity'">
+                    <h6 *ngIf="equDetails?.value?.data?.test_pattern" class="mb-3 text-center">Test Pattern Used: {{equDetails?.value?.data?.test_pattern}}</h6>
+                    <h6 class="mb-3">Evaluation Notes</h6>
+                    <div class="row mb-4">
+                        <div *ngIf="equDetails?.value?.data" class="col">
+                            <div *ngIf="equDetails?.value?.data?.note !== undefined" class="mb-4">
+                                <textarea 
+                                [(ngModel)]="equDetails.value.data.note"
+                                [readonly]="scannerDataEditNote === equDetails?.value?.title ? false : true"  
+                                [ngClass]="scannerDataEditNote === equDetails?.value?.title ? '' : 'edit-disable'" 
+                                class="textarea">{{equDetails?.value?.data?.note}}</textarea>
+                            </div>
+                        </div>
+                        <div *ngIf="equDetails?.value?.layout === 'withImg'" class="col d-flex align-items-end">
+                            <div class="mb-2 evaluation-image">
+                                <img src="{{equDetails.value.data.img}}" onerror="this.src='../../../assets/images/NoImageFound.png'" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="equDetails?.value?.data?.note || equDetails?.value?.data?.assessment" class="d-flex align-items-end justify-content-between">
+                        <div *ngIf="equDetails?.value?.data?.note" class="evalution-data-buttons">
+                            <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.value?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+                        </div>
+                        <div *ngIf="equDetails?.value?.data?.assessment" class="evalution-data-buttons text-end">
+                            <button [ngClass]="equDetails?.value?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
+                            <button [ngClass]="equDetails?.value?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="equDetails?.value?.layout === 'basicLuminance'">
+                    <table class="scanner-table tabel-border-th tabel-border-td">
+                        <tr>
+                            <th></th>
+                            <th>Calculated Value</th>
+                            <th>Suggested Range</th>
+                        </tr>
+                        <tr>
+                            <td>Ambience Ratio</td>
+                            <td>{{equDetails.value.data.ambianceRatio}}</td>
+                            <td> < 0.25 </td>
+                        </tr>
+                        <tr>
+                            <td>Luminance Ratio</td>
+                            <td>{{equDetails.value.data.luminanceRatio}}</td>
+                            <td> 250 - 450 </td>
+                        </tr>
+                        <tr>
+                            <td>L'<sub>min</sub></td>
+                            <td>{{equDetails.value.data.lMin}}</td>
+                            <td> > 1.0 </td>
+                        </tr>
+                        <tr>
+                            <td>L'<sub>max</sub></td>
+                            <td>{{equDetails.value.data.lMax}}</td>
+                            <td> > 300 </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div *ngIf="equDetails?.value?.layout === 'luminanceUniformity'">
+                    <table class="w-100">
+                        <tr>
+                            <td class="p-2 pb-3">
+                                <table class="m-auto">
+                                    <tr>
+                                        <td class="p-1 text-end">Upper Left:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.upper_left}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-1 text-end">Lower Left:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.lower_left}} </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="p-2 pb-3">
+                                <table class="m-auto">
+                                    <tr>
+                                        <td class="p-1 text-end">Ambient:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.ambient}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-1 text-end">Center:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.center}} </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="p-2 pb-3">
+                                <table class="m-auto">
+                                    <tr>
+                                        <td class="p-1 text-end">Upper Right:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.lower_right}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-1 text-end">Lower Right:</td>
+                                        <td class="p-1 ps-4"> {{equDetails.value.data.testPattern.upper_right}} </td>
+                                    </tr>
+                                </table>
+                            </td>                    
+                        </tr> 
+                    </table>
+                    
+                    <table class="scanner-table tabel-border-th tabel-border-td">
+                        <tr>
+                            <th></th>
+                            <th>Calculated Value</th>
+                            <th>Suggested Range</th>
+                        </tr>
+                        <tr>
+                            <td>Maximum Deviation</td>
+                            <td>{{equDetails.value.data.maximumDeviation}}</td>
+                            <td> < 30% </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div *ngIf="equDetails?.value?.layout === 'luminanceResponse'">
+                    <div class="container mb-5 JNDChart">
+                        <div class="chart-container mb-5">
+                            <canvas id="JNDChart"></canvas>
+                        </div>
+                        <div class="table-responsive">
+                            <table class='jnd_plot w-100 text-center'>
+                                <tr>
+                                    <th class="border">Measured JND</th>
+                                    <th class="border">GSDF JND</th>
+                                    <th class="border">Meas. dL/L per JND</th>
+                                    <th class="border">GSDF dL/L per JND</th>
+                                    <th class="border">dL/L per JND error</th>
+                                </tr>
+                                <tr *ngFor="let jndPlotData of jndPlotTableData" [ngClass]="jndPlotData?.className">
+                                    <td class='border measured_jnd'>{{jndPlotData.measured_jnd}}</td>
+                                    <td class='border gsdf_jnd'>{{jndPlotData.gsdf_jnd}}</td>
+                                    <td class='border meas_dl_per_l_per_jnd'>{{jndPlotData.meas_dl_per_l_per_jnd}}</td>
+                                    <td class='border gsdf_dl_per_l_per_jnd'>{{jndPlotData.gsdf_dl_per_l_per_jnd}}</td>
+                                    <td class='border dl_per_l_per_jnd_error'>{{jndPlotData.dl_per_l_per_jnd_error}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="container mb-5 GLChart">
+                        <div class="chart-container mb-5" style="position: relative; width:500; height:400;">
+                            <canvas id="GLChart"></canvas>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="gl_plot w-100 text-center">
+                                <tr>
+                                    <th class="border">Grey Level</th>
+                                    <th class="border">Measured Luminance</th>
+                                    <th class="border">L'</th>
+                                    <th class="border">GSDF L'</th>
+                                    <th class="border">L' Error</th>
+                                </tr>
+                                <tr *ngFor="let glPlotData of glPlotTableData" [ngClass]="glPlotData?.className">
+                                    <td class='border grey_level'>{{glPlotData.grey_level}}</td>
+                                    <td class='border measured_luminance'>{{glPlotData.measured_luminance}}</td>
+                                    <td class='border l_prime'>{{glPlotData.l_prime}}</td>
+                                    <td class='border gsdf_l_prime'>{{glPlotData.gsdf_l_prime}}</td>
+                                    <td class='border l_prime_error'>{{glPlotData.l_prime_error}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </ng-container>
+</div>

@@ -58,6 +58,8 @@ import { ScannerEquipmentLayoutComponent } from './component/equipment/basic-equ
 import { TransducerEquipmentLayoutComponent } from './component/equipment/basic-equipment-evaluation/transducer-equipment-layout/transducer-equipment-layout.component';
 import { EvaluationsComponent } from './component/evaluations/evaluations.component';
 import { EvalutionReviewComponent } from './component/evaluations/evalution-review/evalution-review.component';
+import { TransducerEvaluationReviewComponent } from './component/evaluations/evalution-review/transducer-evaluation-review/transducer-evaluation-review.component';
+import { ScannerEvaluationReviewComponent } from './component/evaluations/evalution-review/scanner-evaluation-review/scanner-evaluation-review.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 @NgModule({
@@ -74,7 +76,9 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     ScannerEquipmentLayoutComponent,
     TransducerEquipmentLayoutComponent,
     EvaluationsComponent,
-    EvalutionReviewComponent
+    EvalutionReviewComponent,
+    TransducerEvaluationReviewComponent,
+    ScannerEvaluationReviewComponent
   ],
   imports: [
     AuthenticationModule,
