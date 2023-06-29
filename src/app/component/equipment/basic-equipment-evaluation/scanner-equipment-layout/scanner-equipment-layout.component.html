@@ -28,8 +28,8 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="equDetails?.value?.data?.note || equDetails?.value?.data?.assessment" class="d-flex align-items-end justify-content-between">
-            <div *ngIf="equDetails?.value?.data?.note" class="evalution-data-buttons">
+        <div *ngIf="equDetails?.value?.data?.note  !== undefined || equDetails?.value?.data?.assessment" class="d-flex align-items-end justify-content-between">
+            <div *ngIf="equDetails?.value?.data?.note !== undefined" class="evalution-data-buttons">
                 <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.value?.title ? ' Save Notes ': ' Edit Notes '}} </button>
             </div>
             <div *ngIf="equDetails?.value?.data?.assessment" class="evalution-data-buttons text-end">

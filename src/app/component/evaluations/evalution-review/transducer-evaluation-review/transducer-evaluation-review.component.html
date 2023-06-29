@@ -1,5 +1,5 @@
-<div class="accordion accordion-flush mb-2" id="transducerEvData" >
-    <ng-container *ngFor="let equDetails of transducerEvaluationData; let categoryIndex = index">
+<div class="accordion accordion-flush mb-2" [attr.id]="'transducersEvData'+transdIndex" >
+    <ng-container *ngFor="let tranSubDetails of transducerEvaluationData; let categoryIndex = index">
         <div class="accordion-item border-0">
             
             
@@ -7,15 +7,15 @@
                 <button class="accordion-button collapsed position-relative justify-content-between shadow-none mb-2 p-0" type="button" data-bs-toggle="collapse" aria-expanded="false" [attr.data-bs-target]="'#transducerDataTitleButton'+transdIndex+categoryIndex" [attr.aria-controls]="'transducerDataTitleButton'+transdIndex+categoryIndex">
                     <span class="font-awesome-font fa-solid fa-caret-right"></span>
                     <div class="acc-title ms-3 me-3 d-flex w-100 justify-content-between border-bottom-3">
-                        <h5 *ngIf="equDetails?.title" class="modal-title font-small text-capitalize">{{equDetails.title}}</h5> 
-                        <h5 *ngIf="equDetails?.assessment" class="modal-title font-small text-uppercase">{{equDetails.assessment}}</h5>
+                        <h5 *ngIf="tranSubDetails?.title" class="modal-title font-small text-capitalize">{{tranSubDetails.title}}</h5> 
+                        <h5 *ngIf="tranSubDetails?.data?.assessment" class="modal-title font-small text-uppercase">{{tranSubDetails.data.assessment}}</h5>
                     </div>
                 </button>  
             </div>
             
             <div [attr.id]="'transducerDataTitleButton'+transdIndex+categoryIndex" class="m-3 accordion-collapse collapse" [attr.aria-labelledby]="'transducerDataTitle'+transdIndex+categoryIndex" [attr.data-bs-parent]="'#transducersEvData'+transdIndex">
-                <!-- <h6 *ngIf="tranSubDetails?.layout === 'withImg'" class="mb-3">Evaluation Notes</h6> -->
-                <!-- <div class="row mb-4">
+                <h6 *ngIf="tranSubDetails?.layout === 'withImg'" class="mb-3">Evaluation Notes</h6>
+                <div class="row mb-4">
                     <div *ngIf="tranSubDetails?.data && tranSubDetails?.layout === 'withImg'" class="col d-flex flex-column justify-content-between">
                         <div *ngIf="tranSubDetails?.data?.note !== undefined" class="mb-4">
                             <textarea 
@@ -31,8 +31,8 @@
                         </div>
                     </div>
                     
-                    <!-- Uniformity and Artifacct --
-                    <div *ngIf="tranSubDetails?.layout === 'uniformityArtifact'">
+                    <!-- Uniformity and Artifacct -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'uniformityArtifact'">
                         <div class="mb-4">
                             <img src="../../../assets/images/uniformity.jpeg" alt=""> 
                         </div>
@@ -71,10 +71,10 @@
                                 </tr>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Depth of penetration --
-                    <div *ngIf="tranSubDetails?.layout === 'depthOfPenetration'">
+                    <!-- Depth of penetration -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'depthOfPenetration'">
                         <div class="row mb-4">
                             <div class="col">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -83,10 +83,10 @@
                                 <img src="../../../assets/images/dop.jpeg" alt=""> 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Vertical Distance --
-                    <div *ngIf="tranSubDetails?.layout === 'verticalDistance'" class="vertical-distance">
+                    <!-- Vertical Distance -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'verticalDistance'" class="vertical-distance">
                         <div class="row mb-4">
                             <div class="col-9">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -151,10 +151,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Horizontal Distance --
-                    <div *ngIf="tranSubDetails?.layout === 'horizontalDistance'">
+                    <!-- Horizontal Distance -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'horizontalDistance'">
                         <div class="row mb-4">
                             <div class="col-9">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -205,10 +205,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Axial Resolution --
-                    <div *ngIf="tranSubDetails?.layout === 'axialResolution'">
+                    <!-- Axial Resolution -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'axialResolution'">
                         <div class="row mb-4">
                             <div class="col-9">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -273,10 +273,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Leteral Resolution --
-                    <div *ngIf="tranSubDetails?.layout === 'leteralResolution'">
+                    <!-- Leteral Resolution -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'leteralResolution'">
                         <div class="row mb-4">
                             <div class="col-9">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -341,10 +341,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Elevation Resolution --
-                    <div *ngIf="tranSubDetails?.layout === 'elevationResolution'">
+                    <!-- Elevation Resolution -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'elevationResolution'">
                         <div class="row mb-4">
                             <div class="col-9">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -409,10 +409,10 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     
-                    <!-- Contrast Resolution --
-                    <div *ngIf="tranSubDetails?.layout === 'contrastResolution'">
+                    <!-- Contrast Resolution -->
+                    <!-- <div *ngIf="tranSubDetails?.layout === 'contrastResolution'">
                         <div class="row mb-4">
                             <div class="col-8">
                                 <img src="../../../assets/images/review.jpeg" alt=""> 
@@ -444,11 +444,11 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                </div> -->
+                    </div> -->
+                </div>
             
             
-                <!-- <div *ngIf="tranSubDetails?.data?.note !== undefined || tranSubDetails?.data?.assessment !== undefined" class="d-flex justify-content-between align-items-end">
+                <div *ngIf="tranSubDetails?.data?.note !== undefined || tranSubDetails?.data?.assessment !== undefined" class="d-flex justify-content-between align-items-end">
                     
                     <div>
                         <div *ngIf="tranSubDetails?.data?.note !== undefined" class="evalution-data-buttons">
@@ -458,49 +458,49 @@
                         <!-- Depth of penetration --
                         <div *ngIf="tranSubDetails?.layout === 'uniformityArtifact'">
                             <p>Clinically Signigicant Artifacts: 1</p>
-                        </div>            
+                        </div>-->         
                         
                         <!-- Depth of penetration --
                         <div *ngIf="tranSubDetails?.layout === 'depthOfPenetration'" class="d-flex flex-column align-items-end">
                             <h4>Baseline DOP: 15.7 cm</h4>
                             <h4>Measured DOP: 15.0 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Vertical Distance --
                         <div *ngIf="tranSubDetails?.layout === 'verticalDistance'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 4.10 cm</h4>
                             <h4>Measured: 4.05 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Horizontal Distance --
                         <div *ngIf="tranSubDetails?.layout === 'horizontalDistance'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 3.01 cm</h4>
                             <h4>Measured: 3.03 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Axial Resolution --
                         <div *ngIf="tranSubDetails?.layout === 'axialResolution'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 4.10 cm</h4>
                             <h4>Measured: 4.05 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Leteral Resolution --
                         <div *ngIf="tranSubDetails?.layout === 'leteralResolution'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 4.10 cm</h4>
                             <h4>Measured: 4.05 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Elevation Resolution --
                         <div *ngIf="tranSubDetails?.layout === 'elevationResolution'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 4.10 cm</h4>
                             <h4>Measured: 4.05 cm</h4>
-                        </div>
+                        </div>-->
                         
                         <!-- Contrast Resolution --
-                        <div *ngIf="tranSubDetails?.layout === 'contrastResolution'" class="d-flex flex-column align-items-end">
+                        <!-- <div *ngIf="tranSubDetails?.layout === 'contrastResolution'" class="d-flex flex-column align-items-end">
                             <h4>Baseline: 1.75 cm</h4>
                             <h4>Measured: 1.73 cm</h4>
-                        </div>
+                        </div> -->
                     </div>   
                     
                     <div>
@@ -509,7 +509,7 @@
                             <button [ngClass]="tranSubDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducerId, tranSubDetails, 'fail', 'transducers')"> Fail </button>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
             </div> 
 

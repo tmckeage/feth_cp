@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { EquipmentService } from 'src/app/services/equipment.service';
+import { EvaluationsService } from 'src/app/services/evaluations.service';
+import { ToastrService } from 'ngx-toastr';
+import { Chart } from 'chart.js';
 
 @Component({
     selector: 'app-transducer-evaluation-review',
@@ -10,9 +14,12 @@ export class TransducerEvaluationReviewComponent implements OnInit {
     @Input() transducerData:any;
     @Input() transducerId:any;
     @Input() transdIndex:any;
+    @Input() scannerId:any;
+
     transducerEvaluationData:any[] = [];
+    transducerDataEditNote: string = '';
     
-    constructor() { }
+    constructor(private equipmentService: EquipmentService, private evaluationsService: EvaluationsService, public toastr: ToastrService) { }
     
     ngOnInit(): void {
         const transducerImageAnalysis = [
@@ -110,5 +117,47 @@ export class TransducerEvaluationReviewComponent implements OnInit {
     
     ascOrderObject = (a:any, b:any) =>{
         if(a.key > b.key) return b.key;
+    }
+    
+    evDetailsAssessmentValue(transducerId: any, equDetails:any, assessmentValue:string, scannerType:any) {
+        const data = { assessment: assessmentValue };
+        const parentCategory = equDetails?.value?.parentCategory || equDetails?.parentCategory;
+        const category = equDetails?.value?.category || equDetails?.category; 
+        
+        if(category && parentCategory){
+            this.equipmentService.changeEvaluationDetailsAssesment(transducerId, category, data, scannerType).subscribe( value => {
+                this.transducerData[parentCategory][category].assessment = assessmentValue;
+                this.toastr.success('Assessment Updated successfully', '', { timeOut: 1500});
+            }, error => {
+                this.toastr.success('Please try again', '', { timeOut: 1500});
+            });
+
+            // TODO When api will get ready
+            /*this.evaluationsService.transducerAssesment(transducerId, category, data, scannerId).subscribe( value => {
+                this.transducerData[parentCategory][category].assessment = assessmentValue;
+                this.toastr.success('Assessment Updated successfully', '', { timeOut: 1500});
+            }, error => {
+                this.toastr.success('Please try again', '', { timeOut: 1500});
+            });*/
+        }else {
+            this.toastr.error('Please try again', '', { timeOut: 1500});
+        }
+    }
+    
+    evDetailsEditNote(transducerId: any, equDetails:any, scannerType:any) {
+        const data = { note: equDetails?.data?.note };
+        const title = equDetails?.value?.title || equDetails?.title;
+        const category = equDetails?.value?.category || equDetails?.category;
+        
+        this.transducerDataEditNote = this.transducerDataEditNote !== title ? title : '';
+        if(!this.transducerDataEditNote) this.editNotesApiCall(transducerId, category, data, scannerType);	
+    }
+    
+    editNotesApiCall(transducerId:any, category:any, data:any, scannerType:any){
+        this.equipmentService.updateAssesmentNote(transducerId, category, data, scannerType).subscribe( result => { 
+            this.toastr.success('Note Updated successfully', '', { timeOut: 1500});
+        }, error => {
+            this.toastr.success('Please try again', '', { timeOut: 1500});
+        });
     }
 }

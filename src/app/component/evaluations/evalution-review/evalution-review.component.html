@@ -46,7 +46,7 @@
                                 <div [attr.id]="'transData'+transdIndex" class="accordion-collapse collapse" [attr.aria-labelledby]="'transdTitle'+transdIndex" data-bs-parent="#scannerEvaluationsData">
                                     <div class="ps-5">
                                         <!-- TODO -->
-                                        <app-transducer-evaluation-review [transdIndex]="transdIndex" [transducerId]="transducersData.transducer_id" [transducerData]="transducersData.last_evaluation"></app-transducer-evaluation-review>
+                                        <app-transducer-evaluation-review [transdIndex]="transdIndex" [transducerId]="transducersData.transducer_id" [scannerId]="evaluation.scanner_id" [transducerData]="transducersData.last_evaluation"></app-transducer-evaluation-review>
                                     </div>
                                 </div>
                             </div>
