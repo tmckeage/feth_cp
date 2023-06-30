@@ -33,7 +33,7 @@ export class EvalutionReviewComponent implements OnInit {
         });
 
         this.evaluationsService.getScannerEvaluations(this.scannerId).subscribe( scData => {
-            // console.log(scData); // T
+            // console.log(scData); // TODO
         });
     }
     

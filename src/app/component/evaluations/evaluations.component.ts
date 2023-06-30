@@ -22,6 +22,7 @@ export class EvaluationsComponent implements OnInit {
             this.evaluationsService.getEvaluations().subscribe( evaluations => {
                 evaluations?.scanner_evaluations.map( (filter:any) => {
                     if(!filter?.date_approved){
+                        // equipment used to create title for scanner
                         let scannerName = equipment.scanners.findIndex((topic:any) => topic.scanner_id === filter.scanner_id);
                         filter.scannerName = `${equipment.scanners[scannerName].manufacturer} ${equipment.scanners[scannerName].model} : ${equipment.scanners[scannerName].serial_number}`;
                         filter.transducerLength = filter?.transducer_evaluation?.length ?? '';

@@ -32,50 +32,41 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="equDetails?.data?.note !== undefined || equDetails?.data?.assessment !== undefined" class="d-flex align-items-end justify-content-between">
-                            <div *ngIf="equDetails?.data?.note !== undefined" class="evalution-data-buttons">
-                                <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
-                            </div>
-                            <div *ngIf="equDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
-                                <button [ngClass]="equDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
-                                <button [ngClass]="equDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
-                            </div>
-                        </div>
                     </div>
                     
+                    <!-- Basic Luminance -->
+                    <div *ngIf="equDetails?.layout === 'basicLuminance'" class="mb-3">
+                        <table class="scanner-table tabel-border-th tabel-border-td">
+                            <tr>
+                                <th></th>
+                                <th>Calculated Value</th>
+                                <th>Suggested Range</th>
+                            </tr>
+                            <tr>
+                                <td>Ambience Ratio</td>
+                                <td>{{equDetails.data.ambianceRatio}}</td>
+                                <td> < 0.25 </td>
+                            </tr>
+                            <tr>
+                                <td>Luminance Ratio</td>
+                                <td>{{equDetails.data.luminanceRatio}}</td>
+                                <td> 250 - 450 </td>
+                            </tr>
+                            <tr>
+                                <td>L'<sub>min</sub></td>
+                                <td>{{equDetails.data.lMin}}</td>
+                                <td> > 1.0 </td>
+                            </tr>
+                            <tr>
+                                <td>L'<sub>max</sub></td>
+                                <td>{{equDetails.data.lMax}}</td>
+                                <td> > 300 </td>
+                            </tr>
+                        </table>
+                    </div>
                     
-                    <!--
-                        <div *ngIf="equDetails?.layout === 'basicLuminance'">
-                            <table class="scanner-table tabel-border-th tabel-border-td">
-                                <tr>
-                                    <th></th>
-                                    <th>Calculated Value</th>
-                                    <th>Suggested Range</th>
-                                </tr>
-                                <tr>
-                                    <td>Ambience Ratio</td>
-                                    <td>{{equDetails.data.ambianceRatio}}</td>
-                                    <td> < 0.25 </td>
-                                </tr>
-                                <tr>
-                                    <td>Luminance Ratio</td>
-                                    <td>{{equDetails.data.luminanceRatio}}</td>
-                                    <td> 250 - 450 </td>
-                                </tr>
-                                <tr>
-                                    <td>L'<sub>min</sub></td>
-                                    <td>{{equDetails.data.lMin}}</td>
-                                    <td> > 1.0 </td>
-                                </tr>
-                                <tr>
-                                    <td>L'<sub>max</sub></td>
-                                    <td>{{equDetails.data.lMax}}</td>
-                                    <td> > 300 </td>
-                                </tr>
-                            </table>
-                        </div>
-                        
-                        <div *ngIf="equDetails?.layout === 'luminanceUniformity'">
+                    <!-- luminance Uniformity -->
+                        <div *ngIf="equDetails?.layout === 'luminanceUniformity'" class="mb-3">
                             <table class="w-100">
                                 <tr>
                                     <td class="p-2 pb-3">
@@ -131,6 +122,23 @@
                             </table>
                         </div>
                         
+                        <!-- <div *ngIf="equDetails?.layout !== 'luminanceUniformity'"> -->
+                            <div *ngIf="equDetails?.data?.note !== undefined || equDetails?.data?.assessment !== undefined" class="row">
+                                <div class="col-6">
+                                    <div *ngIf="equDetails?.data?.note !== undefined && equDetails?.layout !== 'basicLuminance' && equDetails?.layout !== 'luminanceUniformity'" class="evalution-data-buttons">
+                                        <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div *ngIf="equDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
+                                        <button [ngClass]="equDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
+                                        <button [ngClass]="equDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+
+                        <!-- Luminance Response --
                         <div *ngIf="equDetails?.layout === 'luminanceResponse'">
                             <div class="container mb-5 JNDChart">
                                 <div class="chart-container mb-5">
