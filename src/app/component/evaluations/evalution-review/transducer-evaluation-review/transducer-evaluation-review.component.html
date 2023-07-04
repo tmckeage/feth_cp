@@ -452,7 +452,7 @@
                     
                     <div>
                         <div *ngIf="tranSubDetails?.data?.note !== undefined" class="evalution-data-buttons">
-                            <button class="btn m-1" (click)="evDetailsEditNote(transducerId, tranSubDetails, 'transducers')"> {{transducerDataEditNote === tranSubDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+                            <button class="btn m-1" (click)="evDetailsEditNote(scannerId, transducerId, tranSubDetails)"> {{transducerDataEditNote === tranSubDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
                         </div>
             
                         <!-- Depth of penetration --
@@ -505,8 +505,8 @@
                     
                     <div>
                         <div *ngIf="tranSubDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
-                            <button [ngClass]="tranSubDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducerId, tranSubDetails, 'pass', 'transducers')"> Pass </button>
-                            <button [ngClass]="tranSubDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(transducerId, tranSubDetails, 'fail', 'transducers')"> Fail </button>
+                            <button [ngClass]="tranSubDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId,transducerId, tranSubDetails, 'pass')"> Pass </button>
+                            <button [ngClass]="tranSubDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId,transducerId, tranSubDetails, 'fail')"> Fail </button>
                         </div>
                     </div>
                 </div>

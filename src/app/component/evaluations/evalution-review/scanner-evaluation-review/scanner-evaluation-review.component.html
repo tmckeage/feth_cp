@@ -188,14 +188,17 @@
                     
                     <div *ngIf="equDetails?.data?.note !== undefined || equDetails?.data?.assessment !== undefined" class="row">
                         <div class="col-6">
-                            <div *ngIf="equDetails?.data?.note !== undefined && equDetails?.layout !== 'basicLuminance' && equDetails?.layout !== 'luminanceUniformity' && equDetails?.layout === 'luminanceResponse'" class="evalution-data-buttons">
-                                <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails, 'scanners')"> {{scannerDataEditNote === equDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
-                            </div>
+                            <ng-container *ngIf="equDetails?.data?.note !== undefined">
+                                <div *ngIf="equDetails?.layout !== 'basicLuminance' && equDetails?.layout !== 'luminanceUniformity' && equDetails?.layout !== 'luminanceResponse'" class="evalution-data-buttons">
+                                    <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails)"> {{scannerDataEditNote === equDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
+                                </div>
+                            </ng-container>
+                            
                         </div>
                         <div class="col-6">
                             <div *ngIf="equDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
-                                <button [ngClass]="equDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass', 'scanners')"> Pass </button>
-                                <button [ngClass]="equDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail', 'scanners')"> Fail </button>
+                                <button [ngClass]="equDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass')"> Pass </button>
+                                <button [ngClass]="equDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail')"> Fail </button>
                             </div>
                         </div>
                     </div>

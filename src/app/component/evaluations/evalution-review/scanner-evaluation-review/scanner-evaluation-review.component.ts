@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EquipmentService } from 'src/app/services/equipment.service';
+import { EvaluationsService } from 'src/app/services/evaluations.service';
 import { ToastrService } from 'ngx-toastr';
 import { Chart } from 'chart.js';
 
@@ -18,21 +19,12 @@ export class ScannerEvaluationReviewComponent implements OnInit {
     luminanceUniformity: any;
     luminanceResponseData: any;
     
-    physicalConditionTitle:any [] = [
-        {controls:'Controls'},
-        {housing:'Housing'},
-        {ports:'Ports'},
-        {power_cord:'Power Cord'},
-        {wheels:'Wheels'}
-    ];
     displayPerformanceTitle:any [] = [];
     
     jndPlotTableData: any[] = [];
     glPlotTableData: any[] = [];
     
-    constructor(private equipmentService: EquipmentService, public toastr: ToastrService) {
-        
-    }
+    constructor(private equipmentService: EquipmentService, private evaluationsService: EvaluationsService, public toastr: ToastrService) {}
     
     ngOnInit(): void {
         // console.log(this.scannerData);
@@ -159,18 +151,14 @@ export class ScannerEvaluationReviewComponent implements OnInit {
         
     }
     
-    
-    
-    
-    
-    
+
     
     async luminanceResponse(luminanceResponse: any){
         if(luminanceResponse){
             this.luminanceResponseData = {
                 assessment: 'pass',
             }
-
+            
             let data = luminanceResponse;      
             let meas_luminance:any [] = []; // this value come from API
             let ambient:any; // this value come from API
@@ -188,7 +176,7 @@ export class ScannerEvaluationReviewComponent implements OnInit {
         }
     }
     
-
+    
     getLprime(luminanceData:any, ambientValue:any){
         return luminanceData.map((lum:any, i:any) => {return lum + ambientValue;});
     }
@@ -493,29 +481,18 @@ export class ScannerEvaluationReviewComponent implements OnInit {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
     ascOrderObject = (a:any, b:any) =>{
         if(a.key > b.key) return b.key;
     }
     
-    evDetailsAssessmentValue(scannerId: any, equDetails:any, assessmentValue:string, scannerType:any) {
-        
+    evDetailsAssessmentValue(scannerId: any, equDetails:any, assessmentValue:string) {
         const data = { assessment: assessmentValue };
         const parentCategory = equDetails?.value?.parentCategory || equDetails?.parentCategory;
         const category = equDetails?.value?.category || equDetails?.category; 
-        
-        this.equipmentService.changeEvaluationDetailsAssesment(scannerId, category, data, scannerType).subscribe(value => {
-            if(value.scanner_id){
+               
+        this.evaluationsService.scannerAssesment(scannerId, category, data).subscribe(
+            value => { if(value.scanner_id){
                 this.scannerData[parentCategory][category].assessment = assessmentValue;
                 this.toastr.success('Assessment Updated successfully', '', { timeOut: 1500});
             } else {
@@ -526,18 +503,18 @@ export class ScannerEvaluationReviewComponent implements OnInit {
         });
     }
     
-    evDetailsEditNote(scannerId: any, equDetails:any, scannerType:any) {
+    evDetailsEditNote(scannerId: any, equDetails:any) {
         const data = { note: equDetails?.data?.note };
         const title = equDetails?.value?.title || equDetails?.title;
         const category = equDetails?.value?.category || equDetails?.category;
         
         this.scannerDataEditNote = this.scannerDataEditNote !== title ? title : '';
-        if(!this.scannerDataEditNote) this.editNotesApiCall(scannerId, category, data, scannerType);
+        if(!this.scannerDataEditNote) this.editNotesApiCall(scannerId, category, data);
     }
     
-    editNotesApiCall(scannerId:any, category:any, data:any, scannerType:any){
-        this.equipmentService.updateAssesmentNote(scannerId, category, data, scannerType).subscribe( result => { 
-            if(result.scanner_id){
+    editNotesApiCall(scannerId:any, category:any, data:any){        
+        this.evaluationsService.scannerNote(scannerId, category, data).subscribe( 
+            result => { if(result.scanner_id){
                 this.toastr.success('Note Updated successfully', '', { timeOut: 1500});
             } else {
                 this.toastr.error('Please try again', '', { timeOut: 1500});

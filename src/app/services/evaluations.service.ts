@@ -25,10 +25,10 @@ export class EvaluationsService {
         return this.http.put(`${environment.api_url}/api/v1/scanner_evaluations/${scannerId}/${category}/assessment`, data);
     }
     
-    transducerNote(transducerId:any, category: any, data: any, scannerId: any): Observable<any>{
+    transducerNote(scannerId: any, transducerId:any, category: any, data: any): Observable<any>{
         return this.http.put(`${environment.api_url}/api/v1/scanner_evaluations/${scannerId}/transducers/${transducerId}/${category}/note`, data);
     }
-    transducerAssesment(transducerId: any, category: any, data: any, scannerId:any): Observable<any>{
+    transducerAssesment(scannerId: any, transducerId: any, category: any, data: any): Observable<any>{
         return this.http.put(`${environment.api_url}/api/v1/scanner_evaluations/${scannerId}/transducers/${transducerId}/${category}/assessment`, data);
     }
 }

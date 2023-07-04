@@ -15,7 +15,7 @@
                 </thead>
                 <tbody *ngIf="evaluationsData">
                     <tr *ngFor="let evData of evaluationsData">
-                        <td [routerLink]="[evData.scanner_id]">{{evData.scannerName}}</td>
+                        <td [routerLink]="[evData.scanner_evaluation_id]">{{evData.scannerName}}</td>
                         <td>{{evData.transducerLength}}</td>
                         <td>{{evData.date_performed}}</td>
                     </tr>
