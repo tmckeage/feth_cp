@@ -19,47 +19,33 @@ export class EvalutionReviewComponent implements OnInit {
     
     constructor(private router: Router, private toastr: ToastrService, public modalService: NgbModal, private evaluationsService: EvaluationsService,  private equipmentService: EquipmentService, private activatedRoute: ActivatedRoute) { }
     
-    ngOnInit(): void {
+    ngOnInit(){
         this.scannerId = this.activatedRoute.snapshot.paramMap.get('scannerId');
-        
-        /* this.equipmentService.getAllEquipments().subscribe( equipment => {
-            // console.log(equipment);
-            equipment?.scanners.map( (scannerData:any) => {
-                if(scannerData.scanner_id === this.scannerId){
-                    this.evaluationsData = [scannerData];
-                }
-                this.loading = false;
-            });
-        }); */
-        
-        // TODO
-        this.evaluationsService.getScannerEvaluations(this.scannerId).subscribe( scData => {
-            // console.log(scData); 
-            this.equipmentService.getAllEquipments().subscribe( equipment => {
-                equipment?.scanners.map( (scannerData:any) => {
-                    if(scannerData.scanner_id === scData.scanner_id){
-                        // console.log(scannerData);
 
-                        scData.manufacturer = scannerData.manufacturer;
-                        scData.model = scannerData.model;
-                        scData.serial_number = scannerData.serial_number;
-                        
-                        scannerData.transducers.map( (transducerData:any) => {
-                            scData.transducer_evaluation.map( (newTData:any) => {
-                                if(transducerData.transducer_id === newTData.transducer_id){
-                                    newTData.manufacturer = transducerData.manufacturer;
-                                    newTData.model = transducerData.model;
-                                    newTData.serial_number = transducerData.serial_number;
-                                }
-                            });
-                        });
-                        this.evaluationsData = scData;
-                        // console.log(this.evaluationsData);          
-                        this.loading = false;
-                    }
+        // TODO
+        this.evaluationsService.getScannerEvaluations(this.scannerId).subscribe( async (scData) => {
+            // console.log(scData);
+
+            // Gets Transducers Title
+            await scData.transducer_evaluation.map( async (transducerData:any) => {
+                await this.evaluationsService.getTransducerData(transducerData.transducer_id).subscribe( tdData => {
+                    transducerData.manufacturer = tdData.manufacturer;
+                    transducerData.model = tdData.model;
+                    transducerData.serial_number = tdData.serial_number;
                 });
             });
+            
+            // Gets Scanner Title
+            await this.evaluationsService.getScannerData(scData.scanner_id).subscribe( scannerData => {
+                scData.manufacturer = scannerData.manufacturer;
+                scData.model = scannerData.model;
+                scData.serial_number = scannerData.serial_number;
+            });
+            
+            this.evaluationsData = scData;
+            setTimeout(() => {
+                this.loading = false;
+            }, 1500);
         });
     }
-    
 }
