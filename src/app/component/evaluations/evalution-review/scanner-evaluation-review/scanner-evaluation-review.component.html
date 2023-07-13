@@ -73,11 +73,11 @@
                                     <table class="m-auto">
                                         <tr>
                                             <td class="p-1 text-end">Upper Left:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.testPattern.upper_left}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.data.upper_left}} </td>
                                         </tr>
                                         <tr>
                                             <td class="p-1 text-end">Lower Left:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.testPattern.lower_left}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.data.lower_left}} </td>
                                         </tr>
                                     </table>
                                 </td>
@@ -85,11 +85,11 @@
                                     <table class="m-auto">
                                         <tr>
                                             <td class="p-1 text-end">Ambient:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.ambient}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.ambient}} </td>
                                         </tr>
                                         <tr>
                                             <td class="p-1 text-end">Center:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.testPattern.center}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.data.center}} </td>
                                         </tr>
                                     </table>
                                 </td>
@@ -97,11 +97,11 @@
                                     <table class="m-auto">
                                         <tr>
                                             <td class="p-1 text-end">Upper Right:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.testPattern.lower_right}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.data.lower_right}} </td>
                                         </tr>
                                         <tr>
                                             <td class="p-1 text-end">Lower Right:</td>
-                                            <td class="p-1 ps-4"> {{equDetails.data.testPattern.upper_right}} </td>
+                                            <td class="p-1 ps-4"> {{equDetails.data.upper_right}} </td>
                                         </tr>
                                     </table>
                                 </td>                    
@@ -185,18 +185,19 @@
                     </div>
                     
                     
-                    
-                    <div *ngIf="equDetails?.data?.note !== undefined || equDetails?.data?.assessment !== undefined" class="row">
+                    <!-- *ngIf="equDetails?.data?.note !== undefined || equDetails?.data?.assessment !== undefined"  -->
+                    <div class="row">
                         <div class="col-6">
                             <ng-container *ngIf="equDetails?.data?.note !== undefined">
                                 <div *ngIf="equDetails?.layout !== 'basicLuminance' && equDetails?.layout !== 'luminanceUniformity' && equDetails?.layout !== 'luminanceResponse'" class="evalution-data-buttons">
                                     <button class="btn m-1" (click)="evDetailsEditNote(scannerId, equDetails)"> {{scannerDataEditNote === equDetails?.title ? ' Save Notes ': ' Edit Notes '}} </button>
                                 </div>
                             </ng-container>
-                            
                         </div>
+                        
                         <div class="col-6">
-                            <div *ngIf="equDetails?.data?.assessment !== undefined" class="evalution-data-buttons text-end">
+                            <!-- *ngIf="equDetails?.data?.assessment !== undefined"  -->
+                            <div class="evalution-data-buttons text-end">
                                 <button [ngClass]="equDetails?.data?.assessment === 'pass'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'pass')"> Pass </button>
                                 <button [ngClass]="equDetails?.data?.assessment === 'fail'? 'active' : ''" class="btn text-uppercase m-1" (click)="evDetailsAssessmentValue(scannerId, equDetails, 'fail')"> Fail </button>
                             </div>
