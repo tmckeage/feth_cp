@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fethcp-dev-193743-authRole",
+      "UnauthRoleArn": "arn:aws:iam::209353441244:role/amplify-fethcp-dev-193743-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::209353441244:role/amplify-fethcp-dev-193743-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-fethcp-dev-193743-deployment",
+      "UnauthRoleName": "amplify-fethcp-dev-193743-unauthRole",
+      "StackName": "amplify-fethcp-dev-193743",
+      "StackId": "arn:aws:cloudformation:us-east-1:209353441244:stack/amplify-fethcp-dev-193743/bb9319c0-266b-11ee-8cb5-1243b98013d5",
+      "AmplifyAppId": "d38do5wgjrgttp"
+    }
+  }
+}
